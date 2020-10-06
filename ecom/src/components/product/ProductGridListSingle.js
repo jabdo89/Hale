@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import { useToasts } from "react-toast-notifications";
 import { getDiscountPrice } from "../../helpers/product";
 import Rating from "./sub-components/ProductRating";
@@ -16,16 +17,22 @@ const ProductGridListSingle = ({
   wishlistItem,
   compareItem,
   sliderClassName,
-  spaceBottomClass
+  spaceBottomClass,
+  profile,
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const { addToast } = useToasts();
 
   const discountedPrice = getDiscountPrice(product.price, product.discount);
-  const finalProductPrice = +(product.price * currency.currencyRate).toFixed(2);
+  let finalProductPrice = +(product.price * currency.currencyRate).toFixed(2);
   const finalDiscountedPrice = +(
     discountedPrice * currency.currencyRate
   ).toFixed(2);
+  let quantAdd;
+  if (!profile.isEmpty) {
+    quantAdd = product.minQuant;
+    finalProductPrice = +(product.priceDis * currency.currencyRate).toFixed(2);
+  }
 
   return (
     <Fragment>
@@ -54,14 +61,19 @@ const ProductGridListSingle = ({
                 ""
               )}
             </Link>
-            {product.discount || product.new ? (
+            {product.discount || product.new || !profile.isEmpty ? (
               <div className="product-img-badges">
-                {product.discount ? (
+                {product.discount && profile.isEmpty ? (
                   <span className="pink">-{product.discount}%</span>
                 ) : (
                   ""
                 )}
                 {product.new ? <span className="purple">New</span> : ""}
+                {!profile.isEmpty ? (
+                  <span className="pink">Min {product.minQuant}</span>
+                ) : (
+                  ""
+                )}
               </div>
             ) : (
               ""
@@ -98,7 +110,7 @@ const ProductGridListSingle = ({
                   </Link>
                 ) : product.stock && product.stock > 0 ? (
                   <button
-                    onClick={() => addToCart(product, addToast)}
+                    onClick={() => addToCart(product, addToast, quantAdd)}
                     className={
                       cartItem !== undefined && cartItem.quantity > 0
                         ? "active"
@@ -142,7 +154,7 @@ const ProductGridListSingle = ({
               ""
             )}
             <div className="product-price">
-              {discountedPrice !== null ? (
+              {discountedPrice !== null && profile.isEmpty ? (
                 <Fragment>
                   <span>{currency.currencySymbol + finalDiscountedPrice}</span>{" "}
                   <span className="old">
@@ -176,14 +188,19 @@ const ProductGridListSingle = ({
                       ""
                     )}
                   </Link>
-                  {product.discount || product.new ? (
+                  {product.discount || product.new || !profile.isEmpty ? (
                     <div className="product-img-badges">
-                      {product.discount ? (
+                      {product.discount && profile.isEmpty ? (
                         <span className="pink">-{product.discount}%</span>
                       ) : (
                         ""
                       )}
                       {product.new ? <span className="purple">New</span> : ""}
+                      {!profile.isEmpty ? (
+                        <span className="pink">Min {product.minQuant}</span>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   ) : (
                     ""
@@ -199,7 +216,7 @@ const ProductGridListSingle = ({
                   </Link>
                 </h3>
                 <div className="product-list-price">
-                  {discountedPrice !== null ? (
+                  {discountedPrice !== null && profile.isEmpty ? (
                     <Fragment>
                       <span>
                         {currency.currencySymbol + finalDiscountedPrice}
@@ -288,20 +305,6 @@ const ProductGridListSingle = ({
                       <i className="pe-7s-like" />
                     </button>
                   </div>
-                  <div className="shop-list-compare ml-10">
-                    <button
-                      className={compareItem !== undefined ? "active" : ""}
-                      disabled={compareItem !== undefined}
-                      title={
-                        compareItem !== undefined
-                          ? "Added to compare"
-                          : "Add to compare"
-                      }
-                      onClick={() => addToCompare(product, addToast)}
-                    >
-                      <i className="pe-7s-shuffle" />
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -339,7 +342,13 @@ ProductGridListSingle.propTypes = {
   product: PropTypes.object,
   sliderClassName: PropTypes.string,
   spaceBottomClass: PropTypes.string,
-  wishlistItem: PropTypes.object
+  wishlistItem: PropTypes.object,
 };
 
-export default ProductGridListSingle;
+const mapStateToProps = (state) => {
+  return {
+    profile: state.firebase.profile,
+  };
+};
+
+export default connect(mapStateToProps)(ProductGridListSingle);

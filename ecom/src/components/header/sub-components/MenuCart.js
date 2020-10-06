@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import { useToasts } from "react-toast-notifications";
+import { addToCart } from "../../../redux/actions/cartActions";
 import { getDiscountPrice } from "../../../helpers/product";
 
-const MenuCart = ({ cartData, currency, deleteFromCart }) => {
+const MenuCart = ({ cartData, currency, deleteFromCart, profile }) => {
   let cartTotalPrice = 0;
   const { addToast } = useToasts();
   return (
@@ -17,14 +19,21 @@ const MenuCart = ({ cartData, currency, deleteFromCart }) => {
                 single.price,
                 single.discount
               );
-              const finalProductPrice = (
+              let finalProductPrice = (
                 single.price * currency.currencyRate
               ).toFixed(2);
               const finalDiscountedPrice = (
                 discountedPrice * currency.currencyRate
               ).toFixed(2);
+              let quantAdd;
+              if (!profile.isEmpty) {
+                quantAdd = single.minQuant;
+                finalProductPrice = +(
+                  single.priceDis * currency.currencyRate
+                ).toFixed(2);
+              }
 
-              discountedPrice != null
+              discountedPrice != null && profile.isEmpty
                 ? (cartTotalPrice += finalDiscountedPrice * single.quantity)
                 : (cartTotalPrice += finalProductPrice * single.quantity);
 
@@ -50,7 +59,7 @@ const MenuCart = ({ cartData, currency, deleteFromCart }) => {
                     </h4>
                     <h6>Qty: {single.quantity}</h6>
                     <span>
-                      {discountedPrice !== null
+                      {discountedPrice !== null && profile.isEmpty
                         ? currency.currencySymbol + finalDiscountedPrice
                         : currency.currencySymbol + finalProductPrice}
                     </span>
@@ -103,7 +112,22 @@ const MenuCart = ({ cartData, currency, deleteFromCart }) => {
 MenuCart.propTypes = {
   cartData: PropTypes.array,
   currency: PropTypes.object,
-  deleteFromCart: PropTypes.func
+  deleteFromCart: PropTypes.func,
 };
 
-export default MenuCart;
+const mapStateToProps = (state) => {
+  return {
+    cartItems: state.cartData,
+    currency: state.currencyData,
+    profile: state.firebase.profile,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (item, addToast, quantityCount) => {
+      dispatch(addToCart(item, addToast, quantityCount));
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(MenuCart);

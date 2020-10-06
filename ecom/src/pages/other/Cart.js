@@ -24,6 +24,7 @@ const Cart = ({
   addToCart,
   deleteFromCart,
   deleteAllFromCart,
+  profile,
 }) => {
   const [quantityCount] = useState(1);
   const { addToast } = useToasts();
@@ -73,14 +74,27 @@ const Cart = ({
                               cartItem.price,
                               cartItem.discount
                             );
-                            const finalProductPrice = (
+                            let finalProductPrice = (
                               cartItem.price * currency.currencyRate
                             ).toFixed(2);
                             const finalDiscountedPrice = (
                               discountedPrice * currency.currencyRate
                             ).toFixed(2);
-
-                            discountedPrice != null
+                            let quantAdd;
+                            if (!profile.isEmpty) {
+                              if (cartItem.quantity < cartItem.minQuant) {
+                                addToCart(
+                                  cartItem,
+                                  addToast,
+                                  cartItem.minQuant - cartItem.quantity
+                                );
+                              }
+                              quantAdd = cartItem.minQuant;
+                              finalProductPrice = +(
+                                cartItem.priceDis * currency.currencyRate
+                              ).toFixed(2);
+                            }
+                            discountedPrice != null && profile.isEmpty
                               ? (cartTotalPrice +=
                                   finalDiscountedPrice * cartItem.quantity)
                               : (cartTotalPrice +=
@@ -132,7 +146,8 @@ const Cart = ({
                                 </td>
 
                                 <td className="product-price-cart">
-                                  {discountedPrice !== null ? (
+                                  {discountedPrice !== null &&
+                                  profile.isEmpty ? (
                                     <Fragment>
                                       <span className="amount old">
                                         {currency.currencySymbol +
@@ -192,7 +207,7 @@ const Cart = ({
                                   </div>
                                 </td>
                                 <td className="product-subtotal">
-                                  {discountedPrice !== null
+                                  {discountedPrice !== null && profile.isEmpty
                                     ? currency.currencySymbol +
                                       (
                                         finalDiscountedPrice * cartItem.quantity
@@ -324,6 +339,7 @@ const mapStateToProps = (state) => {
   return {
     cartItems: state.cartData,
     currency: state.currencyData,
+    profile: state.firebase.profile,
   };
 };
 

@@ -1,16 +1,21 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
+import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { Link, useHistory } from "react-router-dom";
 import firebase from "firebase";
+import { useToasts } from "react-toast-notifications";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
+import { deleteAllFromCart } from "../../redux/actions/cartActions";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 
-const LoginRegister = ({ location }) => {
+const LoginRegister = ({ location, deleteAllFromCart }) => {
   const { pathname } = location;
+
+  const { addToast } = useToasts();
 
   const [form, setForm] = useState();
   const [error, setError] = useState();
@@ -26,6 +31,7 @@ const LoginRegister = ({ location }) => {
       .auth()
       .signInWithEmailAndPassword(form.email, form.password)
       .then(() => {
+        deleteAllFromCart();
         history.push("/shop-grid-standard/");
       })
       .catch((err) => {
@@ -57,6 +63,7 @@ const LoginRegister = ({ location }) => {
               });
             })
             .then(() => {
+              deleteAllFromCart();
               history.push("/shop-grid-standard/");
             })
             .catch((err) => {
@@ -195,4 +202,12 @@ LoginRegister.propTypes = {
   location: PropTypes.object,
 };
 
-export default LoginRegister;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteAllFromCart: (addToast) => {
+      dispatch(deleteAllFromCart(addToast));
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(LoginRegister);

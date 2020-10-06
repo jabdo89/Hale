@@ -21,6 +21,7 @@ const ProductDescriptionInfo = ({
   addToCart,
   addToWishlist,
   addToCompare,
+  profile,
 }) => {
   const [selectedProductColor, setSelectedProductColor] = useState(
     product.variation ? product.variation[0].color : ""
@@ -31,7 +32,9 @@ const ProductDescriptionInfo = ({
   const [productStock, setProductStock] = useState(
     product.variation ? product.variation[0].size[0].stock : product.stock
   );
-  const [quantityCount, setQuantityCount] = useState(1);
+  const [quantityCount, setQuantityCount] = useState(
+    !profile.isEmpty ? product.minQuant : 1
+  );
 
   const productCartQty = getProductCartQuantity(
     cartItems,
@@ -40,11 +43,18 @@ const ProductDescriptionInfo = ({
     selectedProductSize
   );
 
+  let quantAdd = 1;
+
+  if (!profile.isEmpty) {
+    quantAdd = product.minQuant;
+    finalProductPrice = +(product.priceDis * currency.currencyRate).toFixed(2);
+  }
+
   return (
     <div className="product-details-content ml-70">
       <h2>{product.name}</h2>
       <div className="product-details-price">
-        {discountedPrice !== null ? (
+        {discountedPrice !== null && profile.isEmpty ? (
           <Fragment>
             <span>{currency.currencySymbol + finalDiscountedPrice}</span>{" "}
             <span className="old">
@@ -154,7 +164,9 @@ const ProductDescriptionInfo = ({
           <div className="cart-plus-minus">
             <button
               onClick={() =>
-                setQuantityCount(quantityCount > 1 ? quantityCount - 1 : 1)
+                setQuantityCount(
+                  quantityCount > quantAdd ? quantityCount - 1 : quantAdd
+                )
               }
               className="dec qtybutton"
             >
@@ -214,20 +226,6 @@ const ProductDescriptionInfo = ({
               <i className="pe-7s-like" />
             </button>
           </div>
-          <div className="pro-details-compare">
-            <button
-              className={compareItem !== undefined ? "active" : ""}
-              disabled={compareItem !== undefined}
-              title={
-                compareItem !== undefined
-                  ? "Added to compare"
-                  : "Add to compare"
-              }
-              onClick={() => addToCompare(product, addToast)}
-            >
-              <i className="pe-7s-shuffle" />
-            </button>
-          </div>
         </div>
       )}
       {product.category ? (
@@ -270,28 +268,13 @@ const ProductDescriptionInfo = ({
       <div className="pro-details-social">
         <ul>
           <li>
+            <a href="//instagram.com">
+              <i className="fa fa-instagram" />
+            </a>
+          </li>
+          <li>
             <a href="//facebook.com">
               <i className="fa fa-facebook" />
-            </a>
-          </li>
-          <li>
-            <a href="//dribbble.com">
-              <i className="fa fa-dribbble" />
-            </a>
-          </li>
-          <li>
-            <a href="//pinterest.com">
-              <i className="fa fa-pinterest-p" />
-            </a>
-          </li>
-          <li>
-            <a href="//twitter.com">
-              <i className="fa fa-twitter" />
-            </a>
-          </li>
-          <li>
-            <a href="//linkedin.com">
-              <i className="fa fa-linkedin" />
             </a>
           </li>
         </ul>
@@ -313,6 +296,12 @@ ProductDescriptionInfo.propTypes = {
   finalProductPrice: PropTypes.number,
   product: PropTypes.object,
   wishlistItem: PropTypes.object,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    profile: state.firebase.profile,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -343,4 +332,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(ProductDescriptionInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProductDescriptionInfo);

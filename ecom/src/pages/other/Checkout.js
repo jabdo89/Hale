@@ -3,14 +3,16 @@ import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import MetaTags from "react-meta-tags";
+import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
 import firebase from "firebase";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { getDiscountPrice } from "../../helpers/product";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
+import { addToCart } from "../../redux/actions/cartActions";
 
-const Checkout = ({ location, cartItems, currency }) => {
+const Checkout = ({ location, cartItems, currency, profile, addToCart }) => {
   const { pathname } = location;
   let cartTotalPrice = 0;
   let history = useHistory();
@@ -18,7 +20,7 @@ const Checkout = ({ location, cartItems, currency }) => {
     apartmentNum: "",
     message: "",
   });
-
+  const { addToast } = useToasts();
   const createOrder = (e) => {
     e.preventDefault();
     const db = firebase.firestore();
@@ -207,25 +209,41 @@ const Checkout = ({ location, cartItems, currency }) => {
                                   cartItem.price,
                                   cartItem.discount
                                 );
-                                const finalProductPrice = (
+                                let finalProductPrice = (
                                   cartItem.price * currency.currencyRate
                                 ).toFixed(2);
                                 const finalDiscountedPrice = (
                                   discountedPrice * currency.currencyRate
                                 ).toFixed(2);
+                                let quantAdd;
+                                if (!profile.isEmpty) {
+                                  if (cartItem.quantity < cartItem.minQuant) {
+                                    addToCart(
+                                      cartItem,
+                                      addToast,
+                                      cartItem.minQuant - cartItem.quantity
+                                    );
+                                  }
+                                  quantAdd = cartItem.minQuant;
+                                  finalProductPrice = +(
+                                    cartItem.priceDis * currency.currencyRate
+                                  ).toFixed(2);
+                                }
 
-                                discountedPrice != null
+                                discountedPrice != null && profile.isEmpty
                                   ? (cartTotalPrice +=
                                       finalDiscountedPrice * cartItem.quantity)
                                   : (cartTotalPrice +=
                                       finalProductPrice * cartItem.quantity);
+
                                 return (
                                   <li key={key}>
                                     <span className="order-middle-left">
                                       {cartItem.name} X {cartItem.quantity}
                                     </span>{" "}
                                     <span className="order-price">
-                                      {discountedPrice !== null
+                                      {discountedPrice !== null &&
+                                      profile.isEmpty
                                         ? currency.currencySymbol +
                                           (
                                             finalDiscountedPrice *
@@ -307,7 +325,16 @@ const mapStateToProps = (state) => {
   return {
     cartItems: state.cartData,
     currency: state.currencyData,
+    profile: state.firebase.profile,
   };
 };
 
-export default connect(mapStateToProps)(Checkout);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (item, addToast, quantityCount) => {
+      dispatch(addToCart(item, addToast, quantityCount));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
