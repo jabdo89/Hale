@@ -1,11 +1,11 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyCw9lfiScfZE-thN9072bCX-gB7yImXhvA",
-  authDomain: "pruebaecom-7be9c.firebaseapp.com",
-  databaseURL: "https://pruebaecom-7be9c.firebaseio.com",
-  projectId: "pruebaecom-7be9c",
-  storageBucket: "pruebaecom-7be9c.appspot.com",
-  messagingSenderId: "293104647073",
-  appId: "1:293104647073:web:6163dfed5fad486966e9e0",
+  apiKey: "AIzaSyDqCfeEGAFooSlpMTHVRXkqdXGRdfuD4iY",
+  authDomain: "hale-dd838.firebaseapp.com",
+  databaseURL: "https://hale-dd838.firebaseio.com",
+  projectId: "hale-dd838",
+  storageBucket: "hale-dd838.appspot.com",
+  messagingSenderId: "149037020644",
+  appId: "1:149037020644:web:da657b3a259c14188b83f1",
 };
 
 const rrfConfig = {

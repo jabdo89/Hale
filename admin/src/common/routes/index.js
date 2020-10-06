@@ -4,6 +4,7 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
+import Dashboard from "../../views/dashboard";
 import Clientes from "../../views/clientes";
 import Inventario from "../../views/inventario";
 import EditInventario from "../../views/inventario/editInventario";
@@ -21,6 +22,7 @@ import NewSlider from "../../views/promocion/sliders/newSlider";
 
 const Routes = () => (
         <Switch>
+            <Route path="/dashboard" exact component={Dashboard} />
             <Route path="/productos" exact component={Productos} />
             <Route path="/productos/new" component={NewProducto} />
             <Route path="/productos/edit" component={EditProducto} />
@@ -35,7 +37,7 @@ const Routes = () => (
             <Route path="/descuentos" component={Descuentos} />
             <Route path="/ordenes" component={Ordenes} />
             <Route path="/clientes" component={Clientes} />
-            <Redirect to="/productos" />
+            <Redirect to="/dashboard" />
         </Switch>
 );
 

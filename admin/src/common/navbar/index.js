@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 import firebase from 'firebase';
 import { Button, Menu, Layout } from "antd";
-import { ShoppingOutlined, InboxOutlined, DollarCircleOutlined, DatabaseOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { ShoppingOutlined, InboxOutlined, DollarCircleOutlined, DatabaseOutlined, LogoutOutlined, UserOutlined, BarChartOutlined } from '@ant-design/icons';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -29,6 +29,11 @@ const Navbar = ({ location }) => {
                 mode="inline"
                 selectedKeys={[pathname]}
             >
+                <Menu.Item key='dashboard'>
+                    <Link to="/dashboard"></Link>
+                    <BarChartOutlined />
+                    <span className="nav-text">Dashboard</span>
+                </Menu.Item>
                 <Menu.Item key='productos'>
                     <Link to="/productos"></Link>
                     <ShoppingOutlined />

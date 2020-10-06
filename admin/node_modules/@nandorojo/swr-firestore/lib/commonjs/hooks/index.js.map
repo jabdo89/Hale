@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.ts"],"names":[],"mappings":"sEAAA,4PACA,oQACA,+PACA","sourcesContent":["export * from './use-swr-document'\nexport * from './use-swr-collection'\nexport * from './static-mutations'\nexport * from './use-swr-collection-group'\n"]}

@@ -1,18 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import firebase from "firebase";
 import {
     Card,
     Form,
     Input,
     Button,
-    Divider,
     Typography,
     Layout
 } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 const { Item } = Form;
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const { Content } = Layout;
 
 const LoginLayout = ({ children }) => (
