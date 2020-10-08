@@ -1,19 +1,111 @@
-import React, { useState } from "react";
-import firebase from "firebase";
-import Login from "./views/login";
-import AppLayout from "./common/appLayout";
+import React from 'react';
 
-const App = () => {
-  const [isLogged, setIsLogged] = useState(false);
+import { Switch, BrowserRouter as Router,Route } from "react-router-dom";
+import { connect } from "react-redux";
 
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user != null) {
-      setIsLogged(true);
-    } else {
-      setIsLogged(false);
-    }
-  });
-  return <>{isLogged ? <AppLayout /> : <Login />}</>;
+// Import Routes all
+import { userRoutes , authRoutes } from "./routes/allRoutes";
+
+// Import all middleware
+import Authmiddleware from "./routes/middleware/Authmiddleware";
+
+// layouts Format
+import VerticalLayout from "./components/VerticalLayout/";
+import HorizontalLayout from "./components/HorizontalLayout/";
+import NonAuthLayout from "./components/NonAuthLayout";
+
+// Import scss
+import "./assets/scss/theme.scss";
+
+// Import Firebase Configuration file
+import { initFirebaseBackend } from "./helpers/firebase_helper";
+
+import fakeBackend from './helpers/AuthType/fakeBackend';
+
+// Activating fake backend
+fakeBackend();
+
+const firebaseConfig = {		
+  apiKey: process.env.REACT_APP_APIKEY,
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASEURL,
+  projectId: process.env.REACT_APP_PROJECTID,
+  storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_APPID,
+  measurementId: process.env.REACT_APP_MEASUREMENTID,
 };
 
-export default App;
+// init firebase backend
+initFirebaseBackend(firebaseConfig);
+
+const App = (props) => {
+
+   function getLayout() {
+		let layoutCls = VerticalLayout;
+
+		switch (props.layout.layoutType) {
+			case "horizontal":
+				layoutCls = HorizontalLayout;
+				break;
+			default:
+				layoutCls = VerticalLayout;
+				break;
+		}
+		return layoutCls;
+	};
+
+		const Layout = getLayout();
+
+			const NonAuthmiddleware = ({
+				component: Component,
+				layout: Layout
+			}) => (
+					<Route
+						render={props => {
+						return (
+					     	   <Layout>
+									<Component {...props} />
+								</Layout>
+							);
+						}}
+					/>
+				);
+
+		  return (
+		  		<React.Fragment>
+				<Router>
+					<Switch>
+						{authRoutes.map((route, idx) => (
+							<NonAuthmiddleware
+								path={route.path}
+								layout={NonAuthLayout}
+								component={route.component}
+								key={idx}
+							/>
+						))}
+
+						{userRoutes.map((route, idx) => (
+							<Authmiddleware
+								path={route.path}
+								layout={Layout}
+								component={route.component}
+								key={idx}
+							/>
+						))}
+
+					</Switch>
+				</Router>
+			</React.Fragment>
+		
+		  );
+		}
+
+
+const mapStateToProps = state => {
+	return {
+		layout: state.Layout
+	};
+};
+
+export default connect(mapStateToProps, null)(App);

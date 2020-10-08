@@ -1,15 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "antd/dist/antd.css";
-import { BrowserRouter as Router } from "react-router-dom";
-import App from "./App";
-import ReduxWrapper from "./redux";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import * as serviceWorker from './serviceWorker';
+import { BrowserRouter } from 'react-router-dom';
+import './i18n';
+import { Provider } from 'react-redux';
 
-ReactDOM.render(
-  <ReduxWrapper>
-      <Router basename="/">
-        <App />
-      </Router>
-  </ReduxWrapper>,
-  document.getElementById("root")
+import store from './store';
+
+const app = (
+    <Provider store={store}>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </Provider>
 );
+
+ReactDOM.render(app, document.getElementById('root'));
+serviceWorker.unregister();
