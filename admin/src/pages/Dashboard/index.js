@@ -22,7 +22,7 @@ import Breadcrumbs from '../../components/Common/Breadcrumb';
 //i18n
 import { withNamespaces } from 'react-i18next';
 
- const Dashboard = (props) => {
+ const DashboardDemo = (props) => {
 
      const [modal, setmodal] = useState(false);
 
@@ -197,4 +197,4 @@ import { withNamespaces } from 'react-i18next';
           );
         }
 
-export default withNamespaces()(Dashboard);
+export default withNamespaces()(DashboardDemo);

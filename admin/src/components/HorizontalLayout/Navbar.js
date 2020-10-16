@@ -66,13 +66,13 @@ const Navbar = (props) => {
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="ecommerce-products" className="nav-link">
+                                <Link to="productos" className="nav-link">
                                     <i className="bx bxs-shopping-bag mr-2"></i>
                                     <span>{props.t('Productos')}</span>
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="ecommerce-orders" className="nav-link">
+                                <Link to="ordenes" className="nav-link">
                                     <i className="bx bxs-receipt mr-2"></i>
                                     <span>{props.t('Órdenes')}</span>
                                 </Link>
