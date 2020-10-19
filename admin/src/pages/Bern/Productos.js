@@ -8,25 +8,25 @@ import Breadcrumbs from '../../components/Common/Breadcrumb';
 
 const data = [
     {
-        img: "https://via.placeholder.com/150",
-        id: "anc1",
-        nombre: "producto 1",
-        descripcion: "descripcion 1",
-        precio: "240"
+        image: "https://via.placeholder.com/150",
+        sku: "anc1",
+        name: "producto 1",
+        shortDescription: "descripcion 1",
+        price: "240"
     },
     {
-        img: "https://via.placeholder.com/150",
-        id: "gpd2",
-        nombre: "producto 2",
-        descripcion: "descripcion 2",
-        precio: "250"
+        image: "https://via.placeholder.com/150",
+        sku: "gpd2",
+        name: "producto 2",
+        shortDescription: "descripcion 2",
+        price: "250"
     },
     {
-        img: "https://via.placeholder.com/150",
-        id: "cmw3",
-        nombre: "producto1",
-        descripcion: "descripcion 1",
-        precio: "260"
+        image: "https://via.placeholder.com/150",
+        sku: "cmw3",
+        name: "producto1",
+        shortDescription: "descripcion 1",
+        price: "260"
     },
 ]
 
@@ -48,7 +48,7 @@ const Productos = (props) => {
                                         <thead>
                                             <tr>
                                                 <th scope="col" style={{ width: "100px" }}></th>
-                                                <th scope="col">ID</th>
+                                                <th scope="col">SKU</th>
                                                 <th scope="col">Productos</th>
                                                 <th scope="col">Precio</th>
                                                 <th scope="col">Estatus</th>
@@ -58,15 +58,15 @@ const Productos = (props) => {
                                         <tbody>
                                             {
                                                 data.map((producto, index) => {
-                                                    const { img, id, nombre, descripcion, precio } = producto;
+                                                    const { image, sku, name, shortDescription, price } = producto;
                                                     return (<tr key={index}>
-                                                        <td><img src={img} alt="" className="avatar-sm" /></td>
-                                                        <td>{id}</td>
+                                                        <td><img src={image} alt="" className="avatar-sm" /></td>
+                                                        <td>{sku}</td>
                                                         <td>
-                                                            <h5 className="text-truncate font-size-14"><Link to="#" className="text-dark">{nombre}</Link></h5>
-                                                            <p className="text-muted mb-0">{descripcion}</p>
+                                                            <h5 className="text-truncate font-size-14"><Link to="#" className="text-dark">{name}</Link></h5>
+                                                            <p className="text-muted mb-0">{shortDescription}</p>
                                                         </td>
-                                                        <td>{`$${precio}`}</td>
+                                                        <td>{`$${price}`}</td>
                                                         <td><span className="badge badge-primary">Completed</span></td>
                                                         {/* <td><span className="badge badge-warning">Pending</span></td> */}
                                                         {/* <td><span className="badge badge-danger">Delay</span></td> */}
