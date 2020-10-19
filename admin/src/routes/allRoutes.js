@@ -52,7 +52,7 @@ import ForgetPwd1 from "../pages/AuthenticationInner/ForgetPassword";
 import LockScreen from "../pages/AuthenticationInner/auth-lock-screen";
 
   // Dashboard
-import Dashboard from "../pages/Dashboard/index";
+import DashboardDemo from "../pages/Dashboard/index";
 import DashboardSaas from "../pages/Dashboard-saas/index";
 import DashboardCrypto from "../pages/Dashboard-crypto/index";
 
@@ -140,9 +140,19 @@ import ContactsGrid from "../pages/Contacts/contacts-grid";
 import ContactsList from "../pages/Contacts/contacts-list";
 import ContactsProfile from "../pages/Contacts/contacts-profile";
 
+// Bern
+import Dashboard from '../pages/Bern/Dashboard';
+import Productos from '../pages/Bern/Productos';
+import Ordenes from '../pages/Bern/Ordenes';
+
 const userRoutes = [
 
+	//Bern
 	{ path: "/dashboard", component: Dashboard },
+	{ path: "/productos", component: Productos },
+	{ path: "/ordenes", component: Ordenes },
+
+	{ path: "/dashboard-demo", component: DashboardDemo },
 	{ path: "/dashboard-saas", component: DashboardSaas },
 	{ path: "/dashboard-crypto", component: DashboardCrypto },
 
