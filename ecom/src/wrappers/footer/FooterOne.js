@@ -5,6 +5,7 @@ import { animateScroll } from "react-scroll";
 import FooterCopyright from "../../components/footer/FooterCopyright";
 import FooterNewsletter from "../../components/footer/FooterNewsletter";
 import LogoPNG from "./Hale-Logo.gif";
+import Whats from "./whats.png";
 
 const FooterOne = ({
   backgroundColorClass,
@@ -173,6 +174,14 @@ const FooterOne = ({
       >
         <i className="fa fa-angle-double-up"></i>
       </button>
+      <div src={Whats} className={`whats ${scroll > top ? "show" : ""}`}>
+        <whatsapp-button
+          phone="7712345678"
+          dialcode="44"
+          text="hey there lets chat!"
+          bypass
+        ></whatsapp-button>
+      </div>
     </footer>
   );
 };
