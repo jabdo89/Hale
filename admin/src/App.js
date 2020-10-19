@@ -1,10 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import { Switch, BrowserRouter as Router,Route } from "react-router-dom";
-import { connect } from "react-redux";
+import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import { connect, useSelector } from "react-redux";
 
 // Import Routes all
-import { userRoutes , authRoutes } from "./routes/allRoutes";
+import { userRoutes, authRoutes } from "./routes/allRoutes";
 
 // Import all middleware
 import Authmiddleware from "./routes/middleware/Authmiddleware";
@@ -20,92 +21,75 @@ import "./assets/scss/theme.scss";
 // Import Firebase Configuration file
 import { initFirebaseBackend } from "./helpers/firebase_helper";
 
-import fakeBackend from './helpers/AuthType/fakeBackend';
+import fakeBackend from "./helpers/AuthType/fakeBackend";
 
 // Activating fake backend
 fakeBackend();
 
-const firebaseConfig = {		
-  apiKey: process.env.REACT_APP_APIKEY,
-  authDomain: process.env.REACT_APP_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_DATABASEURL,
-  projectId: process.env.REACT_APP_PROJECTID,
-  storageBucket: process.env.REACT_APP_STORAGEBUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
-  appId: process.env.REACT_APP_APPID,
-  measurementId: process.env.REACT_APP_MEASUREMENTID,
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDqCfeEGAFooSlpMTHVRXkqdXGRdfuD4iY",
+//   authDomain: "hale-dd838.firebaseapp.com",
+//   databaseURL: "https://hale-dd838.firebaseio.com",
+//   projectId: "hale-dd838",
+//   storageBucket: "hale-dd838.appspot.com",
+//   messagingSenderId: "149037020644",
+//   appId: "1:149037020644:web:da657b3a259c14188b83f1",
+// };
 
 // init firebase backend
-initFirebaseBackend(firebaseConfig);
+// initFirebaseBackend(firebaseConfig);
+
+function AuthIsLoaded() {
+  const auth = useSelector((state) => state.firebase.auth);
+  if (auth.isEmpty) return true;
+  return false;
+}
 
 const App = (props) => {
+  function getLayout() {
+    let layoutCls = VerticalLayout;
+    console.log(props.layout);
+    switch (props.layout.layoutType) {
+      case "horizontal":
+        layoutCls = HorizontalLayout;
+        break;
+      default:
+        layoutCls = VerticalLayout;
+        break;
+    }
+    return layoutCls;
+  }
 
-   function getLayout() {
-		let layoutCls = VerticalLayout;
+  const Layout = getLayout();
 
-		switch (props.layout.layoutType) {
-			case "horizontal":
-				layoutCls = HorizontalLayout;
-				break;
-			default:
-				layoutCls = VerticalLayout;
-				break;
-		}
-		return layoutCls;
-	};
+  return (
+    <React.Fragment>
+      <Router>
+        <Switch>
+          {AuthIsLoaded() ? (
+            <Redirect
+              to={{ pathname: "/login", state: { from: props.location } }}
+            />
+          ) : (
+            userRoutes.map((route, idx) => (
+              <Authmiddleware
+                path={route.path}
+                layout={Layout}
+                component={route.component}
+                key={idx}
+              />
+            ))
+          )}
+        </Switch>
+      </Router>
+    </React.Fragment>
+  );
+};
 
-		const Layout = getLayout();
-
-			const NonAuthmiddleware = ({
-				component: Component,
-				layout: Layout
-			}) => (
-					<Route
-						render={props => {
-						return (
-					     	   <Layout>
-									<Component {...props} />
-								</Layout>
-							);
-						}}
-					/>
-				);
-
-		  return (
-		  		<React.Fragment>
-				<Router>
-					<Switch>
-						{authRoutes.map((route, idx) => (
-							<NonAuthmiddleware
-								path={route.path}
-								layout={NonAuthLayout}
-								component={route.component}
-								key={idx}
-							/>
-						))}
-
-						{userRoutes.map((route, idx) => (
-							<Authmiddleware
-								path={route.path}
-								layout={Layout}
-								component={route.component}
-								key={idx}
-							/>
-						))}
-
-					</Switch>
-				</Router>
-			</React.Fragment>
-		
-		  );
-		}
-
-
-const mapStateToProps = state => {
-	return {
-		layout: state.Layout
-	};
+const mapStateToProps = (state) => {
+  return {
+    layout: state.Layout,
+  };
 };
 
 export default connect(mapStateToProps, null)(App);
