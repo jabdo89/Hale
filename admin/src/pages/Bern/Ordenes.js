@@ -28,7 +28,7 @@ const [modal, setmodal] = useState(false);
            <React.Fragment>
                 <div className="page-content">
                     <Container fluid>
-                        <Breadcrumbs title="Órdenes" breadcrumbItem="Órdenes" />
+                        <Breadcrumbs title="Órdenes" breadcrumbItem="Lista de órdenes" />
                         <Row>
                             <Col xs="12">
                                 <Card>
@@ -53,12 +53,6 @@ const [modal, setmodal] = useState(false);
                                             <Table className="table table-centered table-nowrap">
                                                 <thead className="thead-light">
                                                     <tr>
-                                                        <th style={{ width: "20px" }}>
-                                                            <div className="custom-control custom-checkbox">
-                                                                <Input type="checkbox" className="custom-control-input" id="customCheck1" />
-                                                                <Label className="custom-control-label" htmlFor="customCheck1">&nbsp;</Label>
-                                                            </div>
-                                                        </th>
                                                         <th>Order ID</th>
                                                         <th>Billing Name</th>
                                                         <th>Date</th>
@@ -73,12 +67,6 @@ const [modal, setmodal] = useState(false);
                                                     {
                                                         Orders.map((order, key) =>
                                                             <tr key={"_order_" + key}>
-                                                                <td>
-                                                                    <div className="custom-control custom-checkbox">
-                                                                        <Input type="checkbox" className="custom-control-input" id={order.id} />
-                                                                        <Label className="custom-control-label" htmlFor={order.id}>&nbsp;</Label>
-                                                                    </div>
-                                                                </td>
                                                                 <td><Link to="#" className="text-body font-weight-bold">{order.orderId}</Link></td>
                                                                 <td>{order.billingName}</td>
                                                                 <td>
