@@ -23,6 +23,7 @@ export default class PaymentForm extends React.Component {
   render() {
     return (
       <div id="PaymentForm" style={{ paddingTop: "5vh" }}>
+        <h3>Payment Information</h3>
         <form>
           <input
             type="tel"
@@ -37,6 +38,7 @@ export default class PaymentForm extends React.Component {
             type="text"
             name="name"
             placeholder="Name"
+            Required
             onChange={this.handleInputChange}
             onFocus={this.handleInputFocus}
           />
@@ -46,6 +48,7 @@ export default class PaymentForm extends React.Component {
               <input
                 type="tel"
                 name="expiry"
+                Required
                 placeholder="Expiration Date"
                 onChange={this.handleInputChange}
                 onFocus={this.handleInputFocus}
@@ -56,6 +59,7 @@ export default class PaymentForm extends React.Component {
                 type="tel"
                 name="cvc"
                 placeholder="CVC"
+                Required
                 onChange={this.handleInputChange}
                 onFocus={this.handleInputFocus}
               />

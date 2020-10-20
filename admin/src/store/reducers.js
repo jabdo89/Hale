@@ -9,13 +9,18 @@ import Account from "./auth/register/reducer";
 import ForgetPassword from "./auth/forgetpwd/reducer";
 import Profile from "./auth/profile/reducer";
 
+import { firestoreReducer } from "redux-firestore";
+import { firebaseReducer } from "react-redux-firebase";
+
 const rootReducer = combineReducers({
   // public
   Layout,
   Login,
   Account,
   ForgetPassword,
-  Profile
+  Profile,
+  firestore: firestoreReducer,
+  firebase: firebaseReducer,
 });
 
 export default rootReducer;

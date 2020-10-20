@@ -6,6 +6,7 @@ import MetaTags from "react-meta-tags";
 import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
 import firebase from "firebase";
+import Cards from "react-credit-cards";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { getDiscountPrice } from "../../helpers/product";
 import LayoutOne from "../../layouts/LayoutOne";
@@ -18,10 +19,20 @@ const Checkout = ({ location, cartItems, currency, profile, addToCart }) => {
   const { pathname } = location;
   let cartTotalPrice = 0;
   let history = useHistory();
+
   const [form, setForm] = useState({
     apartmentNum: "",
     message: "",
   });
+
+  const [cardForm, setCardForm] = useState({
+    cvc: "",
+    expiry: "",
+    focus: "",
+    name: "",
+    number: "",
+  });
+
   const { addToast } = useToasts();
   const createOrder = async (e) => {
     e.preventDefault();
@@ -58,8 +69,17 @@ const Checkout = ({ location, cartItems, currency, profile, addToCart }) => {
     //   });
   };
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({ ...cardForm, [e.target.name]: e.target.value });
   };
+
+  const handleInputFocus = (e) => {
+    setCardForm({ ...cardForm, focus: e.target.name });
+  };
+
+  const handleInputChange = (e) => {
+    setCardForm({ ...cardForm, [e.target.name]: e.target.value });
+  };
+
   return (
     <Fragment>
       <MetaTags>
@@ -298,7 +318,57 @@ const Checkout = ({ location, cartItems, currency, profile, addToCart }) => {
                             Place Order
                           </button>
                         </div>
-                        <Payment />
+                        <div id="PaymentForm" style={{ paddingTop: "5vh" }}>
+                          <h3>Payment Information</h3>
+                          <input
+                            type="tel"
+                            name="number"
+                            placeholder="Card Number"
+                            onChange={handleInputChange}
+                            onFocus={handleInputFocus}
+                            required
+                          />
+                          <div style={{ paddingTop: "1vh" }} />
+                          <input
+                            type="text"
+                            name="name"
+                            placeholder="Name"
+                            Required
+                            onChange={handleInputChange}
+                            onFocus={handleInputFocus}
+                          />
+                          <div style={{ paddingTop: "1vh" }} />
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6">
+                              <input
+                                type="tel"
+                                name="expiry"
+                                Required
+                                placeholder="Expiration Date"
+                                onChange={handleInputChange}
+                                onFocus={handleInputFocus}
+                              />
+                            </div>
+                            <div className="col-lg-6 col-md-6">
+                              <input
+                                type="tel"
+                                name="cvc"
+                                placeholder="CVC"
+                                Required
+                                onChange={handleInputChange}
+                                onFocus={handleInputFocus}
+                              />
+                            </div>
+                          </div>
+                          <div style={{ paddingTop: "3vh" }} />
+                          <Cards
+                            cvc={cardForm.cvc}
+                            expiry={cardForm.expiry}
+                            focused={cardForm.focus}
+                            name={cardForm.name}
+                            number={cardForm.number}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>

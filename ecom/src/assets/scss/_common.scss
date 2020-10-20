@@ -1596,7 +1596,7 @@ textarea:focus {
   position: fixed;
   z-index: 9811 !important;
   right: 20px;
-  bottom: 60px;
+  bottom: 75px;
 
   visibility: hidden;
   overflow: hidden;
@@ -1612,6 +1612,55 @@ textarea:focus {
   border-radius: 50px;
   background: none;
   background-color: $theme-color;
+  &.show {
+    visibility: visible;
+
+    opacity: 1;
+  }
+  @media #{$xs-layout} {
+    width: 40px;
+    height: 40px;
+  }
+  & i {
+    font-size: 22px;
+    line-height: 50px;
+
+    display: block;
+    @media #{$xs-layout} {
+      font-size: 16px;
+      line-height: 40px;
+    }
+  }
+  &:hover {
+    & i {
+      animation-name: fadeInUp;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+
+      animation-fill-mode: both;
+    }
+  }
+}
+
+.whats {
+  position: fixed;
+  z-index: 9811 !important;
+  right: 80px;
+  bottom: 65px;
+  cursor: pointer;
+  visibility: hidden;
+  overflow: hidden;
+
+  width: 150px;
+  height: 55px;
+
+  text-align: center;
+
+  opacity: 0;
+  color: #fff;
+  border: none;
+  border-radius: 0px;
+  background: none;
   &.show {
     visibility: visible;
 
