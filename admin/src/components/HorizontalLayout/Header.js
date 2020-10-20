@@ -5,7 +5,10 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 // Redux Store
-import { showRightSidebarAction, toggleLeftmenu } from "../../store/actions";
+import {
+  showRightSidebarAction,
+  toggleLeftmenu,
+} from "../../redux/Actions/actions";
 
 // Import menuDropdown
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
@@ -18,10 +21,9 @@ import logoLightSvg from "../../assets/images/logo-light.svg";
 import logoDark from "../../assets/images/logo-dark.png";
 
 //i18n
-import { withNamespaces } from 'react-i18next';
+import { withNamespaces } from "react-i18next";
 
 const Header = (props) => {
-
   function toggleFullscreen() {
     if (
       !document.fullscreenElement &&
@@ -77,21 +79,25 @@ const Header = (props) => {
               type="button"
               className="btn btn-sm px-3 font-size-16 d-lg-none header-item waves-effect waves-light"
               data-toggle="collapse"
-              onClick={() => { props.toggleLeftmenu(!props.leftMenu); }}
-              data-target="#topnav-menu-content">
+              onClick={() => {
+                props.toggleLeftmenu(!props.leftMenu);
+              }}
+              data-target="#topnav-menu-content"
+            >
               <i className="fa fa-fw fa-bars"></i>
             </button>
           </div>
 
           <div className="d-flex">
-
             <LanguageDropdown />
 
             <div className="dropdown d-none d-lg-inline-block ml-1">
               <button
                 type="button"
                 className="btn header-item noti-icon waves-effect"
-                onClick={() => { toggleFullscreen() }}
+                onClick={() => {
+                  toggleFullscreen();
+                }}
                 data-toggle="fullscreen"
               >
                 <i className="bx bx-fullscreen"></i>
@@ -103,9 +109,12 @@ const Header = (props) => {
 
             <div className="dropdown d-inline-block">
               <button
-                onClick={() => { props.showRightSidebarAction(!props.showRightSidebar); }}
+                onClick={() => {
+                  props.showRightSidebarAction(!props.showRightSidebar);
+                }}
                 type="button"
-                className="btn header-item noti-icon right-bar-toggle waves-effect" >
+                className="btn header-item noti-icon right-bar-toggle waves-effect"
+              >
                 <i className="bx bx-cog bx-spin"></i>
               </button>
             </div>
@@ -114,13 +123,14 @@ const Header = (props) => {
       </header>
     </React.Fragment>
   );
-}
+};
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   const { layoutType, showRightSidebar, leftMenu } = state.Layout;
   return { layoutType, showRightSidebar, leftMenu };
 };
 
-export default connect(mapStatetoProps, { showRightSidebarAction, toggleLeftmenu })(withNamespaces()(Header));
-
-
+export default connect(mapStatetoProps, {
+  showRightSidebarAction,
+  toggleLeftmenu,
+})(withNamespaces()(Header));
