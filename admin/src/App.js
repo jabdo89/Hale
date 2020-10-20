@@ -66,7 +66,7 @@ const App = (props) => {
     <React.Fragment>
       <Router>
         <Switch>
-          {AuthIsLoaded() ? (
+          {!AuthIsLoaded() ? (
             <Redirect
               to={{ pathname: "/login", state: { from: props.location } }}
             />
