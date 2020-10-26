@@ -22,6 +22,7 @@ const Login = (props) => {
   function handleValidSubmit(event, values) {
     firebase.auth().signInWithEmailAndPassword(values.email, values.password);
   }
+  console.log("heheh");
   return (
     <React.Fragment>
       <div className="home-btn d-none d-sm-block">

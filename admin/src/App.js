@@ -23,6 +23,11 @@ import { initFirebaseBackend } from "./helpers/firebase_helper";
 
 import fakeBackend from "./helpers/AuthType/fakeBackend";
 
+import Login from "./pages/Authentication/Login";
+import Logout from "./pages/Authentication/Logout";
+import Register from "./pages/Authentication/Register";
+import ForgetPwd from "./pages/Authentication/ForgetPassword";
+
 // Activating fake backend
 fakeBackend();
 
@@ -61,15 +66,25 @@ const App = (props) => {
   }
 
   const Layout = getLayout();
+  console.log(AuthIsLoaded());
 
   return (
     <React.Fragment>
       <Router>
         <Switch>
-          {!AuthIsLoaded() ? (
-            <Redirect
-              to={{ pathname: "/login", state: { from: props.location } }}
-            />
+          {AuthIsLoaded() ? (
+            <div>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/signup">
+                <Register />
+              </Route>
+              <Route path="/recover">
+                <ForgetPwd />
+              </Route>
+              <Redirect to="/login" />
+            </div>
           ) : (
             userRoutes.map((route, idx) => (
               <Authmiddleware
