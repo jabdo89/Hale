@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
@@ -25,13 +25,118 @@ import {
 } from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb";
+import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
-import img4 from "../../assets/images/product/img-4.png";
-import img7 from "../../assets/images/product/img-7.png";
+import img4 from "../../../assets/images/product/img-4.png";
+import img7 from "../../../assets/images/product/img-7.png";
+
+const OrderDetailModal = ({ order, isOpen, setmodal }) => {
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      role="dialog"
+      autoFocus={true}
+      centered={true}
+      className="exampleModal"
+      toggle={() => {
+        setmodal(!isOpen);
+      }}
+    >
+      <div className="modal-content">
+        <ModalHeader
+          toggle={() => {
+            setmodal(!isOpen);
+          }}
+        >
+          Order Details
+          </ModalHeader>
+        <ModalBody>
+          <p className="mb-2">
+            Order id: <span className="text-primary">#SK2540</span>
+          </p>
+          <p className="mb-4">
+            Billing Name: <span className="text-primary">{`${order.firstName} ${order.lastname}`}</span>
+          </p>
+
+          <div className="table-responsive">
+            <Table className="table table-centered table-nowrap">
+              <thead>
+                <tr>
+                  <th scope="col">Product</th>
+                  <th scope="col">Product Name</th>
+                  <th scope="col">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {order.items && order.items.map((item, key) => (
+                  <tr key={key}>
+                    <th scope="row">
+                      <div>
+                        <img src={item.image[0]} alt="" className="avatar-sm" />
+                      </div>
+                    </th>
+                    <td>
+                      <div>
+                        <h5 className="text-truncate font-size-14">
+                          {item.name}
+                        </h5>
+                        <p className="text-muted mb-0">$ {item.price} x {item.quantity}</p>
+                      </div>
+                    </td>
+                    <td>$ {item.price * item.quantity - item.discount}</td>
+                  </tr>
+                ))}
+                <tr>
+                  <td>
+                    <h6 className="m-0 text-right">Sub Total:</h6>
+                  </td>
+                  <td>$ {order.price}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <h6 className="m-0 text-right">Shipping:</h6>
+                  </td>
+                  <td>Free</td>
+                </tr>
+                <tr>
+                  <td>
+                    <h6 className="m-0 text-right">Total:</h6>
+                  </td>
+                  <td>$ {order.price}</td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            type="button"
+            color="secondary"
+            onClick={() => {
+              setmodal(!isOpen);
+            }}
+          >
+            Close
+            </Button>
+        </ModalFooter>
+      </div>
+    </Modal >
+  );
+}
 
 const Ordenes = ({ Orders }) => {
+
+  console.log('Ordenes', Orders);
   const [modal, setmodal] = useState(false);
+  const [modalOrder, setModalOrder] = useState({});
+  const history = useHistory();
+
+  const editOrder = (order) => history.push(`/ordenes/edit/${order.id}`);
+
+  const deleteOrder = (order) => {
+    console.log('Deleting order', order);
+  }
 
   return (
     <React.Fragment>
@@ -57,13 +162,15 @@ const Ordenes = ({ Orders }) => {
                     </Col>
                     <Col sm="8">
                       <div className="text-sm-right">
-                        <Button
-                          type="button"
-                          color="success"
-                          className="btn-rounded waves-effect waves-light mb-2 mr-2"
-                        >
-                          <i className="mdi mdi-plus mr-1"></i> Add New Order
-                        </Button>
+                        <Link to="/ordenes/edit/new">
+                          <Button
+                            type="button"
+                            color="success"
+                            className="btn-rounded waves-effect waves-light mb-2 mr-2"
+                          >
+                            <i className="mdi mdi-plus mr-1"></i> Add New Order
+                          </Button>
+                        </Link>
                       </div>
                     </Col>
                   </Row>
@@ -89,8 +196,10 @@ const Ordenes = ({ Orders }) => {
                           </th>
                           <th>Order ID</th>
                           <th>Billing Name</th>
+                          <th>Email</th>
                           <th>Date</th>
                           <th>Total</th>
+                          <th>Items</th>
                           <th>Payment Status</th>
                           <th>Payment Method</th>
                           <th>View Details</th>
@@ -125,10 +234,16 @@ const Ordenes = ({ Orders }) => {
                                 </Link>
                               </td>
                               <td>
-                                {order.firstName} {order.lastname}
+                                {`${order.firstName} ${order.lastname}`}
                               </td>
+                              <td>{order.email}</td>
                               <td>{order.Date}</td>
                               <td>${order.price}</td>
+                              <td><div>
+                                {order.items.map((item, i) =>
+                                  <span key={i} className="badge badge-danger">{item.name}</span>
+                                )}
+                              </div></td>
                               <td>
                                 <Badge
                                   className={
@@ -155,6 +270,7 @@ const Ordenes = ({ Orders }) => {
                                   color="primary"
                                   className="btn-sm btn-rounded"
                                   onClick={() => {
+                                    setModalOrder(order);
                                     setmodal(!modal);
                                   }}
                                 >
@@ -166,6 +282,7 @@ const Ordenes = ({ Orders }) => {
                                   <i
                                     className="mdi mdi-pencil font-size-18 mr-3"
                                     id="edittooltip"
+                                    onClick={() => editOrder(order)}
                                   ></i>
                                   <UncontrolledTooltip
                                     placement="top"
@@ -178,6 +295,7 @@ const Ordenes = ({ Orders }) => {
                                   <i
                                     className="mdi mdi-close font-size-18 mr-3"
                                     id="deletetooltip"
+                                    onClick={() => deleteOrder(order)}
                                   ></i>
                                   <UncontrolledTooltip
                                     placement="top"
@@ -221,111 +339,7 @@ const Ordenes = ({ Orders }) => {
           </Row>
         </Container>
       </div>
-
-      <Modal
-        isOpen={modal}
-        role="dialog"
-        autoFocus={true}
-        centered={true}
-        className="exampleModal"
-        tabindex="-1"
-        toggle={() => {
-          setmodal(!modal);
-        }}
-      >
-        <div className="modal-content">
-          <ModalHeader
-            toggle={() => {
-              setmodal(!modal);
-            }}
-          >
-            Order Details
-          </ModalHeader>
-          <ModalBody>
-            <p className="mb-2">
-              Product id: <span className="text-primary">#SK2540</span>
-            </p>
-            <p className="mb-4">
-              Billing Name: <span className="text-primary">Neal Matthews</span>
-            </p>
-
-            <div className="table-responsive">
-              <Table className="table table-centered table-nowrap">
-                <thead>
-                  <tr>
-                    <th scope="col">Product</th>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">
-                      <div>
-                        <img src={img7} alt="" className="avatar-sm" />
-                      </div>
-                    </th>
-                    <td>
-                      <div>
-                        <h5 className="text-truncate font-size-14">
-                          Wireless Headphone (Black)
-                        </h5>
-                        <p className="text-muted mb-0">$ 225 x 1</p>
-                      </div>
-                    </td>
-                    <td>$ 255</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">
-                      <div>
-                        <img src={img4} alt="" className="avatar-sm" />
-                      </div>
-                    </th>
-                    <td>
-                      <div>
-                        <h5 className="text-truncate font-size-14">
-                          Hoodie (Blue)
-                        </h5>
-                        <p className="text-muted mb-0">$ 145 x 1</p>
-                      </div>
-                    </td>
-                    <td>$ 145</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <h6 className="m-0 text-right">Sub Total:</h6>
-                    </td>
-                    <td>$ 400</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <h6 className="m-0 text-right">Shipping:</h6>
-                    </td>
-                    <td>Free</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <h6 className="m-0 text-right">Total:</h6>
-                    </td>
-                    <td>$ 400</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              type="button"
-              color="secondary"
-              onClick={() => {
-                setmodal(!modal);
-              }}
-            >
-              Close
-            </Button>
-          </ModalFooter>
-        </div>
-      </Modal>
+      <OrderDetailModal order={modalOrder} isOpen={modal} setmodal={setmodal} />
     </React.Fragment>
   );
 };
