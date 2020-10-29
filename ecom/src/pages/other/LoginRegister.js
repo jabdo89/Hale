@@ -9,10 +9,15 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
 import { deleteAllFromCart } from "../../redux/actions/cartActions";
+import { deleteAllFromWishlist } from "../../redux/actions/wishlistActions";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 
-const LoginRegister = ({ location, deleteAllFromCart }) => {
+const LoginRegister = ({
+  location,
+  deleteAllFromCart,
+  deleteAllFromWishlist,
+}) => {
   const { pathname } = location;
 
   const { addToast } = useToasts();
@@ -32,6 +37,7 @@ const LoginRegister = ({ location, deleteAllFromCart }) => {
       .signInWithEmailAndPassword(form.email, form.password)
       .then(() => {
         deleteAllFromCart();
+        deleteAllFromWishlist();
         history.push("/shop-grid-standard/");
       })
       .catch((err) => {
@@ -64,6 +70,7 @@ const LoginRegister = ({ location, deleteAllFromCart }) => {
             })
             .then(() => {
               deleteAllFromCart();
+              deleteAllFromWishlist();
               history.push("/shop-grid-standard/");
             })
             .catch((err) => {
@@ -206,6 +213,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     deleteAllFromCart: (addToast) => {
       dispatch(deleteAllFromCart(addToast));
+    },
+    deleteAllFromWishlist: (addToast) => {
+      dispatch(deleteAllFromWishlist(addToast));
     },
   };
 };
