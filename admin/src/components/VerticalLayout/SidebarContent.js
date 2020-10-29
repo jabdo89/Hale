@@ -76,19 +76,19 @@ const SidebarContent = (props) => {
 
                     <li className="menu-title">{props.t('Productos')}</li>
                     <li>
-                        <Link to="productos">
+                        <Link to="/productos">
                             <i className="bx bxs-shopping-bag"></i>
                             <span>{props.t('Productos')}</span>
                         </Link>
                     </li>
                     <li>
-                        <Link to="ordenes">
+                        <Link to="/ordenes">
                             <i className="bx bxs-receipt"></i>
                             <span>{props.t('Órdenes')}</span>
                         </Link>
                     </li>
                     <li>
-                        <Link to="ecommerce-shops">
+                        <Link to="/ecommerce-shops">
                             <i className="bx bxs-box"></i>
                             <span>{props.t('Inventario')}</span>
                         </Link>
@@ -99,13 +99,13 @@ const SidebarContent = (props) => {
                             <span>{props.t('Promoción')}</span>
                         </Link>
                         <ul className="sub-menu" aria-expanded="false">
-                            <li><Link to="ecommerce-checkout">{props.t('Sliders')}</Link></li>
-                            <li><Link to="ecommerce-product-detail">{props.t('Cupones')}</Link></li>
-                            <li><Link to="ecommerce-cart">{props.t('Descuentos')}</Link></li>
+                            <li><Link to="/ecommerce-checkout">{props.t('Sliders')}</Link></li>
+                            <li><Link to="/ecommerce-product-detail">{props.t('Cupones')}</Link></li>
+                            <li><Link to="/ecommerce-cart">{props.t('Descuentos')}</Link></li>
                         </ul>
                     </li>
                     <li>
-                        <Link to="ecommerce-customers">
+                        <Link to="/ecommerce-customers">
                             <i className="bx bxs-user"></i>
                             <span>{props.t('Clientes')}</span>
                         </Link>

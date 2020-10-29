@@ -60,25 +60,25 @@ const Navbar = (props) => {
                     <Collapse isOpen={props.leftMenu} className="navbar-collapse" id="topnav-menu-content">
                         <ul className="navbar-nav">
                             <li className="nav-item">
-                                <Link to="dashboard" className="nav-link">
+                                <Link to="/dashboard" className="nav-link">
                                     <i className="bx bx-home-circle mr-2"></i>
                                     <span>{props.t('Dashboard')}</span>
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="productos" className="nav-link">
+                                <Link to="/productos" className="nav-link">
                                     <i className="bx bxs-shopping-bag mr-2"></i>
                                     <span>{props.t('Productos')}</span>
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="ordenes" className="nav-link">
+                                <Link to="/ordenes" className="nav-link">
                                     <i className="bx bxs-receipt mr-2"></i>
                                     <span>{props.t('Órdenes')}</span>
                                 </Link>
                             </li>
                             <li>
-                                <Link to="ecommerce-shops" className="nav-link">
+                                <Link to="/ecommerce-shops" className="nav-link">
                                     <i className="bx bxs-box mr-2"></i>
                                     <span>{props.t('Inventario')}</span>
                                 </Link>
@@ -88,13 +88,13 @@ const Navbar = (props) => {
                                     <i className="bx bxs-discount mr-2"></i>{props.t('Promoción')} <div className="arrow-down"></div>
                                 </Link>
                                 <div className={classname("dropdown-menu", { show: promocion })} >
-                                    <Link to="ecommerce-checkout" className="dropdown-item">{props.t('Sliders')}</Link>
-                                    <Link to="ecommerce-product-detail" className="dropdown-item">{props.t('Cupones')}</Link>
-                                    <Link to="ecommerce-cart" className="dropdown-item">{props.t('Descuentos')}</Link>
+                                    <Link to="/ecommerce-checkout" className="dropdown-item">{props.t('Sliders')}</Link>
+                                    <Link to="/ecommerce-product-detail" className="dropdown-item">{props.t('Cupones')}</Link>
+                                    <Link to="/ecommerce-cart" className="dropdown-item">{props.t('Descuentos')}</Link>
                                 </div>
                             </li>
                             <li className="nav-item">
-                                <Link to="ecommerce-customers" className="nav-link">
+                                <Link to="/ecommerce-customers" className="nav-link">
                                     <i className="bx bxs-user mr-2"></i>
                                     <span>{props.t('Clientes')}</span>
                                 </Link>
