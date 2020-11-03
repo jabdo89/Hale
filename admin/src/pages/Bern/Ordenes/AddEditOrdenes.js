@@ -52,7 +52,7 @@ const AddEditOrdenes = ({ location, Orders }) => {
                 <Container fluid>
 
                     {/* Render Breadcrumb */}
-                    <Breadcrumbs title="Ecommerce" breadcrumbItem="Add Product" />
+                    <Breadcrumbs title="Órdenes" breadcrumbItem={`${isEditing ? 'Editar' : 'Añadir'} Órdenes`} />
 
                     <Row>
                         <Col xs="12">

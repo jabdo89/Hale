@@ -142,7 +142,8 @@ import ContactsProfile from "../pages/Contacts/contacts-profile";
 
 // Bern
 import Dashboard from '../pages/Bern/Dashboard';
-import Productos from '../pages/Bern/Productos';
+import Productos from '../pages/Bern/Productos/Productos';
+import AddEditProductos from "../pages/Bern/Productos/AddEditProductos";
 import Ordenes from '../pages/Bern/Ordenes/Ordenes';
 import AddEditOrdenes from "../pages/Bern/Ordenes/AddEditOrdenes";
 
@@ -150,6 +151,7 @@ const userRoutes = [
 
 	//Bern
 	{ path: "/dashboard", component: Dashboard },
+	{ path: "/productos/edit/:id", component: AddEditProductos },
 	{ path: "/productos", component: Productos },
 	{ path: "/ordenes/edit/:id", component: AddEditOrdenes },
 	{ path: "/ordenes", component: Ordenes },

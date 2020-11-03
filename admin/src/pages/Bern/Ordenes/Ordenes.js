@@ -168,7 +168,7 @@ const Ordenes = ({ Orders }) => {
                             color="success"
                             className="btn-rounded waves-effect waves-light mb-2 mr-2"
                           >
-                            <i className="mdi mdi-plus mr-1"></i> Add New Order
+                            <i className="mdi mdi-plus mr-1"></i> Nueva orden
                           </Button>
                         </Link>
                       </div>
