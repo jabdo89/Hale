@@ -9,7 +9,7 @@ import { getDiscountPrice } from "../../helpers/product";
 import {
   addToWishlist,
   deleteFromWishlist,
-  deleteAllFromWishlist
+  deleteAllFromWishlist,
 } from "../../redux/actions/wishlistActions";
 import { addToCart } from "../../redux/actions/cartActions";
 import LayoutOne from "../../layouts/LayoutOne";
@@ -22,7 +22,8 @@ const Wishlist = ({
   addToCart,
   wishlistItems,
   deleteFromWishlist,
-  deleteAllFromWishlist
+  deleteAllFromWishlist,
+  profile,
 }) => {
   const { addToast } = useToasts();
   const { pathname } = location;
@@ -65,18 +66,44 @@ const Wishlist = ({
                         </thead>
                         <tbody>
                           {wishlistItems.map((wishlistItem, key) => {
+                            // const discountedPrice = getDiscountPrice(
+                            //   wishlistItem.price,
+                            //   wishlistItem.discount
+                            // );
+                            // const finalProductPrice = (
+                            //   wishlistItem.price * currency.currencyRate
+                            // ).toFixed(2);
+                            // const finalDiscountedPrice = (
+                            //   discountedPrice * currency.currencyRate
+                            // ).toFixed(2);
                             const discountedPrice = getDiscountPrice(
                               wishlistItem.price,
                               wishlistItem.discount
                             );
-                            const finalProductPrice = (
+                            let finalProductPrice = (
                               wishlistItem.price * currency.currencyRate
                             ).toFixed(2);
                             const finalDiscountedPrice = (
                               discountedPrice * currency.currencyRate
                             ).toFixed(2);
+                            let quantAdd;
+                            if (!profile.isEmpty) {
+                              if (
+                                wishlistItem.quantity < wishlistItem.minQuant
+                              ) {
+                                addToCart(
+                                  wishlistItem,
+                                  addToast,
+                                  wishlistItem.minQuant - wishlistItem.quantity
+                                );
+                              }
+                              quantAdd = wishlistItem.minQuant;
+                              finalProductPrice = +(
+                                wishlistItem.priceDis * currency.currencyRate
+                              ).toFixed(2);
+                            }
                             const cartItem = cartItems.filter(
-                              item => item.id === wishlistItem.id
+                              (item) => item.id === wishlistItem.id
                             )[0];
                             return (
                               <tr key={key}>
@@ -150,31 +177,63 @@ const Wishlist = ({
                                     </Link>
                                   ) : wishlistItem.stock &&
                                     wishlistItem.stock > 0 ? (
-                                    <button
-                                      onClick={() =>
-                                        addToCart(wishlistItem, addToast)
-                                      }
-                                      className={
-                                        cartItem !== undefined &&
+                                    profile.rol === "distributor" ? (
+                                      <button
+                                        onClick={() =>
+                                          addToCart(
+                                            wishlistItem,
+                                            addToast,
+                                            wishlistItem.minQuant
+                                          )
+                                        }
+                                        className={
+                                          cartItem !== undefined &&
+                                          cartItem.quantity > 0
+                                            ? "active"
+                                            : ""
+                                        }
+                                        disabled={
+                                          cartItem !== undefined &&
+                                          cartItem.quantity > 0
+                                        }
+                                        title={
+                                          wishlistItem !== undefined
+                                            ? "Added to cart"
+                                            : "Add to cart"
+                                        }
+                                      >
+                                        {cartItem !== undefined &&
                                         cartItem.quantity > 0
-                                          ? "active"
-                                          : ""
-                                      }
-                                      disabled={
-                                        cartItem !== undefined &&
+                                          ? "Added"
+                                          : "Add to cart"}
+                                      </button>
+                                    ) : (
+                                      <button
+                                        onClick={() =>
+                                          addToCart(wishlistItem, addToast)
+                                        }
+                                        className={
+                                          cartItem !== undefined &&
+                                          cartItem.quantity > 0
+                                            ? "active"
+                                            : ""
+                                        }
+                                        disabled={
+                                          cartItem !== undefined &&
+                                          cartItem.quantity > 0
+                                        }
+                                        title={
+                                          wishlistItem !== undefined
+                                            ? "Added to cart"
+                                            : "Add to cart"
+                                        }
+                                      >
+                                        {cartItem !== undefined &&
                                         cartItem.quantity > 0
-                                      }
-                                      title={
-                                        wishlistItem !== undefined
-                                          ? "Added to cart"
-                                          : "Add to cart"
-                                      }
-                                    >
-                                      {cartItem !== undefined &&
-                                      cartItem.quantity > 0
-                                        ? "Added"
-                                        : "Add to cart"}
-                                    </button>
+                                          ? "Added"
+                                          : "Add to cart"}
+                                      </button>
+                                    )
                                   ) : (
                                     <button disabled className="active">
                                       Out of stock
@@ -250,18 +309,19 @@ Wishlist.propTypes = {
   location: PropTypes.object,
   deleteAllFromWishlist: PropTypes.func,
   deleteFromWishlist: PropTypes.func,
-  wishlistItems: PropTypes.array
+  wishlistItems: PropTypes.array,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     cartItems: state.cartData,
+    profile: state.firebase.profile,
     wishlistItems: state.wishlistData,
-    currency: state.currencyData
+    currency: state.currencyData,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     addToCart: (item, addToast, quantityCount) => {
       dispatch(addToCart(item, addToast, quantityCount));
@@ -272,9 +332,9 @@ const mapDispatchToProps = dispatch => {
     deleteFromWishlist: (item, addToast, quantityCount) => {
       dispatch(deleteFromWishlist(item, addToast, quantityCount));
     },
-    deleteAllFromWishlist: addToast => {
+    deleteAllFromWishlist: (addToast) => {
       dispatch(deleteAllFromWishlist(addToast));
-    }
+    },
   };
 };
 

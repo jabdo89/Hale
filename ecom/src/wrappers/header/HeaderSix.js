@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import IconGroup from "../../components/header/IconGroup";
 import MobileMenu from "../../components/header/MobileMenu";
 import OffcanvasMenu from "../../components/header/OffcanvasMenu";
-import Logo from "./Hale-Logo.gif";
+import Logo from "./logo.gif";
 
 const HeaderSix = ({ layout, headerPaddingClass, headerBgClass }) => {
   const [scroll, setScroll] = useState(0);
