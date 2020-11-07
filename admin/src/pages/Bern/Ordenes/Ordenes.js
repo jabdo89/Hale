@@ -53,7 +53,7 @@ const OrderDetailModal = ({ order, isOpen, setmodal }) => {
           </ModalHeader>
         <ModalBody>
           <p className="mb-2">
-            Order id: <span className="text-primary">#SK2540</span>
+            Order ID: <span className="text-primary">#{order.id}</span>
           </p>
           <p className="mb-4">
             Billing Name: <span className="text-primary">{`${order.firstName} ${order.lastname}`}</span>

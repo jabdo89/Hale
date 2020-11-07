@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Container, Row, Col, Form, FormGroup, Input, Card, CardBody, CardTitle, CardSubtitle, Button, Label } from "reactstrap";
 import Select from 'react-select';
 import Dropzone from 'react-dropzone';
@@ -11,12 +11,19 @@ import { compose } from "redux";
 import Breadcrumbs from '../../../components/Common/Breadcrumb';
 
 const AddEditProductos = ({ location, products }) => {
+
+    const history = useHistory();
+
     const productID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
     const isEditing = productID !== 'new';
     const product = products ? products.find(x => x.id === productID) : {};
 
     const deleteImg = (img) => {
         console.log('deleting img', img);
+    }
+
+    const returnToProducts = () => {
+        history.push('/productos');
     }
 
     const [selectedFiles, setselectedFiles] = useState([]);
@@ -187,7 +194,7 @@ const AddEditProductos = ({ location, products }) => {
                                         </FormGroup>
                                         <Row className="justify-content-end">
                                             <Button type="submit" color="primary" className="mr-1 waves-effect waves-light">Save Changes</Button>
-                                            <Button type="submit" color="secondary" className="waves-effect">Cancel</Button>
+                                            <Button type="submit" color="secondary" className="waves-effect" onClick={returnToProducts}>Cancel</Button>
                                         </Row>
                                     </Form>
                                 </CardBody>
