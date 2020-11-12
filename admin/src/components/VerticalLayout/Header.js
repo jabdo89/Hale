@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 // Import menuDropdown
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
-import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 
 import logo from "../../assets/images/logo.svg";
@@ -114,7 +113,6 @@ const Header = (props) => {
               </button>
             </div>
 
-            <NotificationDropdown />
             <ProfileMenu />
 
             <div
@@ -127,7 +125,7 @@ const Header = (props) => {
                 type="button"
                 className="btn header-item noti-icon right-bar-toggle waves-effect"
               >
-                <i className="bx bx-cog bx-spin"></i>
+                <i className="bx bx-cog"></i>
               </button>
             </div>
           </div>

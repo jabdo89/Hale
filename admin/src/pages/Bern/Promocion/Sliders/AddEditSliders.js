@@ -1,41 +1,31 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from "react-router-dom";
 import { Container, Row, Col, Form, FormGroup, Input, Card, CardBody, CardTitle, CardSubtitle, Button, Label } from "reactstrap";
-import Select from 'react-select';
 import Dropzone from 'react-dropzone';
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 
 //Import Breadcrumb
-import Breadcrumbs from '../../../components/Common/Breadcrumb';
+import Breadcrumbs from '../../../../components/Common/Breadcrumb';
 
-const AddEditProductos = ({ location, products }) => {
+const AddEditSliders = ({ location, sliders }) => {
 
     const history = useHistory();
 
-    const productID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
-    const isEditing = productID !== 'new';
-    const product = products ? products.find(x => x.id === productID) : {};
+    const sliderID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
+    const slider = sliders && sliders.find(x => x.id === sliderID) || {};
+    const isEditing = sliderID !== 'new' && slider !== {};
+
+    const returnToSliders = () => {
+        history.push('/promocion-sliders');
+    }
 
     const deleteImg = (img) => {
         console.log('deleting img', img);
     }
 
-    const returnToProducts = () => {
-        history.push('/productos');
-    }
-
     const [selectedFiles, setselectedFiles] = useState([]);
-
-    let options = [
-        { value: 'AK', label: 'Alaska' },
-        { value: 'HI', label: 'Hawaii' },
-        { value: 'CA', label: 'California' },
-        { value: 'NV', label: 'Nevada' },
-        { value: 'OR', label: 'Oregon' },
-        { value: 'WA', label: 'Washington' },
-    ];
 
     function handleAcceptedFiles(files) {
         files.map(file => Object.assign(file, {
@@ -56,73 +46,47 @@ const AddEditProductos = ({ location, products }) => {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
 
-
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>
-
-                    {/* Render Breadcrumb */}
-                    <Breadcrumbs title="Productos" breadcrumbItem={`${isEditing ? 'Editar' : 'Añadir'} Producto`} />
-
+                    <Breadcrumbs title="Promoción" breadcrumbItem={`${isEditing ? 'Editar' : 'Añadir'} Slider`} />
                     <Row>
                         <Col xs="12">
                             <Card>
                                 <CardBody>
 
-                                    <CardTitle>Información del producto</CardTitle>
+                                    <CardTitle>Información del slider</CardTitle>
                                     <CardSubtitle className="mb-3">Ingresa la información en los siguientes campos: </CardSubtitle>
 
                                     <Form>
                                         <Row>
-                                            <Col sm="6">
+                                            <Col sm="4">
                                                 <FormGroup>
-                                                    <Label htmlFor="productname">Nombre de producto</Label>
-                                                    <Input id="productname" name="productname" type="text" className="form-control" />
+                                                    <Label htmlFor="slidertitle">Título de slider</Label>
+                                                    <Input id="slidertitle" name="slidertitle" type="text" className="form-control"
+                                                        defaultValue={(isEditing) ? slider.title : ''}
+                                                    />
                                                 </FormGroup>
                                             </Col>
-                                            <Col sm="6">
+                                            <Col sm="4">
                                                 <FormGroup>
-                                                    <Label htmlFor="sku">SKU</Label>
-                                                    <Input id="sku" name="sku" type="text" className="form-control" />
+                                                    <Label htmlFor="slidertitle">Subtítulo de slider</Label>
+                                                    <Input id="slidersub" name="slidersub" type="text" className="form-control"
+                                                        defaultValue={(isEditing) ? slider.subtitle : ''}
+                                                    />
                                                 </FormGroup>
                                             </Col>
-                                            <Col sm="12">
+                                            <Col sm="4">
                                                 <FormGroup>
-                                                    <Label htmlFor="productdesc">Descripción de producto</Label>
-                                                    <textarea className="form-control" id="productdesc" rows="5"></textarea>
-                                                </FormGroup>
-                                            </Col>
-                                            <Col sm="6">
-                                                <FormGroup>
-                                                    <Label className="control-label">Categoría(s)</Label>
-                                                    <select className="form-control select2">
-                                                        <option>Select</option>
-                                                        <option value="AK">Alaska</option>
-                                                        <option value="HI">Hawaii</option>
-                                                    </select>
-                                                </FormGroup>
-                                            </Col>
-                                            <Col sm="6">
-                                                <FormGroup className="select2-container">
-                                                    <Label className="control-label">Tags</Label>
-                                                    <Select classNamePrefix="select2-selection" placeholder="Choose..." title="Country" options={options} isMulti />
-                                                </FormGroup>
-                                            </Col>
-                                            <Col sm="6">
-                                                <FormGroup>
-                                                    <Label htmlFor="productprice">Precio de producto</Label>
-                                                    <Input id="productprice" name="productprice" type="number" pre min={0} className="form-control" />
-                                                </FormGroup>
-                                            </Col>
-                                            <Col sm="6">
-                                                <FormGroup>
-                                                    <Label htmlFor="productstock">Stock</Label>
-                                                    <Input id="productstock" name="productstock" type="number" min={0} className="form-control" />
+                                                    <Label htmlFor="slidertitle">URL de slider</Label>
+                                                    <Input id="sliderurl" name="sliderurl" type="text" className="form-control"
+                                                        defaultValue={(isEditing) ? slider.url : ''}
+                                                    />
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <CardTitle className="mb-3">Imágenes de producto</CardTitle>
+                                        <CardTitle className="mb-3">Imágen de slider</CardTitle>
                                         <FormGroup>
                                             <Dropzone
                                                 accept='image/*'
@@ -194,7 +158,7 @@ const AddEditProductos = ({ location, products }) => {
                                         </FormGroup>
                                         <Row className="justify-content-end">
                                             <Button type="submit" color="primary" className="mr-1 waves-effect waves-light">Save Changes</Button>
-                                            <Button type="submit" color="secondary" className="waves-effect" onClick={returnToProducts}>Cancel</Button>
+                                            <Button type="submit" color="secondary" className="waves-effect" onClick={returnToSliders}>Cancel</Button>
                                         </Row>
                                     </Form>
                                 </CardBody>
@@ -203,13 +167,13 @@ const AddEditProductos = ({ location, products }) => {
                     </Row>
                 </Container>
             </div>
-        </React.Fragment>
+        </React.Fragment >
     );
 }
 
 const mapStateToProps = (state) => {
     return {
-        products: state.firestore.ordered.Products,
+        sliders: state.firestore.ordered.Sliders,
     };
 };
 
@@ -218,8 +182,8 @@ export default compose(
     firestoreConnect((props) => {
         return [
             {
-                collection: "Products",
+                collection: "Sliders",
             },
         ];
     })
-)(AddEditProductos);
+)(AddEditSliders);
