@@ -12,11 +12,8 @@ const Contact = ({ location }) => {
   return (
     <Fragment>
       <MetaTags>
-        <title>Flone | Contact</title>
-        <meta
-          name="description"
-          content="Contact of flone react minimalist eCommerce template."
-        />
+        <title>Hale | Contact</title>
+        <meta name="description" content="Contact of Hale Vape Shop." />
       </MetaTags>
       <BreadcrumbsItem to={process.env.PUBLIC_URL + "/"}>Home</BreadcrumbsItem>
       <BreadcrumbsItem to={process.env.PUBLIC_URL + pathname}>
