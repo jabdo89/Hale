@@ -27,9 +27,6 @@ import {
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
-import img4 from "../../../assets/images/product/img-4.png";
-import img7 from "../../../assets/images/product/img-7.png";
-
 const OrderDetailModal = ({ order, isOpen, setmodal }) => {
 
   return (
@@ -142,7 +139,7 @@ const Ordenes = ({ Orders }) => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumbs title="Órdenes" breadcrumbItem="Órdenes" />
+          <Breadcrumbs title="Órdenes" breadcrumbItem="Lista de órdenes" />
           <Row>
             <Col xs="12">
               <Card>
