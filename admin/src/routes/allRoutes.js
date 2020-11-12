@@ -146,6 +146,12 @@ import Productos from '../pages/Bern/Productos/Productos';
 import AddEditProductos from "../pages/Bern/Productos/AddEditProductos";
 import Ordenes from '../pages/Bern/Ordenes/Ordenes';
 import AddEditOrdenes from "../pages/Bern/Ordenes/AddEditOrdenes";
+import Clientes from "../pages/Bern/Clientes/Clientes";
+import AddEditSliders from '../pages/Bern/Promocion/Sliders/AddEditSliders';
+import Sliders from '../pages/Bern/Promocion/Sliders/Sliders';
+import AddEditCupones from '../pages/Bern/Promocion/Cupones/AddEditCupones';
+import Cupones from '../pages/Bern/Promocion/Cupones/Cupones';
+import Descuentos from '../pages/Bern/Promocion/Descuentos/Descuentos';
 
 const userRoutes = [
 
@@ -155,6 +161,12 @@ const userRoutes = [
 	{ path: "/productos", component: Productos },
 	{ path: "/ordenes/edit/:id", component: AddEditOrdenes },
 	{ path: "/ordenes", component: Ordenes },
+	{ path: "/clientes", component: Clientes },
+	{ path: "/promocion-sliders/edit/:id", component: AddEditSliders },
+	{ path: "/promocion-sliders", component: Sliders },
+	{ path: "/promocion-cupones/edit/:id", component: AddEditCupones },
+	{ path: "/promocion-cupones", component: Cupones },
+	{ path: "/promocion-descuentos", component: Descuentos },
 
 	{ path: "/dashboard-demo", component: DashboardDemo },
 	{ path: "/dashboard-saas", component: DashboardSaas },
