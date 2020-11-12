@@ -88,13 +88,13 @@ const Navbar = (props) => {
                                     <i className="bx bxs-discount mr-2"></i>{props.t('Promoción')} <div className="arrow-down"></div>
                                 </Link>
                                 <div className={classname("dropdown-menu", { show: promocion })} >
-                                    <Link to="/ecommerce-checkout" className="dropdown-item">{props.t('Sliders')}</Link>
-                                    <Link to="/ecommerce-product-detail" className="dropdown-item">{props.t('Cupones')}</Link>
-                                    <Link to="/ecommerce-cart" className="dropdown-item">{props.t('Descuentos')}</Link>
+                                    <Link to="/promocion-sliders" className="dropdown-item">{props.t('Sliders')}</Link>
+                                    <Link to="/promocion-cupones" className="dropdown-item">{props.t('Cupones')}</Link>
+                                    <Link to="/promocion-descuentos" className="dropdown-item">{props.t('Descuentos')}</Link>
                                 </div>
                             </li>
                             <li className="nav-item">
-                                <Link to="/ecommerce-customers" className="nav-link">
+                                <Link to="/clientes" className="nav-link">
                                     <i className="bx bxs-user mr-2"></i>
                                     <span>{props.t('Clientes')}</span>
                                 </Link>

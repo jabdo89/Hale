@@ -99,13 +99,13 @@ const SidebarContent = (props) => {
                             <span>{props.t('Promoción')}</span>
                         </Link>
                         <ul className="sub-menu" aria-expanded="false">
-                            <li><Link to="/ecommerce-checkout">{props.t('Sliders')}</Link></li>
-                            <li><Link to="/ecommerce-product-detail">{props.t('Cupones')}</Link></li>
-                            <li><Link to="/ecommerce-cart">{props.t('Descuentos')}</Link></li>
+                            <li><Link to="/promocion-sliders">{props.t('Sliders')}</Link></li>
+                            <li><Link to="/promocion-cupones">{props.t('Cupones')}</Link></li>
+                            <li><Link to="/promocion-descuentos">{props.t('Descuentos')}</Link></li>
                         </ul>
                     </li>
                     <li>
-                        <Link to="/ecommerce-customers">
+                        <Link to="/clientes">
                             <i className="bx bxs-user"></i>
                             <span>{props.t('Clientes')}</span>
                         </Link>
