@@ -1,54 +1,29 @@
 import PropTypes from "prop-types";
-import React from "react";
-import MailchimpSubscribe from "react-mailchimp-subscribe";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const CustomForm = ({ status, message, onValidated }) => {
-  let email;
-  const submit = () => {
-    email &&
-      email.value.indexOf("@") > -1 &&
-      onValidated({
-        EMAIL: email.value
-      });
-
-    let emailInput = document.getElementById("mc-form-email");
-    emailInput.value = "";
-  };
-
+  const [id, setId] = useState(0);
   return (
     <div className="subscribe-form">
       <div className="mc-form">
         <div>
           <input
-            id="mc-form-email"
             className="email"
-            ref={node => (email = node)}
-            type="email"
-            placeholder="Enter your email address..."
+            type="text"
+            onChange={({ target: { value } }) => setId(value)}
+            placeholder="Enter your order id..."
           />
         </div>
         <div className="clear">
-          <button className="button" onClick={submit}>
-            SUBSCRIBE
-          </button>
+          <Link
+            className="button"
+            to={process.env.PUBLIC_URL + "/postCheckOut/" + id}
+          >
+            Track Order
+          </Link>
         </div>
       </div>
-
-      {status === "sending" && (
-        <div style={{ color: "#3498db", fontSize: "12px" }}>sending...</div>
-      )}
-      {status === "error" && (
-        <div
-          style={{ color: "#e74c3c", fontSize: "12px" }}
-          dangerouslySetInnerHTML={{ __html: message }}
-        />
-      )}
-      {status === "success" && (
-        <div
-          style={{ color: "#2ecc71", fontSize: "12px" }}
-          dangerouslySetInnerHTML={{ __html: message }}
-        />
-      )}
     </div>
   );
 };
@@ -56,22 +31,13 @@ const CustomForm = ({ status, message, onValidated }) => {
 const SubscribeEmail = ({ mailchimpUrl }) => {
   return (
     <div>
-      <MailchimpSubscribe
-        url={mailchimpUrl}
-        render={({ subscribe, status, message }) => (
-          <CustomForm
-            status={status}
-            message={message}
-            onValidated={formData => subscribe(formData)}
-          />
-        )}
-      />
+      <CustomForm />
     </div>
   );
 };
 
 SubscribeEmail.propTypes = {
-  mailchimpUrl: PropTypes.string
+  mailchimpUrl: PropTypes.string,
 };
 
 export default SubscribeEmail;

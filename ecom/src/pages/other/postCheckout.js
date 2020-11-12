@@ -183,7 +183,7 @@ const PostCheckout = ({
                       <i className="pe-7s-cart"></i>
                     </div>
                     <div className="item-empty-area__text">
-                      No items found in cart <br />{" "}
+                      Order Id does not exists <br />{" "}
                       <Link to={process.env.PUBLIC_URL + "/shop-grid-standard"}>
                         Shop Now
                       </Link>

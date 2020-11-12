@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { animateScroll } from "react-scroll";
 import FooterCopyright from "../../components/footer/FooterCopyright";
 import FooterNewsletter from "../../components/footer/FooterNewsletter";
-import LogoPNG from "./Hale-Logo.gif";
+import LogoPNG from "./logo.gif";
 import Whats from "./whats.png";
 
 const FooterOne = ({
@@ -70,11 +70,6 @@ const FooterOne = ({
                   <li>
                     <Link to={process.env.PUBLIC_URL + "/contact"}>
                       Contact
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={process.env.PUBLIC_URL + "#/"}>
-                      Orders tracking
                     </Link>
                   </li>
                 </ul>
