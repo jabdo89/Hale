@@ -35,13 +35,13 @@ const Productos = ({ products }) => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          {/* Render Breadcrumbs */}
           <Breadcrumbs title="Productos" breadcrumbItem="Lista de productos" />
           <Card>
             <CardBody>
               <Row className="mb-2">
                 <Col sm="4">
-                  <div className="search-box mr-2 mb-2 d-inline-block">
+                  {/* TODO: Make functioning search */}
+                  {/* <div className="search-box mr-2 mb-2 d-inline-block">
                     <div className="position-relative">
                       <Input
                         type="text"
@@ -50,7 +50,7 @@ const Productos = ({ products }) => {
                       />
                       <i className="bx bx-search-alt search-icon"></i>
                     </div>
-                  </div>
+                  </div> */}
                 </Col>
                 <Col sm="8">
                   <div className="text-sm-right">
@@ -76,8 +76,8 @@ const Productos = ({ products }) => {
                             <th scope="col" style={{ width: "100px" }}></th>
                             <th scope="col">SKU</th>
                             <th scope="col">Productos</th>
+                            <th scope="col">Categorías</th>
                             <th scope="col">Precio</th>
-                            <th scope="col">New</th>
                             <th scope="col">Stock</th>
                             <th scope="col">Acción</th>
                           </tr>
@@ -90,6 +90,7 @@ const Productos = ({ products }) => {
                                 sku,
                                 name,
                                 shortDescription,
+                                category,
                                 price,
                                 stock,
                               } = producto;
@@ -104,13 +105,14 @@ const Productos = ({ products }) => {
                                       <Link to="#" className="text-dark">
                                         {name}
                                       </Link>
+                                      {producto.new && <span className="badge badge-warning ml-2">Nuevo</span>}
                                     </h5>
                                     <p className="text-muted mb-0">
                                       {shortDescription}
                                     </p>
                                   </td>
+                                  <td>{category.map((c, i) => (<span key={i} className="badge badge-primary mr-2">{c}</span>))}</td>
                                   <td>{`$${price}`}</td>
-                                  <td>{producto.new.toString()}</td>
                                   <td>{stock}</td>
                                   <td>
                                     <Link to="#" className="mr-3 text-primary">
@@ -155,10 +157,10 @@ const Productos = ({ products }) => {
                     <PaginationItem disabled>
                       <PaginationLink previous href="#" />
                     </PaginationItem>
-                    <PaginationItem>
+                    <PaginationItem active>
                       <PaginationLink href="#">1</PaginationLink>
                     </PaginationItem>
-                    <PaginationItem active>
+                    <PaginationItem>
                       <PaginationLink href="#">2</PaginationLink>
                     </PaginationItem>
                     <PaginationItem>
