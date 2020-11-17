@@ -152,6 +152,7 @@ import Sliders from '../pages/Bern/Promocion/Sliders/Sliders';
 import AddEditCupones from '../pages/Bern/Promocion/Cupones/AddEditCupones';
 import Cupones from '../pages/Bern/Promocion/Cupones/Cupones';
 import Descuentos from '../pages/Bern/Promocion/Descuentos/Descuentos';
+import Inventario from "../pages/Bern/Inventario/Inventario";
 
 const userRoutes = [
 
@@ -161,6 +162,7 @@ const userRoutes = [
 	{ path: "/productos", component: Productos },
 	{ path: "/ordenes/edit/:id", component: AddEditOrdenes },
 	{ path: "/ordenes", component: Ordenes },
+	{ path: "/inventario", component: Inventario },
 	{ path: "/clientes", component: Clientes },
 	{ path: "/promocion-sliders/edit/:id", component: AddEditSliders },
 	{ path: "/promocion-sliders", component: Sliders },

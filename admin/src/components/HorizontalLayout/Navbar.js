@@ -78,7 +78,7 @@ const Navbar = (props) => {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/ecommerce-shops" className="nav-link">
+                                <Link to="/inventario" className="nav-link">
                                     <i className="bx bxs-box mr-2"></i>
                                     <span>{props.t('Inventario')}</span>
                                 </Link>

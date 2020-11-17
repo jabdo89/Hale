@@ -88,7 +88,7 @@ const SidebarContent = (props) => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/ecommerce-shops">
+                        <Link to="/inventario">
                             <i className="bx bxs-box"></i>
                             <span>{props.t('Inventario')}</span>
                         </Link>
