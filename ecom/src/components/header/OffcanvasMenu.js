@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import HeaderSocial from "./sub-components/HeaderSocial";
 import NavMenu from "./NavMenu";
-import Logo from "./Hale-Logo.gif";
+import Logo from "./logo.gif";
 
 const OffcanvasMenu = ({ activeState, getActiveState }) => {
   return (

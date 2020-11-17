@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "hale-dd838"
+  },
+    "targets": {
+    "hale-dd838": {
+      "hosting": {
+        "admin": [
+          "adminhale-dd838"
+        ]
+      }
+    }
+  }
+}
