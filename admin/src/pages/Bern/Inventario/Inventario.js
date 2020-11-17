@@ -123,13 +123,6 @@ const Inventario = ({ products }) => {
               )
             }
           </Row>
-          <Row>
-            <Col xs="12">
-              <div className="text-center my-3">
-                <Link to="#" className="text-success"><i className="bx bx-loader bx-spin font-size-18 align-middle mr-2"></i> Load more </Link>
-              </div>
-            </Col>
-          </Row>
         </Container>
       </div>
       <InventoryDetailModal product={modalProduct} isOpen={modal} setmodal={setmodal} />
