@@ -16,6 +16,7 @@ const InventoryDetailModal = ({ product, isOpen, setmodal }) => {
   const updateInventory = (e) => {
     e.preventDefault();
     console.log('updating inventory', stock);
+    setmodal(!isOpen);
   }
 
   const handleChange = (e) => {
