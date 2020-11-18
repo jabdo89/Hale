@@ -8,7 +8,7 @@ import { compose } from "redux";
 //Import Breadcrumb
 import Breadcrumbs from '../../../../components/Common/Breadcrumb';
 
-const CouponForm = ({ coupon }) => {
+const CouponForm = ({ coupon = {} }) => {
 
     const history = useHistory();
     
