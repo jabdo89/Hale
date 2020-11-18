@@ -22,14 +22,14 @@ import {
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
 const Productos = ({ products }) => {
-
   const history = useHistory();
 
-  const editProduct = (product) => history.push(`/productos/edit/${product.id}`);
+  const editProduct = (product) =>
+    history.push(`/productos/edit/${product.id}`);
 
   const deleteProduct = (product) => {
-    console.log('Deleting product', product);
-  }
+    console.log("Deleting product", product);
+  };
 
   return (
     <React.Fragment>
@@ -41,7 +41,7 @@ const Productos = ({ products }) => {
               <Row className="mb-2">
                 <Col sm="4">
                   {/* TODO: Make functioning search */}
-                  {/* <div className="search-box mr-2 mb-2 d-inline-block">
+                  <div className="search-box mr-2 mb-2 d-inline-block">
                     <div className="position-relative">
                       <Input
                         type="text"
@@ -50,7 +50,7 @@ const Productos = ({ products }) => {
                       />
                       <i className="bx bx-search-alt search-icon"></i>
                     </div>
-                  </div> */}
+                  </div>
                 </Col>
                 <Col sm="8">
                   <div className="text-sm-right">
@@ -61,7 +61,7 @@ const Productos = ({ products }) => {
                         className="btn-rounded waves-effect waves-light mb-2 mr-2"
                       >
                         <i className="mdi mdi-plus mr-1"></i> Nuevo producto
-                          </Button>
+                      </Button>
                     </Link>
                   </div>
                 </Col>
@@ -97,7 +97,11 @@ const Productos = ({ products }) => {
                               return (
                                 <tr key={index}>
                                   <td>
-                                    <img src={image} alt="" className="avatar-sm" />
+                                    <img
+                                      src={image}
+                                      alt=""
+                                      className="avatar-sm"
+                                    />
                                   </td>
                                   <td>{sku}</td>
                                   <td>
@@ -105,13 +109,26 @@ const Productos = ({ products }) => {
                                       <Link to="#" className="text-dark">
                                         {name}
                                       </Link>
-                                      {producto.new && <span className="badge badge-warning ml-2">Nuevo</span>}
+                                      {producto.new && (
+                                        <span className="badge badge-warning ml-2">
+                                          Nuevo
+                                        </span>
+                                      )}
                                     </h5>
                                     <p className="text-muted mb-0">
                                       {shortDescription}
                                     </p>
                                   </td>
-                                  <td>{category.map((c, i) => (<span key={i} className="badge badge-primary mr-2">{c}</span>))}</td>
+                                  <td>
+                                    {category.map((c, i) => (
+                                      <span
+                                        key={i}
+                                        className="badge badge-primary mr-2"
+                                      >
+                                        {c}
+                                      </span>
+                                    ))}
+                                  </td>
                                   <td>{`$${price}`}</td>
                                   <td>{stock}</td>
                                   <td>
@@ -126,7 +143,7 @@ const Productos = ({ products }) => {
                                         target="edittooltip"
                                       >
                                         Edit
-                                  </UncontrolledTooltip>
+                                      </UncontrolledTooltip>
                                     </Link>
                                     <Link to="#" className="text-danger">
                                       <i
@@ -139,7 +156,7 @@ const Productos = ({ products }) => {
                                         target="deletetooltip"
                                       >
                                         Delete
-                                  </UncontrolledTooltip>
+                                      </UncontrolledTooltip>
                                     </Link>
                                   </td>
                                 </tr>

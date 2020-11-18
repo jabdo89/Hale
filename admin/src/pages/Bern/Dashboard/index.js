@@ -15,16 +15,14 @@ import {
   Table,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+import { connect } from "react-redux";
 //import Charts
 import StackedColumnChart from "./StackedColumnChart";
 
 import modalimage1 from "../../../assets/images/product/img-7.png";
 import modalimage2 from "../../../assets/images/product/img-4.png";
-
-// Pages Components
-import WelcomeComp from "./WelcomeComp";
-import MonthlyEarning from "./MonthlyEarning";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
@@ -32,16 +30,43 @@ import Breadcrumbs from "../../../components/Common/Breadcrumb";
 //i18n
 import { withNamespaces } from "react-i18next";
 
+function getOrders(orders) {
+  return orders.length;
+}
+
+function getClients(clients) {
+  return clients.length;
+}
+
+function totalEarn(clients) {
+  let total = 0;
+  for (var i = 0; i < clients.length; i++) {
+    total += clients[i].total;
+  }
+  return total;
+}
+
 const Dashboard = (props) => {
   const [modal, setmodal] = useState(false);
-
+  console.log(props.Orders);
+  if (props.Orders === undefined || props.Clients === undefined) {
+    return null;
+  }
   const reports = [
-    { title: "Orders", iconClass: "bx-copy-alt", description: "1,235" },
-    { title: "Clients", iconClass: "bx-archive-in", description: "35, 723" },
+    {
+      title: "Orders",
+      iconClass: "bx-copy-alt",
+      description: getOrders(props.Orders),
+    },
+    {
+      title: "Clients",
+      iconClass: "bx-archive-in",
+      description: getClients(props.Clients),
+    },
     {
       title: "Total Earnings",
       iconClass: "bx-purchase-tag-alt",
-      description: "$16.2",
+      description: "$" + totalEarn(props.Clients),
     },
   ];
   const email = [
@@ -230,4 +255,24 @@ const Dashboard = (props) => {
   );
 };
 
-export default withNamespaces()(Dashboard);
+const mapStateToProps = (state) => {
+  return {
+    Orders: state.firestore.ordered.Orders,
+    Clients: state.firestore.ordered.Clients,
+  };
+};
+
+export default compose(
+  withNamespaces(),
+  connect(mapStateToProps),
+  firestoreConnect((props) => {
+    return [
+      {
+        collection: "Orders",
+      },
+      {
+        collection: "Clients",
+      },
+    ];
+  })
+)(Dashboard);

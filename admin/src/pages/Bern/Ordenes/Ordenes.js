@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import moment from "moment";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import {
@@ -13,12 +14,10 @@ import {
   CardBody,
   Table,
   Label,
-  Badge,
   Modal,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  UncontrolledTooltip,
   Pagination,
   PaginationItem,
   PaginationLink,
@@ -28,7 +27,6 @@ import {
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
 const OrderDetailModal = ({ order, isOpen, setmodal }) => {
-
   return (
     <Modal
       isOpen={isOpen}
@@ -47,13 +45,14 @@ const OrderDetailModal = ({ order, isOpen, setmodal }) => {
           }}
         >
           Order Details
-          </ModalHeader>
+        </ModalHeader>
         <ModalBody>
           <p className="mb-2">
             Order ID: <span className="text-primary">#{order.id}</span>
           </p>
           <p className="mb-4">
-            Billing Name: <span className="text-primary">{`${order.firstName} ${order.lastname}`}</span>
+            Billing Name:{" "}
+            <span className="text-primary">{`${order.firstName} ${order.lastname}`}</span>
           </p>
 
           <div className="table-responsive">
@@ -66,24 +65,31 @@ const OrderDetailModal = ({ order, isOpen, setmodal }) => {
                 </tr>
               </thead>
               <tbody>
-                {order.items && order.items.map((item, key) => (
-                  <tr key={key}>
-                    <th scope="row">
-                      <div>
-                        <img src={item.image[0]} alt="" className="avatar-sm" />
-                      </div>
-                    </th>
-                    <td>
-                      <div>
-                        <h5 className="text-truncate font-size-14">
-                          {item.name}
-                        </h5>
-                        <p className="text-muted mb-0">$ {item.price} x {item.quantity}</p>
-                      </div>
-                    </td>
-                    <td>$ {item.price * item.quantity - item.discount}</td>
-                  </tr>
-                ))}
+                {order.items &&
+                  order.items.map((item, key) => (
+                    <tr key={key}>
+                      <th scope="row">
+                        <div>
+                          <img
+                            src={item.image[0]}
+                            alt=""
+                            className="avatar-sm"
+                          />
+                        </div>
+                      </th>
+                      <td>
+                        <div>
+                          <h5 className="text-truncate font-size-14">
+                            {item.name}
+                          </h5>
+                          <p className="text-muted mb-0">
+                            $ {item.price} x {item.quantity}
+                          </p>
+                        </div>
+                      </td>
+                      <td>$ {item.price * item.quantity - item.discount}</td>
+                    </tr>
+                  ))}
                 <tr>
                   <td>
                     <h6 className="m-0 text-right">Sub Total:</h6>
@@ -115,25 +121,17 @@ const OrderDetailModal = ({ order, isOpen, setmodal }) => {
             }}
           >
             Close
-            </Button>
+          </Button>
         </ModalFooter>
       </div>
-    </Modal >
+    </Modal>
   );
-}
+};
 
 const Ordenes = ({ Orders }) => {
-
-  console.log('Ordenes', Orders);
+  console.log("Ordenes", Orders);
   const [modal, setmodal] = useState(false);
   const [modalOrder, setModalOrder] = useState({});
-  const history = useHistory();
-
-  const editOrder = (order) => history.push(`/ordenes/edit/${order.id}`);
-
-  const deleteOrder = (order) => {
-    console.log('Deleting order', order);
-  }
 
   return (
     <React.Fragment>
@@ -197,10 +195,7 @@ const Ordenes = ({ Orders }) => {
                           <th>Date</th>
                           <th>Total</th>
                           <th>Items</th>
-                          <th>Payment Status</th>
-                          <th>Payment Method</th>
                           <th>View Details</th>
-                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -230,36 +225,25 @@ const Ordenes = ({ Orders }) => {
                                   {order.id}
                                 </Link>
                               </td>
-                              <td>
-                                {`${order.firstName} ${order.lastname}`}
-                              </td>
+                              <td>{`${order.firstName} ${order.lastname}`}</td>
                               <td>{order.email}</td>
-                              <td>{order.Date}</td>
-                              <td>${order.price}</td>
-                              <td><div>
-                                {order.items.map((item, i) =>
-                                  <span key={i} className="badge badge-danger">{item.name}</span>
-                                )}
-                              </div></td>
                               <td>
-                                <Badge
-                                  className={
-                                    "font-size-12 badge-soft-" +
-                                    order.badgeclass
-                                  }
-                                  color={order.badgeClass}
-                                  pill
-                                >
-                                  {order.paymentStatus}
-                                </Badge>
+                                {moment(
+                                  new Date(order.createdDate.seconds * 1000)
+                                ).format("MMM Do YYYY")}
                               </td>
+                              <td>${order.price}</td>
                               <td>
-                                <i
-                                  className={
-                                    "fab " + order.methodIcon + " mr-1"
-                                  }
-                                ></i>{" "}
-                                {order.paymentMethod}
+                                <div>
+                                  {order.items.map((item, i) => (
+                                    <span
+                                      key={i}
+                                      className="badge badge-danger"
+                                    >
+                                      {item.name}
+                                    </span>
+                                  ))}
+                                </div>
                               </td>
                               <td>
                                 <Button
@@ -273,34 +257,6 @@ const Ordenes = ({ Orders }) => {
                                 >
                                   View Details
                                 </Button>
-                              </td>
-                              <td>
-                                <Link to="#" className="mr-3 text-primary">
-                                  <i
-                                    className="mdi mdi-pencil font-size-18 mr-3"
-                                    id="edittooltip"
-                                    onClick={() => editOrder(order)}
-                                  ></i>
-                                  <UncontrolledTooltip
-                                    placement="top"
-                                    target="edittooltip"
-                                  >
-                                    Edit
-                                  </UncontrolledTooltip>
-                                </Link>
-                                <Link to="#" className="text-danger">
-                                  <i
-                                    className="mdi mdi-close font-size-18 mr-3"
-                                    id="deletetooltip"
-                                    onClick={() => deleteOrder(order)}
-                                  ></i>
-                                  <UncontrolledTooltip
-                                    placement="top"
-                                    target="deletetooltip"
-                                  >
-                                    Delete
-                                  </UncontrolledTooltip>
-                                </Link>
                               </td>
                             </tr>
                           ))}

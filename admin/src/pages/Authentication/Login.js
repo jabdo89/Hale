@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Row, Col, CardBody, Card, Alert, Container } from "reactstrap";
 
@@ -14,13 +14,20 @@ import { loginUser, apiError } from "../../redux/Actions/actions";
 
 // import images
 import profile from "../../assets/images/profile-img.png";
-import logo from "../../assets/images/logo.svg";
+import logo from "./Hale.gif";
 
 import firebase from "firebase";
 const Login = (props) => {
+  const [error, setError] = useState("");
   // handleValidSubmit
   function handleValidSubmit(event, values) {
-    firebase.auth().signInWithEmailAndPassword(values.email, values.password);
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(values.email, values.password)
+      .then(() => {})
+      .catch((err) => {
+        setError(err.message);
+      });
   }
   console.log("heheh");
   return (
@@ -40,7 +47,7 @@ const Login = (props) => {
                     <Col className="col-7">
                       <div className="text-primary p-4">
                         <h5 className="text-primary">Welcome Back !</h5>
-                        <p>Sign in to continue to Skote.</p>
+                        <p>Sign in to continue to Hale Admin.</p>
                       </div>
                     </Col>
                     <Col className="col-5 align-self-end">
@@ -50,18 +57,16 @@ const Login = (props) => {
                 </div>
                 <CardBody className="pt-0">
                   <div>
-                    <Link to="/">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img
-                            src={logo}
-                            alt=""
-                            className="rounded-circle"
-                            height="34"
-                          />
-                        </span>
-                      </div>
-                    </Link>
+                    <div className="avatar-md profile-user-wid mb-4">
+                      <span className="avatar-title rounded-circle bg-light">
+                        <img
+                          src={logo}
+                          alt=""
+                          className="rounded-circle"
+                          height="34"
+                        />
+                      </span>
+                    </div>
                   </div>
                   <div className="p-2">
                     <AvForm
@@ -78,7 +83,6 @@ const Login = (props) => {
                         <AvField
                           name="email"
                           label="Email"
-                          value="admin@themesbrand.com"
                           className="form-control"
                           placeholder="Enter email"
                           type="email"
@@ -90,7 +94,6 @@ const Login = (props) => {
                         <AvField
                           name="password"
                           label="Password"
-                          value="123456"
                           type="password"
                           required
                           placeholder="Enter Password"
@@ -119,7 +122,15 @@ const Login = (props) => {
                           Log In
                         </button>
                       </div>
-
+                      <div
+                        style={{
+                          color: "red",
+                          textAlign: "center",
+                          paddingTop: 10,
+                        }}
+                      >
+                        {error}
+                      </div>
                       <div className="mt-4 text-center">
                         <Link to="/forgot-password" className="text-muted">
                           <i className="mdi mdi-lock mr-1"></i> Forgot your
@@ -132,18 +143,7 @@ const Login = (props) => {
               </Card>
               <div className="mt-5 text-center">
                 <p>
-                  Don't have an account ?{" "}
-                  <Link
-                    to="register"
-                    className="font-weight-medium text-primary"
-                  >
-                    {" "}
-                    Signup now{" "}
-                  </Link>{" "}
-                </p>
-                <p>
-                  © {new Date().getFullYear()} Skote. Crafted with{" "}
-                  <i className="mdi mdi-heart text-danger"></i> by Themesbrand
+                  © {new Date().getFullYear()} Hale Admin. Developed by BernCo
                 </p>
               </div>
             </Col>
