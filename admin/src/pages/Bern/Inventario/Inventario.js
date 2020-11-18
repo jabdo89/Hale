@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
-import { Container, Row, Col, Card, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, Input, Label, FormGroup } from "reactstrap";
+import { Container, Row, Col, Card, Button, Modal, ModalHeader, ModalBody, Form, Input, Label, FormGroup } from "reactstrap";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
@@ -20,6 +19,10 @@ const InventoryDetailModal = ({ product, isOpen, setmodal }) => {
   }
 
   const handleChange = (e) => {
+    if(e.target.type === 'number') {
+      if(e.target.max) e.target.value = Math.min(+e.target.max, +e.target.value ); 
+      if(e.target.min) e.target.value = Math.max(+e.target.min, +e.target.value ); 
+    }
     setStock(+e.target.value);
   }
 
