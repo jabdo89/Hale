@@ -11,13 +11,14 @@ import Breadcrumbs from '../../../../components/Common/Breadcrumb';
 
 const SliderForm = ({ slider = {} }) => {
 
+    
     const history = useHistory();
-
+    
     const returnToSliders = () => {
         history.push('/promocion-sliders');
     }
-
-    const [sliderData, setSliderData] = useState(slider || {});
+    
+    const [sliderData, setSliderData] = useState(slider);
 
     useEffect(() => setSliderData(slider), [slider]);
 
