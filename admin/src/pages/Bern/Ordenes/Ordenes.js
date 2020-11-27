@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import moment from "moment";
 import { firestoreConnect } from "react-redux-firebase";
@@ -21,6 +21,7 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink,
+  UncontrolledTooltip,
 } from "reactstrap";
 
 //Import Breadcrumb
@@ -129,9 +130,17 @@ const OrderDetailModal = ({ order, isOpen, setmodal }) => {
 };
 
 const Ordenes = ({ Orders }) => {
-  console.log("Ordenes", Orders);
   const [modal, setmodal] = useState(false);
   const [modalOrder, setModalOrder] = useState({});
+
+  const history = useHistory();
+
+  const editOrder = (order) =>
+    history.push(`/ordenes/edit/${order.id}`);
+
+  const deleteOrder = (order) => {
+    console.log("Deleting order", order);
+  };
 
   return (
     <React.Fragment>
@@ -174,49 +183,20 @@ const Ordenes = ({ Orders }) => {
                     <Table className="table table-centered table-nowrap">
                       <thead className="thead-light">
                         <tr>
-                          <th style={{ width: "20px" }}>
-                            <div className="custom-control custom-checkbox">
-                              <Input
-                                type="checkbox"
-                                className="custom-control-input"
-                                id="customCheck1"
-                              />
-                              <Label
-                                className="custom-control-label"
-                                htmlFor="customCheck1"
-                              >
-                                &nbsp;
-                              </Label>
-                            </div>
-                          </th>
                           <th>Order ID</th>
                           <th>Billing Name</th>
                           <th>Email</th>
-                          <th>Date</th>
+                          <th>Fecha</th>
                           <th>Total</th>
                           <th>Items</th>
-                          <th>View Details</th>
+                          <th>Ver detalles</th>
+                          <th>Acciones</th>
                         </tr>
                       </thead>
                       <tbody>
                         {Orders &&
                           Orders.map((order, key) => (
                             <tr key={"_order_" + key}>
-                              <td>
-                                <div className="custom-control custom-checkbox">
-                                  <Input
-                                    type="checkbox"
-                                    className="custom-control-input"
-                                    id={order.id}
-                                  />
-                                  <Label
-                                    className="custom-control-label"
-                                    htmlFor={order.id}
-                                  >
-                                    &nbsp;
-                                  </Label>
-                                </div>
-                              </td>
                               <td>
                                 <Link
                                   to="#"
@@ -257,6 +237,34 @@ const Ordenes = ({ Orders }) => {
                                 >
                                   View Details
                                 </Button>
+                              </td>
+                              <td>
+                                <Link to="#" className="mr-3 text-primary">
+                                  <i
+                                    className="mdi mdi-pencil font-size-18 mr-3"
+                                    id="edittooltip"
+                                    onClick={() => editOrder(order)}
+                                  ></i>
+                                  <UncontrolledTooltip
+                                    placement="top"
+                                    target="edittooltip"
+                                  >
+                                    Edit
+                                      </UncontrolledTooltip>
+                                </Link>
+                                <Link to="#" className="text-danger">
+                                  <i
+                                    className="mdi mdi-close font-size-18 mr-3"
+                                    id="deletetooltip"
+                                    onClick={() => deleteOrder(order)}
+                                  ></i>
+                                  <UncontrolledTooltip
+                                    placement="top"
+                                    target="deletetooltip"
+                                  >
+                                    Delete
+                                  </UncontrolledTooltip>
+                                </Link>
                               </td>
                             </tr>
                           ))}
