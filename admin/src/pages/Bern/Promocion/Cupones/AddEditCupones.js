@@ -82,7 +82,7 @@ const CouponForm = ({ coupon = {} }) => {
 const AddEditCupones = ({ location, cupones }) => {
 
     const couponID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
-    const coupon = cupones && cupones.find(x => x.id === couponID) || {};
+    const coupon = cupones ? (cupones.find(x => x.id === couponID) || {}) : {};
     const isEditing = coupon !== {};
 
 

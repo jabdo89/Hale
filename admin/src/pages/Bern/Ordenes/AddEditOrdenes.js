@@ -13,7 +13,7 @@ import Breadcrumbs from '../../../components/Common/Breadcrumb';
 const AddEditOrdenes = ({ location, Orders }) => {
     const orderID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
     const isEditing = orderID !== 'new';
-    const order = Orders ? Orders.find(x => x.id === orderID) : {};
+    // const order = Orders ? Orders.find(x => x.id === orderID) : {};
 
     const [selectedFiles, setselectedFiles] = useState([]);
 

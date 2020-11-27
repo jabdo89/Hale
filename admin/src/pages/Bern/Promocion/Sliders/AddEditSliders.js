@@ -183,7 +183,7 @@ const SliderForm = ({ slider = {} }) => {
 const AddEditSliders = ({ location, sliders }) => {
 
     const sliderID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
-    const slider = sliders && sliders.find(x => x.id === sliderID) || {};
+    const slider = sliders ? (sliders.find(x => x.id === sliderID) || {}) : {};
     const isEditing = sliderID !== 'new' && slider !== {};
 
     return (
