@@ -117,7 +117,7 @@ const Inventario = ({ products }) => {
                 <Col key={idx} xl="4" sm="6">
                   <Card>
                     <Row>
-                      <Col lx="5">
+                      <Col xl="5">
                         <div className="text-center p-4 border-right">
                           <div className="avatar-md mx-auto mb-4">
                             <span className="avatar-title waves-effect rounded-circle bg-light text-danger font-size-16">
