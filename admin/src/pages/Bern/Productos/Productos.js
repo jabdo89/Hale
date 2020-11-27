@@ -79,7 +79,7 @@ const Productos = ({ products }) => {
                             <th scope="col">Categorías</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Stock</th>
-                            <th scope="col">Acción</th>
+                            <th scope="col">Acciones</th>
                           </tr>
                         </thead>
                         <tbody>
