@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 
-import { Container, Row, Col, Pagination, PaginationItem, PaginationLink, Card, CardBody, Media, UncontrolledTooltip, Badge, Button } from "reactstrap";
+import { Container, Row, Col, Pagination, PaginationItem, PaginationLink, Card, CardBody, Media, Badge, Button } from "reactstrap";
 
 //Import Breadcrumb
 import Breadcrumbs from '../../../../components/Common/Breadcrumb';
