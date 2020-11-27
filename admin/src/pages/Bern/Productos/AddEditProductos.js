@@ -123,6 +123,9 @@ const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
     let categoryOptions = Object.keys(categories).map(c => ({ value: c, label: c }));
     let tagOptions = Object.keys(tags).map(t => ({ value: t, label: t }));
 
+    const [currCat, setCurrCat] = useState('');
+    const [currTag, setCurrTag] = useState('');
+
     return (
         <Form>
             <Row>
@@ -180,8 +183,24 @@ const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
                         <Select classNamePrefix="select2-selection" placeholder="Choose..." title="Category" options={categoryOptions} isMulti
                             value={productData.category ? productData.category.map(c => ({ value: c, label: c })) : []}
                             onChange={handleCategoryChange}
-                            onInputChange={v => console.log('input change', v)}
-                            onKeyDown={k => { if (k.key === 'Enter' || k.key === ',') console.log('keydown', k.key) }}
+                            onInputChange={v => {
+                                if (!v) return;
+                                let cat = (v[v.length - 1] === ',') ? v.slice(0, -1) : v;
+                                setCurrCat(cat);
+                                console.log('input change', v);
+                            }}
+                            inputValue={currCat}
+                            onKeyDown={k => {
+                                if (k.key === 'Enter' || k.key === ',') {
+                                    let newCategories = [...productData.category];
+                                    if (newCategories.indexOf(currCat) === -1) newCategories.push(currCat);
+                                    setProductData(prevProduct => ({
+                                        ...prevProduct,
+                                        category: newCategories
+                                    }))
+                                    setCurrCat('');
+                                }
+                            }}
                         />
                     </FormGroup>
                 </Col>
@@ -189,7 +208,25 @@ const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
                     <FormGroup>
                         <Label className="control-label">Tags</Label>
                         <Select classNamePrefix="select2-selection" placeholder="Choose..." title="Tags" options={tagOptions} isMulti
+                            value={productData.tag ? productData.tag.map(t => ({ value: t, label: t })) : []}
                             onChange={handleTagChange}
+                            onInputChange={v => {
+                                if (!v) return;
+                                let tag = (v[v.length - 1] === ',') ? v.slice(0, -1) : v;
+                                setCurrTag(tag);
+                            }}
+                            inputValue={currTag}
+                            onKeyDown={k => {
+                                if (k.key === 'Enter' || k.key === ',') {
+                                    let newTag = [...productData.tag];
+                                    if (newTag.indexOf(currTag) === -1) newTag.push(currTag);
+                                    setProductData(prevProduct => ({
+                                        ...prevProduct,
+                                        tag: newTag
+                                    }))
+                                    setCurrTag('');
+                                }
+                            }}
                         />
                     </FormGroup>
                 </Col>
