@@ -10,7 +10,7 @@ import { compose } from "redux";
 //Import Breadcrumb
 import Breadcrumbs from '../../../components/Common/Breadcrumb';
 
-const ProductForm = ({ producto = {} }) => {
+const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
 
     const history = useHistory();
 
@@ -29,8 +29,20 @@ const ProductForm = ({ producto = {} }) => {
     }
 
     const handleTextChange = (e) => {
-        let name = e.target.name;
-        let value = e.target.value;
+        const name = e.target.name;
+        const value = e.target.value;
+        setProductData(prevProduct => ({
+            ...prevProduct,
+            [name]: value
+        }));
+    }
+
+    const handleCheckChange = (e) => {
+        const name = e.target.name;
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+
+        console.log('changing check value', name, value)
+
         setProductData(prevProduct => ({
             ...prevProduct,
             [name]: value
@@ -43,12 +55,34 @@ const ProductForm = ({ producto = {} }) => {
             if (e.target.min) e.target.value = Math.max(+e.target.min, +e.target.value);
         }
 
-        let name = e.target.name;
-        let value = +e.target.value;
+        const name = e.target.name;
+        const value = +e.target.value;
         setProductData(prevProduct => ({
             ...prevProduct,
             [name]: value
         }));
+    }
+
+    const handleCategoryChange = (v) => {
+        console.log('new values in category', v);
+
+        const newCategories = v ? v.map(c => c.value) : [];
+
+        setProductData(prevProduct => ({
+            ...prevProduct,
+            category: newCategories
+        }))
+    }
+
+    const handleTagChange = (v) => {
+        console.log('new values in tag', v);
+
+        const newTags = v ? v.map(t => t.value) : [];
+
+        setProductData(prevProduct => ({
+            ...prevProduct,
+            tag: newTags
+        }))
     }
 
     const deleteImg = (img) => {
@@ -86,14 +120,8 @@ const ProductForm = ({ producto = {} }) => {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
 
-    let categoryOptions = [
-        { value: 'AK', label: 'Alaska' },
-        { value: 'HI', label: 'Hawaii' },
-        { value: 'CA', label: 'California' },
-        { value: 'NV', label: 'Nevada' },
-        { value: 'OR', label: 'Oregon' },
-        { value: 'WA', label: 'Washington' },
-    ];
+    let categoryOptions = Object.keys(categories).map(c => ({ value: c, label: c }));
+    let tagOptions = Object.keys(tags).map(t => ({ value: t, label: t }));
 
     return (
         <Form>
@@ -102,7 +130,7 @@ const ProductForm = ({ producto = {} }) => {
                     <FormGroup>
                         <Label htmlFor="productname">Nombre de producto</Label>
                         <Input id="productname" name="productname" type="text" onChange={handleTextChange} className="form-control"
-                            defaultValue={producto.name || ''}
+                            defaultValue={productData.name || ''}
                         />
                     </FormGroup>
                 </Col>
@@ -111,7 +139,8 @@ const ProductForm = ({ producto = {} }) => {
                         <h5 className="font-size-14">¿Producto Nuevo?</h5>
                         <div className="form-check mt-3 mb-3">
                             <input className="form-check-input" name="new" type="checkbox"
-                                // defaultValue={producto.new || ''}
+                                checked={productData.new || false}
+                                onChange={handleCheckChange}
                                 id="defaultCheck1" />
                             <label className="form-check-label" htmlFor="defaultCheck1">
                                 Nuevo
@@ -123,34 +152,44 @@ const ProductForm = ({ producto = {} }) => {
                     <FormGroup>
                         <Label htmlFor="sku">SKU</Label>
                         <Input id="sku" name="sku" type="text" onChange={handleTextChange} className="form-control"
-                            defaultValue={producto.sku || ''}
+                            defaultValue={productData.sku || ''}
                         />
                     </FormGroup>
                 </Col>
                 <Col sm="12">
                     <FormGroup>
-                        <Label htmlFor="productdesc">Descripción de producto</Label>
-                        <textarea className="form-control" name="shortDescription" id="productdesc" rows="5"
+                        <Label htmlFor="productdesc">Descripción corta de producto</Label>
+                        <textarea className="form-control" name="shortDescription" id="productdesc" rows="1"
                             onChange={handleTextChange}
-                            defaultValue={producto.shortDescription || ''}
+                            defaultValue={productData.shortDescription || ''}
+                        />
+                    </FormGroup>
+                </Col>
+                <Col sm="12">
+                    <FormGroup>
+                        <Label htmlFor="productfulldesc">Descripción completa de producto</Label>
+                        <textarea className="form-control" name="fullDescription" id="productfulldesc" rows="5"
+                            onChange={handleTextChange}
+                            defaultValue={productData.fullDescription || ''}
                         />
                     </FormGroup>
                 </Col>
                 <Col sm="6">
                     <FormGroup>
                         <Label className="control-label">Categoría(s)</Label>
-                        <Select classNamePrefix="select2-selection" placeholder="Choose..." title="Country" options={categoryOptions} isMulti
-                            defaultValue={producto.categories ? producto.categories.map(c => ({ label: c, value: c })) : []}
-                            onChange={v => console.log('changed', v)}
-                        // TODO: Change onChange
+                        <Select classNamePrefix="select2-selection" placeholder="Choose..." title="Category" options={categoryOptions} isMulti
+                            value={productData.category ? productData.category.map(c => ({ value: c, label: c })) : []}
+                            onChange={handleCategoryChange}
+                            onInputChange={v => console.log('input change', v)}
+                            onKeyDown={k => { if (k.key === 'Enter' || k.key === ',') console.log('keydown', k.key) }}
                         />
                     </FormGroup>
                 </Col>
                 <Col sm="6">
-                    <FormGroup className="select2-container">
+                    <FormGroup>
                         <Label className="control-label">Tags</Label>
-                        <Select classNamePrefix="select2-selection" placeholder="Choose..." title="Country" options={categoryOptions} isMulti
-                        // TODO: Add onChange
+                        <Select classNamePrefix="select2-selection" placeholder="Choose..." title="Tags" options={tagOptions} isMulti
+                            onChange={handleTagChange}
                         />
                     </FormGroup>
                 </Col>
@@ -158,7 +197,7 @@ const ProductForm = ({ producto = {} }) => {
                     <FormGroup>
                         <Label htmlFor="productprice">Precio de producto</Label>
                         <Input id="productprice" name="price" type="number" onChange={handleNumberChange} min={0} className="form-control"
-                            defaultValue={producto.price || 0}
+                            defaultValue={+productData.price || ''}
                         />
                     </FormGroup>
                 </Col>
@@ -166,7 +205,7 @@ const ProductForm = ({ producto = {} }) => {
                     <FormGroup>
                         <Label htmlFor="productstock">Stock</Label>
                         <Input id="productstock" name="stock" type="number" onChange={handleNumberChange} min={0} className="form-control"
-                            defaultValue={producto.stock || 0}
+                            defaultValue={+productData.stock || ''}
                         />
                     </FormGroup>
                 </Col>
@@ -213,7 +252,7 @@ const ProductForm = ({ producto = {} }) => {
                                                 height="80"
                                                 className="avatar-sm rounded bg-light"
                                                 alt={f.name}
-                                                src={f.preview}
+                                                src={f.preview || f}
                                             />
                                         </Col>
                                         <Col>
@@ -221,7 +260,7 @@ const ProductForm = ({ producto = {} }) => {
                                                 to="#"
                                                 className="text-muted font-weight-bold"
                                             >
-                                                {f.name}
+                                                {f.name || 'Imagen guardada en servidor'}
                                             </Link>
                                             <p className="mb-0">
                                                 <strong>{f.formattedSize}</strong>
@@ -247,12 +286,28 @@ const ProductForm = ({ producto = {} }) => {
             </Row>
         </Form>
     );
-
 }
+
+const reducerGen = (attr) => {
+    return (acc, curr) => {
+        if (curr && curr[attr]) {
+            curr[attr].forEach(el => {
+                if (!acc[el]) acc[el] = true;
+            });
+        }
+        return acc;
+    }
+}
+
 const AddEditProductos = ({ location, products }) => {
 
     const productID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
-    const product = products && products.find(x => x.id === productID) || {};
+    const product = products ? (products.find(x => x.id === productID) || {}) : {};
+    const catFilter = reducerGen('category');
+    const tagFilter = reducerGen('tag');
+
+    const categories = products ? products.reduce(catFilter, {}) : {};
+    const tags = products ? products.reduce(tagFilter, {}) : {};
 
     return (
         <React.Fragment>
@@ -266,7 +321,7 @@ const AddEditProductos = ({ location, products }) => {
 
                                     <CardTitle>Información del producto</CardTitle>
                                     <CardSubtitle className="mb-3">Ingresa la información en los siguientes campos: </CardSubtitle>
-                                    <ProductForm producto={product} />
+                                    <ProductForm producto={product} categories={categories} tags={tags} />
                                 </CardBody>
                             </Card>
                         </Col>
