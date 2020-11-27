@@ -20,7 +20,9 @@ const SliderForm = ({ slider = {} }) => {
     
     const [sliderData, setSliderData] = useState(slider);
 
-    useEffect(() => setSliderData(slider), [slider]);
+    useEffect(() => {
+        setSliderData(slider);
+    }, [slider]);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -39,7 +41,7 @@ const SliderForm = ({ slider = {} }) => {
     const deleteImg = (img) => {
 
         let images = [...sliderData.image]; // make a separate copy of the array
-        let index = images.indexOf(img)
+        let index = images.indexOf(img);
         if (index !== -1) {
             images.splice(index, 1);
             setSliderData(prevSlider => ({
@@ -57,7 +59,7 @@ const SliderForm = ({ slider = {} }) => {
 
         setSliderData(prevSlider => ({
             ...prevSlider,
-            image: prevSlider.image ? [...prevSlider.image, ...files] : files
+            image: files
         }))
     }
 
@@ -130,7 +132,9 @@ const SliderForm = ({ slider = {} }) => {
                     className="dropzone-previews mt-3"
                     id="file-previews"
                 >
-                    {sliderData.image && sliderData.image.map((f, i) => {
+                    {sliderData.image && [sliderData.image].map((f, i) => {
+                        if(Array.isArray(sliderData.image)) f = f[0];
+                        if(!f) return;
                         return (
                             <Card
                                 className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
@@ -144,7 +148,7 @@ const SliderForm = ({ slider = {} }) => {
                                                 height="80"
                                                 className="avatar-sm rounded bg-light"
                                                 alt={f.name}
-                                                src={f.preview}
+                                                src={f.preview || f}
                                             />
                                         </Col>
                                         <Col>
@@ -152,7 +156,7 @@ const SliderForm = ({ slider = {} }) => {
                                                 to="#"
                                                 className="text-muted font-weight-bold"
                                             >
-                                                {f.name}
+                                                {f.name || 'Imagen guardada en servidor'}
                                             </Link>
                                             <p className="mb-0">
                                                 <strong>{f.formattedSize}</strong>
