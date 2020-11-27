@@ -76,7 +76,7 @@ const SliderForm = ({ slider = {} }) => {
     return (
         <Form>
             <Row>
-                <Col sm="4">
+                <Col sm="6">
                     <FormGroup>
                         <Label htmlFor="slidertitle">Título de slider</Label>
                         <Input id="slidertitle" name="slidertitle" type="text" className="form-control"
@@ -85,7 +85,7 @@ const SliderForm = ({ slider = {} }) => {
                         />
                     </FormGroup>
                 </Col>
-                <Col sm="4">
+                <Col sm="6">
                     <FormGroup>
                         <Label htmlFor="slidertitle">Subtítulo de slider</Label>
                         <Input id="slidersub" name="slidersub" type="text" className="form-control"
@@ -94,7 +94,7 @@ const SliderForm = ({ slider = {} }) => {
                         />
                     </FormGroup>
                 </Col>
-                <Col sm="4">
+                {/* <Col sm="4">
                     <FormGroup>
                         <Label htmlFor="slidertitle">URL de slider</Label>
                         <Input id="sliderurl" name="sliderurl" type="text" className="form-control"
@@ -102,7 +102,7 @@ const SliderForm = ({ slider = {} }) => {
                             onChange={handleTextChange}
                         />
                     </FormGroup>
-                </Col>
+                </Col> */}
             </Row>
             <CardTitle className="mb-3">Imágen de slider</CardTitle>
             <FormGroup>
