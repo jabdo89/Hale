@@ -1,11 +1,11 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyDqCfeEGAFooSlpMTHVRXkqdXGRdfuD4iY",
-  authDomain: "hale-dd838.firebaseapp.com",
-  databaseURL: "https://hale-dd838.firebaseio.com",
-  projectId: "hale-dd838",
-  storageBucket: "hale-dd838.appspot.com",
-  messagingSenderId: "149037020644",
-  appId: "1:149037020644:web:da657b3a259c14188b83f1",
+  apiKey: "AIzaSyB3zVJ9xyfzftH2STs-6qDpBtzxuQvYEAU",
+  authDomain: "dosal-ba23a.firebaseapp.com",
+  databaseURL: "https://dosal-ba23a.firebaseio.com",
+  projectId: "dosal-ba23a",
+  storageBucket: "dosal-ba23a.appspot.com",
+  messagingSenderId: "758802820779",
+  appId: "1:758802820779:web:f8546db06902576231d1ee",
 };
 
 const rrfConfig = {

@@ -14,7 +14,7 @@ import { loginUser, apiError } from "../../redux/Actions/actions";
 
 // import images
 import profile from "../../assets/images/profile-img.png";
-import logo from "./Hale.gif";
+import logo from "./dosalLogo.png";
 
 import firebase from "firebase";
 const Login = (props) => {
@@ -47,7 +47,7 @@ const Login = (props) => {
                     <Col className="col-7">
                       <div className="text-primary p-4">
                         <h5 className="text-primary">Welcome Back !</h5>
-                        <p>Sign in to continue to Hale Admin.</p>
+                        <p>Sign in to continue to Dosal Admin.</p>
                       </div>
                     </Col>
                     <Col className="col-5 align-self-end">
@@ -143,7 +143,7 @@ const Login = (props) => {
               </Card>
               <div className="mt-5 text-center">
                 <p>
-                  © {new Date().getFullYear()} Hale Admin. Developed by BernCo
+                  © {new Date().getFullYear()} Dosal Admin. Developed by BernCo
                 </p>
               </div>
             </Col>

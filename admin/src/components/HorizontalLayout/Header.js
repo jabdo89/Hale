@@ -14,10 +14,10 @@ import {
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 
-import logo from "./logo.gif";
-import logoLight from "./logo.gif";
-import logoLightSvg from "./logo.gif";
-import logoDark from "./logo.gif";
+import logo from "./dosal.png";
+import logoLight from "./dosal.png";
+import logoLightSvg from "./dosal.png";
+import logoDark from "./dosal.png";
 
 //i18n
 import { withNamespaces } from "react-i18next";

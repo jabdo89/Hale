@@ -228,9 +228,11 @@ const Ordenes = ({ Orders }) => {
                               <td>{`${order.firstName} ${order.lastname}`}</td>
                               <td>{order.email}</td>
                               <td>
-                                {moment(
-                                  new Date(order.createdDate.seconds * 1000)
-                                ).format("MMM Do YYYY")}
+                                {order.createdDate
+                                  ? moment(
+                                      new Date(order.createdDate.seconds * 1000)
+                                    ).format("MMM Do YYYY")
+                                  : null}
                               </td>
                               <td>${order.price}</td>
                               <td>
