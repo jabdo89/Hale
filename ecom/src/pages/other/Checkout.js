@@ -36,40 +36,76 @@ const Checkout = ({ location, cartItems, currency, profile, addToCart }) => {
   const { addToast } = useToasts();
   const createOrder = async (e) => {
     e.preventDefault();
-    const offer = "jejeje";
-    const functions = firebase.functions();
-    const recommendedAlgo = functions.httpsCallable("conektaPayment");
-    const recommended = await recommendedAlgo({ offer });
-    console.log(recommended);
-    // const db = firebase.firestore();
-    // db.collection("Orders")
-    //   .add({
-    //     firstName: form.firstName,
-    //     lastname: form.lastName,
-    //     phone: form.phone,
-    //     email: form.email,
-    //     currency: currency,
-    //     price: cartTotalPrice,
-    //     items: cartItems,
-    //     message: form.message,
-    //     address: {
-    //       street: form.streetAddress,
-    //       state: form.state,
-    //       city: form.city,
-    //       zipcode: form.zipcode,
-    //       apartmentNum: form.apartmentNum,
-    //     },
-    //   })
-    //   .then(function (docRef) {
-    //     history.push("/postCheckout/" + docRef.id);
-    //     console.log("Document written with ID: ", docRef.id);
-    //   })
-    //   .catch(function (error) {
-    //     console.error("Error adding document: ", error);
-    //   });
+    // const offer = "jejeje";
+    // const functions = firebase.functions();
+    // const recommendedAlgo = functions.httpsCallable("conektaPayment");
+    // const recommended = await recommendedAlgo({ offer });
+    // console.log(recommended);
+    const db = firebase.firestore();
+    console.log(form);
+    db.collection("Orders")
+      .add({
+        firstName: form.firstName,
+        lastname: form.lastName,
+        phone: form.phone,
+        email: form.email,
+        createdDate: new Date(),
+        price: cartTotalPrice,
+        items: cartItems,
+        message: form.message,
+        address: {
+          street: form.streetAddress,
+          state: form.state,
+          city: form.city,
+          zipcode: form.zipcode,
+          apartmentNum: form.apartmentNum,
+        },
+      })
+      .then(function (docRef) {
+        db.collection("Clients")
+          .where("email", "==", form.email)
+          .get()
+          .then((snapshot) => {
+            if (snapshot.empty) {
+              db.collection("Clients").add({
+                firstName: form.firstName,
+                lastname: form.lastName,
+                email: form.email,
+                lastPurchase: new Date(),
+                phone: form.phone,
+                total: cartTotalPrice,
+                address: {
+                  street: form.streetAddress,
+                  state: form.state,
+                  city: form.city,
+                  zipcode: form.zipcode,
+                  apartmentNum: form.apartmentNum,
+                },
+              });
+            }
+            let data;
+            snapshot.forEach((doc) => {
+              data = doc.data();
+              db.collection("Clients")
+                .doc(doc.id)
+                .update({
+                  total: data.total + cartTotalPrice,
+                  lastPurchase: new Date(),
+                });
+            });
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+        history.push("/postCheckout/" + docRef.id);
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch(function (error) {
+        console.error("Error adding document: ", error);
+      });
   };
   const handleChange = (e) => {
-    setForm({ ...cardForm, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleInputFocus = (e) => {
