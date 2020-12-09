@@ -178,15 +178,18 @@ const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
                             value={productData.category ? productData.category.map(c => ({ value: c, label: c })) : []}
                             onChange={handleCategoryChange}
                             onInputChange={v => {
-                                if (!v) return;
+                                if (!v) {
+                                    setCurrCat('');
+                                    return;
+                                }
                                 let cat = (v[v.length - 1] === ',') ? v.slice(0, -1) : v;
                                 setCurrCat(cat);
                                 console.log('input change', v);
                             }}
                             inputValue={currCat}
                             onKeyDown={k => {
-                                if (k.key === 'Enter' || k.key === ',') {
-                                    let newCategories = [...productData.category];
+                                if ((k.key === 'Enter' || k.key === ',') && currCat.trim().length > 0) {
+                                    let newCategories = productData.category ? [...productData.category] : [];
                                     if (newCategories.indexOf(currCat) === -1) newCategories.push(currCat);
                                     setProductData(prevProduct => ({
                                         ...prevProduct,
@@ -205,14 +208,17 @@ const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
                             value={productData.tag ? productData.tag.map(t => ({ value: t, label: t })) : []}
                             onChange={handleTagChange}
                             onInputChange={v => {
-                                if (!v) return;
+                                if (!v) {
+                                    setCurrTag('');
+                                    return;
+                                }
                                 let tag = (v[v.length - 1] === ',') ? v.slice(0, -1) : v;
                                 setCurrTag(tag);
                             }}
                             inputValue={currTag}
                             onKeyDown={k => {
-                                if (k.key === 'Enter' || k.key === ',') {
-                                    let newTag = [...productData.tag];
+                                if ((k.key === 'Enter' || k.key === ',') && currTag.trim().length > 0) {
+                                    let newTag = productData.tag ? [...productData.tag] : [];
                                     if (newTag.indexOf(currTag) === -1) newTag.push(currTag);
                                     setProductData(prevProduct => ({
                                         ...prevProduct,
