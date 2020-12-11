@@ -93,19 +93,19 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
     }));
   };
 
-  const deleteImg = (img) => {
-    let images = [...clientData.image]; // make a separate copy of the array
+  const deleteImg = (img, imageIndexAttr = 'imagenUno') => {
+    let images = [...clientData[imageIndexAttr]]; // make a separate copy of the array
     let index = images.indexOf(img);
     if (index !== -1) {
       images.splice(index, 1);
       setClientData((prevProduct) => ({
         ...prevProduct,
-        image: images,
+        [imageIndexAttr]: images,
       }));
     }
   };
 
-  function handleAcceptedFiles(files) {
+  function handleAcceptedFiles(files, imageIndexAttr = 'imagenUno') {
     files.map((file) =>
       Object.assign(file, {
         preview: URL.createObjectURL(file),
@@ -115,7 +115,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
 
     setClientData((prevProduct) => ({
       ...prevProduct,
-      image: prevProduct.image ? [...prevProduct.image, ...files] : files,
+      [imageIndexAttr]: prevProduct[imageIndexAttr] ? [...prevProduct[imageIndexAttr], ...files] : files,
     }));
   }
 
@@ -150,17 +150,20 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
         </Col>
         <Col sm="6">
           <FormGroup>
-            <Label className="control-label">Producto 2</Label>
-            <Select
-              classNamePrefix="select2-selection"
-              placeholder="Choose..."
-              title="Producto 2"
-              options={productOptions}
+            <Label htmlFor="preciouno">Precio</Label>
+            <Input
+              id="precioUno"
+              name="precioUno"
+              type="number"
+              onChange={handleNumberChange}
+              min={0}
+              className="form-control"
+              defaultValue={+clientData.precioUno || ""}
             />
           </FormGroup>
         </Col>
       </Row>
-      <CardTitle className="mb-3">Imagen de cliente</CardTitle>
+      <CardTitle className="mb-3">Imagen de producto 1</CardTitle>
       <FormGroup>
         <Dropzone
           accept="image/*"
@@ -183,8 +186,8 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
           )}
         </Dropzone>
         <div className="dropzone-previews mt-3" id="file-previews">
-          {clientData.image &&
-            clientData.image.map((f, i) => {
+          {clientData.imagenUno &&
+            clientData.imagenUno.map((f, i) => {
               return (
                 <Card
                   className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
@@ -213,7 +216,97 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
                         <i
                           className="text-danger mdi mdi-close font-size-18 mr-3"
                           id="deletetooltip"
-                          onClick={() => deleteImg(f)}
+                          onClick={() => deleteImg(f, 'imagenUno')}
+                        ></i>
+                      </Col>
+                    </Row>
+                  </div>
+                </Card>
+              );
+            })}
+        </div>
+      </FormGroup>
+      <Row>
+        <Col sm="6">
+          <FormGroup>
+            <Label className="control-label">Producto 2</Label>
+            <Select
+              classNamePrefix="select2-selection"
+              placeholder="Choose..."
+              title="Producto 2"
+              options={productOptions}
+            />
+          </FormGroup>
+        </Col>
+        <Col sm="6">
+          <FormGroup>
+            <Label htmlFor="preciodos">Precio 2</Label>
+            <Input
+              id="preciodos"
+              name="precioDos"
+              type="number"
+              onChange={handleNumberChange}
+              min={0}
+              className="form-control"
+              defaultValue={+clientData.precioDos || ""}
+            />
+          </FormGroup>
+        </Col>
+      </Row>
+      <CardTitle className="mb-3">Imagen de producto 2</CardTitle>
+      <FormGroup>
+        <Dropzone
+          accept="image/*"
+          onDrop={(acceptedFiles) => {
+            handleAcceptedFiles(acceptedFiles, 'imagenDos');
+          }}
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div className="dropzone">
+              <div className="dz-message needsclick" {...getRootProps()}>
+                <input {...getInputProps()} />
+                <div className="dz-message needsclick">
+                  <div className="mb-3">
+                    <i className="display-4 text-muted bx bxs-cloud-upload"></i>
+                  </div>
+                  <h4>Drop files here or click to upload.</h4>
+                </div>
+              </div>
+            </div>
+          )}
+        </Dropzone>
+        <div className="dropzone-previews mt-3" id="file-previews">
+          {clientData.imagenDos &&
+            clientData.imagenDos.map((f, i) => {
+              return (
+                <Card
+                  className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
+                  key={i + "-file"}
+                >
+                  <div className="p-2">
+                    <Row className="align-items-center">
+                      <Col className="col-auto">
+                        <img
+                          data-dz-thumbnail=""
+                          height="80"
+                          className="avatar-sm rounded bg-light"
+                          alt={f.name}
+                          src={f.preview || f}
+                        />
+                      </Col>
+                      <Col>
+                        <Link to="#" className="text-muted font-weight-bold">
+                          {f.name || "Imagen guardada en servidor"}
+                        </Link>
+                        <p className="mb-0">
+                          <strong>{f.formattedSize}</strong>
+                        </p>
+                      </Col>
+                      <Col className="col-auto">
+                        <i
+                          className="text-danger mdi mdi-close font-size-18 mr-3"
+                          id="deletetooltip"
+                          onClick={() => deleteImg(f, 'imagenDos')}
                         ></i>
                       </Col>
                     </Row>

@@ -20,13 +20,13 @@ const AddEditClientes = ({ location, clientes: users }) => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>
-                    <Breadcrumbs title="Productos" breadcrumbItem={`${client.id ? 'Editar' : 'Añadir'} Producto`} />
+                    <Breadcrumbs title="Cliente" breadcrumbItem={`${client.id ? 'Editar' : 'Añadir'} Cliente`} />
                     <Row>
                         <Col xs="12">
                             <Card>
                                 <CardBody>
 
-                                    <CardTitle>Información del producto</CardTitle>
+                                    <CardTitle>Información del cliente</CardTitle>
                                     <CardSubtitle className="mb-3">Ingresa la información en los siguientes campos: </CardSubtitle>
                                     <ClientForm cliente={client} />
                                 </CardBody>
