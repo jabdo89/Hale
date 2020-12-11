@@ -196,9 +196,9 @@ const Clientes = ({ clients }) => {
                             const {
                               firstName,
                               lastName,
-                              total: totalSpent,
-                              producto1,
-                              producto2,
+                              totalSpent,
+                              productoUno,
+                              productoDos,
                             } = client;
 
                             return (
@@ -208,11 +208,11 @@ const Clientes = ({ clients }) => {
                                 </td>
                                 <td>
                                   <span className="badge badge-danger">
-                                    {producto1}
+                                    {productoUno}
                                   </span>
-                                  {producto2 && (
+                                  {productoDos && (
                                     <span className="badge badge-danger">
-                                      {producto2}
+                                      {productoDos}
                                     </span>
                                   )}
                                 </td>
@@ -258,7 +258,7 @@ const Clientes = ({ clients }) => {
 
 const mapStateToProps = (state) => {
   return {
-    clients: state.firestore.ordered.Clients,
+    clients: state.firestore.ordered.Users,
   };
 };
 
@@ -267,7 +267,7 @@ export default compose(
   firestoreConnect((props) => {
     return [
       {
-        collection: "Clients",
+        collection: "Users",
       },
     ];
   })
