@@ -157,7 +157,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
           <FormGroup>
             <Label className="control-label">Email</Label>
             <Input
-              disabled={cliente !== {}}
+              disabled={cliente.hasOwnProperty('id')}
               defaultValue={cliente && cliente.email ? cliente.email : ""}
               id="email"
               name="email"
@@ -170,7 +170,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
           <FormGroup>
             <Label className="control-label">Password</Label>
             <Input
-              disabled={cliente !== {}}
+              disabled={cliente.hasOwnProperty('id')}
               defaultValue={cliente && cliente.password ? cliente.password : ""}
               id="password"
               name="password"
