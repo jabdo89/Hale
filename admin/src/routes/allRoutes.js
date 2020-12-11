@@ -142,10 +142,11 @@ import ContactsProfile from "../pages/Contacts/contacts-profile";
 
 // Bern
 import Dashboard from '../pages/Bern/Dashboard';
-import Productos from '../pages/Bern/Productos/Productos';
 import AddEditProductos from "../pages/Bern/Productos/AddEditProductos";
-import Ordenes from '../pages/Bern/Ordenes/Ordenes';
+import Productos from '../pages/Bern/Productos/Productos';
 import AddEditOrdenes from "../pages/Bern/Ordenes/AddEditOrdenes";
+import Ordenes from '../pages/Bern/Ordenes/Ordenes';
+import AddEditClientes from "../pages/Bern/Clientes/AddEditClientes";
 import Clientes from "../pages/Bern/Clientes/Clientes";
 import AddEditSliders from '../pages/Bern/Promocion/Sliders/AddEditSliders';
 import Sliders from '../pages/Bern/Promocion/Sliders/Sliders';
@@ -163,6 +164,7 @@ const userRoutes = [
 	{ path: "/ordenes/edit/:id", component: AddEditOrdenes },
 	{ path: "/ordenes", component: Ordenes },
 	{ path: "/inventario", component: Inventario },
+	{ path: "/clientes/edit/:id", component: AddEditClientes },
 	{ path: "/clientes", component: Clientes },
 	{ path: "/promocion-sliders/edit/:id", component: AddEditSliders },
 	{ path: "/promocion-sliders", component: Sliders },
