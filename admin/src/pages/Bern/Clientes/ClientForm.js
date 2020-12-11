@@ -10,6 +10,7 @@ import {
   CardTitle,
   Button,
   Label,
+  CardSubtitle,
 } from "reactstrap";
 import Select from "react-select";
 import Dropzone from "react-dropzone";
@@ -23,6 +24,8 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
   const returnToProducts = () => {
     history.push("/clientes");
   };
+
+  console.log(cliente, "bool");
 
   const [clientData, setClientData] = useState(cliente);
 
@@ -93,19 +96,14 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
     }));
   };
 
-  const deleteImg = (img, imageIndexAttr = 'imagenUno') => {
-    let images = [...clientData[imageIndexAttr]]; // make a separate copy of the array
-    let index = images.indexOf(img);
-    if (index !== -1) {
-      images.splice(index, 1);
-      setClientData((prevProduct) => ({
-        ...prevProduct,
-        [imageIndexAttr]: images,
-      }));
-    }
+  const deleteImg = (imageIndexAttr = "imagenUno") => {
+    setClientData((prevProduct) => ({
+      ...prevProduct,
+      [imageIndexAttr]: undefined,
+    }));
   };
 
-  function handleAcceptedFiles(files, imageIndexAttr = 'imagenUno') {
+  function handleAcceptedFiles(files, imageIndexAttr = "imagenUno") {
     files.map((file) =>
       Object.assign(file, {
         preview: URL.createObjectURL(file),
@@ -113,9 +111,9 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
       })
     );
 
-    setClientData((prevProduct) => ({
-      ...prevProduct,
-      [imageIndexAttr]: prevProduct[imageIndexAttr] ? [...prevProduct[imageIndexAttr], ...files] : files,
+    setClientData((prevClient) => ({
+      ...prevClient,
+      [imageIndexAttr]: files[0],
     }));
   }
 
@@ -136,6 +134,56 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
 
   return (
     <Form>
+      <CardTitle>Información del cliente</CardTitle>
+      <CardSubtitle className="mb-3">
+        Ingresa la información en los siguientes campos:{" "}
+      </CardSubtitle>
+      <Row>
+        <Col sm="12">
+          <FormGroup>
+            <Label className="control-label">Nombre</Label>
+            <Input
+              defaultValue={cliente && cliente.name ? cliente.name : ""}
+              id="name"
+              name="name"
+              type="name"
+              className="form-control"
+            />
+          </FormGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col sm="6">
+          <FormGroup>
+            <Label className="control-label">Email</Label>
+            <Input
+              disabled={cliente !== {}}
+              defaultValue={cliente && cliente.email ? cliente.email : ""}
+              id="email"
+              name="email"
+              type="email"
+              className="form-control"
+            />
+          </FormGroup>
+        </Col>
+        <Col sm="6">
+          <FormGroup>
+            <Label className="control-label">Password</Label>
+            <Input
+              disabled={cliente !== {}}
+              defaultValue={cliente && cliente.password ? cliente.password : ""}
+              id="password"
+              name="password"
+              type="password"
+              className="form-control"
+            />
+          </FormGroup>
+        </Col>
+      </Row>
+      <CardTitle>Información de productos</CardTitle>
+      <CardSubtitle className="mb-3">
+        Ingresa la información en los siguientes campos:{" "}
+      </CardSubtitle>
       <Row>
         <Col sm="6">
           <FormGroup>
@@ -186,44 +234,39 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
           )}
         </Dropzone>
         <div className="dropzone-previews mt-3" id="file-previews">
-          {clientData.imagenUno &&
-            clientData.imagenUno.map((f, i) => {
-              return (
-                <Card
-                  className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
-                  key={i + "-file"}
-                >
-                  <div className="p-2">
-                    <Row className="align-items-center">
-                      <Col className="col-auto">
-                        <img
-                          data-dz-thumbnail=""
-                          height="80"
-                          className="avatar-sm rounded bg-light"
-                          alt={f.name}
-                          src={f.preview || f}
-                        />
-                      </Col>
-                      <Col>
-                        <Link to="#" className="text-muted font-weight-bold">
-                          {f.name || "Imagen guardada en servidor"}
-                        </Link>
-                        <p className="mb-0">
-                          <strong>{f.formattedSize}</strong>
-                        </p>
-                      </Col>
-                      <Col className="col-auto">
-                        <i
-                          className="text-danger mdi mdi-close font-size-18 mr-3"
-                          id="deletetooltip"
-                          onClick={() => deleteImg(f, 'imagenUno')}
-                        ></i>
-                      </Col>
-                    </Row>
-                  </div>
-                </Card>
-              );
-            })}
+          {clientData.imagenUno && (
+            <Card className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete">
+              <div className="p-2">
+                <Row className="align-items-center">
+                  <Col className="col-auto">
+                    <img
+                      data-dz-thumbnail=""
+                      height="80"
+                      className="avatar-sm rounded bg-light"
+                      alt={clientData.imagenUno.name}
+                      src={clientData.imagenUno.preview || clientData.imagenUno}
+                    />
+                  </Col>
+                  <Col>
+                    <Link to="#" className="text-muted font-weight-bold">
+                      {clientData.imagenUno.name ||
+                        "Imagen guardada en servidor"}
+                    </Link>
+                    <p className="mb-0">
+                      <strong>{clientData.imagenUno.formattedSize}</strong>
+                    </p>
+                  </Col>
+                  <Col className="col-auto">
+                    <i
+                      className="text-danger mdi mdi-close font-size-18 mr-3"
+                      id="deletetooltip"
+                      onClick={() => deleteImg("imagenUno")}
+                    ></i>
+                  </Col>
+                </Row>
+              </div>
+            </Card>
+          )}
         </div>
       </FormGroup>
       <Row>
@@ -258,7 +301,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
         <Dropzone
           accept="image/*"
           onDrop={(acceptedFiles) => {
-            handleAcceptedFiles(acceptedFiles, 'imagenDos');
+            handleAcceptedFiles(acceptedFiles, "imagenDos");
           }}
         >
           {({ getRootProps, getInputProps }) => (
@@ -276,44 +319,39 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
           )}
         </Dropzone>
         <div className="dropzone-previews mt-3" id="file-previews">
-          {clientData.imagenDos &&
-            clientData.imagenDos.map((f, i) => {
-              return (
-                <Card
-                  className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
-                  key={i + "-file"}
-                >
-                  <div className="p-2">
-                    <Row className="align-items-center">
-                      <Col className="col-auto">
-                        <img
-                          data-dz-thumbnail=""
-                          height="80"
-                          className="avatar-sm rounded bg-light"
-                          alt={f.name}
-                          src={f.preview || f}
-                        />
-                      </Col>
-                      <Col>
-                        <Link to="#" className="text-muted font-weight-bold">
-                          {f.name || "Imagen guardada en servidor"}
-                        </Link>
-                        <p className="mb-0">
-                          <strong>{f.formattedSize}</strong>
-                        </p>
-                      </Col>
-                      <Col className="col-auto">
-                        <i
-                          className="text-danger mdi mdi-close font-size-18 mr-3"
-                          id="deletetooltip"
-                          onClick={() => deleteImg(f, 'imagenDos')}
-                        ></i>
-                      </Col>
-                    </Row>
-                  </div>
-                </Card>
-              );
-            })}
+          {clientData.imagenDos && (
+            <Card className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete">
+              <div className="p-2">
+                <Row className="align-items-center">
+                  <Col className="col-auto">
+                    <img
+                      data-dz-thumbnail=""
+                      height="80"
+                      className="avatar-sm rounded bg-light"
+                      alt={clientData.imagenDos.name}
+                      src={clientData.imagenDos.preview || clientData.imagenDos}
+                    />
+                  </Col>
+                  <Col>
+                    <Link to="#" className="text-muted font-weight-bold">
+                      {clientData.imagenDos.name ||
+                        "Imagen guardada en servidor"}
+                    </Link>
+                    <p className="mb-0">
+                      <strong>{clientData.imagenDos.formattedSize}</strong>
+                    </p>
+                  </Col>
+                  <Col className="col-auto">
+                    <i
+                      className="text-danger mdi mdi-close font-size-18 mr-3"
+                      id="deletetooltip"
+                      onClick={() => deleteImg("imagenDos")}
+                    ></i>
+                  </Col>
+                </Row>
+              </div>
+            </Card>
+          )}
         </div>
       </FormGroup>
       <Row className="justify-content-end">

@@ -8,13 +8,16 @@ import { compose } from "redux";
 import Breadcrumbs from '../../../components/Common/Breadcrumb';
 import ClientForm from './ClientForm';
 
-const clientsFromUsers = (users) => (users && users.filter(user => user.role === 'cliente')) || [];
+const clientsFromUsers = (users) => (users && users.filter(user => user.rol === 'Cliente')) || [];
 
-const AddEditClientes = ({ location, clientes: users }) => {
+const AddEditClientes = ({ location, users }) => {
 
     const clientes = clientsFromUsers(users);
     const clientID = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
     const client = clientes ? (clientes.find(x => x.id === clientID) || {}) : {};
+
+    console.log('users', users);
+    console.log('clientes', clientes);
 
     return (
         <React.Fragment>
@@ -25,9 +28,6 @@ const AddEditClientes = ({ location, clientes: users }) => {
                         <Col xs="12">
                             <Card>
                                 <CardBody>
-
-                                    <CardTitle>Información del cliente</CardTitle>
-                                    <CardSubtitle className="mb-3">Ingresa la información en los siguientes campos: </CardSubtitle>
                                     <ClientForm cliente={client} />
                                 </CardBody>
                             </Card>
@@ -41,7 +41,7 @@ const AddEditClientes = ({ location, clientes: users }) => {
 
 const mapStateToProps = (state) => {
     return {
-        products: state.firestore.ordered.Products,
+        users: state.firestore.ordered.Users,
     };
 };
 
@@ -50,7 +50,7 @@ export default compose(
     firestoreConnect((props) => {
         return [
             {
-                collection: "Products",
+                collection: "Users",
             }
         ];
     })

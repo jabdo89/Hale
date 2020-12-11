@@ -15,11 +15,12 @@ import {
   PaginationItem,
   PaginationLink,
   Button,
+  UncontrolledTooltip,
 } from "reactstrap";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // const Clientes = ({ clients }) => {
 //   return (
@@ -144,6 +145,15 @@ import { Link } from "react-router-dom";
 // )(Clientes);
 
 const Clientes = ({ clients }) => {
+
+  const history = useHistory();
+  
+  const editClient = (client) => history.push(`/clientes/edit/${client.id}`);
+
+  const deleteClient = (client) => {
+    console.log("Deleting client", client);
+  };
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -188,6 +198,7 @@ const Clientes = ({ clients }) => {
                           <th>Name</th>
                           <th>Productos</th>
                           <th>Total Spent</th>
+                          <th>Acciones</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -217,6 +228,34 @@ const Clientes = ({ clients }) => {
                                   )}
                                 </td>
                                 <td>${totalSpent}</td>
+                                <td>
+                                  <Link to="#" className="mr-3 text-primary">
+                                    <i
+                                      className="mdi mdi-pencil font-size-18 mr-3"
+                                      id="edittooltip"
+                                      onClick={() => editClient(client)}
+                                    ></i>
+                                    <UncontrolledTooltip
+                                      placement="top"
+                                      target="edittooltip"
+                                    >
+                                      Edit
+                                    </UncontrolledTooltip>
+                                  </Link>
+                                  <Link to="#" className="text-danger">
+                                    <i
+                                      className="mdi mdi-close font-size-18 mr-3"
+                                      id="deletetooltip"
+                                      onClick={() => deleteClient(client)}
+                                    ></i>
+                                    <UncontrolledTooltip
+                                      placement="top"
+                                      target="deletetooltip"
+                                    >
+                                      Delete
+                                    </UncontrolledTooltip>
+                                  </Link>
+                                </td>
                               </tr>
                             );
                           })}
