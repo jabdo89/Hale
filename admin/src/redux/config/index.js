@@ -8,9 +8,15 @@ const firebaseConfig = {
   appId: "1:758802820779:web:f8546db06902576231d1ee",
 };
 
+const secondConfig = {
+  apiKey: "AIzaSyDru_dH3ajvW0O7dIauIjetd5-Pqi5nXx0",
+  authDomain: "eugenio-969c3.firebaseapp.com",
+  databaseURL: "https://eugenio-969c3.firebaseio.com",
+};
+
 const rrfConfig = {
   userProfile: "Usuarios",
   useFirestoreForProfile: true,
 };
 
-export { firebaseConfig, rrfConfig };
+export { firebaseConfig, rrfConfig, secondConfig };

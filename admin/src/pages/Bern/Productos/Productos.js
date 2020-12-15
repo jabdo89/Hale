@@ -73,10 +73,10 @@ const Productos = ({ products }) => {
                       <Table className="table table-nowrap table-centered">
                         <thead className="thead-light">
                           <tr>
-                            <th scope="col" style={{ width: "100px" }}></th>
+                            {/* <th scope="col" style={{ width: "100px" }}></th> */}
                             <th scope="col">SKU</th>
                             <th scope="col">Productos</th>
-                            <th scope="col">Categorías</th>
+                            {/* <th scope="col">Categorías</th> */}
                             <th scope="col">Precio</th>
                             <th scope="col">Stock</th>
                             <th scope="col">Acciones</th>
@@ -96,13 +96,13 @@ const Productos = ({ products }) => {
                               } = producto;
                               return (
                                 <tr key={index}>
-                                  <td>
+                                  {/* <td>
                                     <img
                                       src={image}
                                       alt=""
                                       className="avatar-sm"
                                     />
-                                  </td>
+                                  </td> */}
                                   <td>{sku}</td>
                                   <td>
                                     <h5 className="text-truncate font-size-14">
@@ -119,7 +119,7 @@ const Productos = ({ products }) => {
                                       {shortDescription}
                                     </p>
                                   </td>
-                                  <td>
+                                  {/* <td>
                                     {category.map((c, i) => (
                                       <span
                                         key={i}
@@ -128,7 +128,7 @@ const Productos = ({ products }) => {
                                         {c}
                                       </span>
                                     ))}
-                                  </td>
+                                  </td> */}
                                   <td>{`$${price}`}</td>
                                   <td>{stock}</td>
                                   <td>

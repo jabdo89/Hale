@@ -17,9 +17,14 @@ import Dropzone from "react-dropzone";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { connect } from "react-redux";
+import firebase from "firebase";
+import { secondConfig } from "../../../redux/config";
 
 const ClientForm = ({ cliente = {}, products = [] }) => {
   const history = useHistory();
+  let id = history.location.pathname.substring(
+    history.location.pathname.lastIndexOf("/")
+  );
 
   const returnToProducts = () => {
     history.push("/clientes");
@@ -33,6 +38,45 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(clientData);
+    const db = firebase.firestore();
+    const secondAuth = firebase.initializeApp(secondConfig, "Secondary");
+    console.log(clientData);
+    db.collection("Users")
+      .where("email", "==", clientData.email)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.empty) {
+          secondAuth
+            .auth()
+            .createUserWithEmailAndPassword(
+              clientData.email,
+              clientData.password
+            )
+            .then((resp) => {
+              return db.collection("Users").doc(resp.user.uid).set({
+                email: clientData.email,
+              });
+            })
+            .then(() => {
+              secondAuth.delete();
+              history.push("/clientes");
+            })
+            .catch((err) => {
+              secondAuth.delete();
+              console.error(err);
+            });
+        }
+        snapshot.forEach((doc) => {
+          secondAuth.delete();
+          console.error(doc);
+        });
+      })
+      .catch((err) => {
+        secondAuth.delete();
+        console.error(err);
+      });
+    console.log(clientData);
     console.log("updating/creating client", clientData);
   };
 
@@ -157,7 +201,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
           <FormGroup>
             <Label className="control-label">Email</Label>
             <Input
-              disabled={cliente.hasOwnProperty('id')}
+              disabled={cliente.hasOwnProperty("id")}
               defaultValue={cliente && cliente.email ? cliente.email : ""}
               id="email"
               name="email"
@@ -170,7 +214,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
           <FormGroup>
             <Label className="control-label">Password</Label>
             <Input
-              disabled={cliente.hasOwnProperty('id')}
+              disabled={cliente.hasOwnProperty("id")}
               defaultValue={cliente && cliente.password ? cliente.password : ""}
               id="password"
               name="password"

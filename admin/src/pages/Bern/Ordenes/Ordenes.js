@@ -135,8 +135,7 @@ const Ordenes = ({ Orders }) => {
 
   const history = useHistory();
 
-  const editOrder = (order) =>
-    history.push(`/ordenes/edit/${order.id}`);
+  const editOrder = (order) => history.push(`/ordenes/edit/${order.id}`);
 
   const deleteOrder = (order) => {
     console.log("Deleting order", order);
@@ -208,9 +207,9 @@ const Ordenes = ({ Orders }) => {
                               <td>{`${order.firstName} ${order.lastname}`}</td>
                               <td>{order.email}</td>
                               <td>
-                                {order.createdDate
+                                {order.date
                                   ? moment(
-                                      new Date(order.createdDate.seconds * 1000)
+                                      new Date(order.date.seconds * 1000)
                                     ).format("MMM Do YYYY")
                                   : null}
                               </td>
@@ -252,7 +251,7 @@ const Ordenes = ({ Orders }) => {
                                     target="edittooltip"
                                   >
                                     Edit
-                                      </UncontrolledTooltip>
+                                  </UncontrolledTooltip>
                                 </Link>
                                 <Link to="#" className="text-danger">
                                   <i

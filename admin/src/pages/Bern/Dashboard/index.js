@@ -35,15 +35,43 @@ function getOrders(orders) {
 }
 
 function getClients(clients) {
-  return clients.length;
+  let total = 0;
+  for (var i = 0; i < clients.length; i++) {
+    if (clients[i].rol === "Cliente") {
+      total += 1;
+    }
+  }
+  return total;
 }
 
 function totalEarn(clients) {
   let total = 0;
   for (var i = 0; i < clients.length; i++) {
-    total += clients[i].total;
+    total += clients[i].totalSpent;
   }
   return total;
+}
+
+function getChart(orders, clients) {
+  let series = [];
+  for (var i = 0; i < clients.length; i++) {
+    if (clients[i].rol === "Cliente") {
+      series.push({
+        name: clients[i].email,
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      });
+    }
+  }
+  for (var j = 0; j < orders.length; j++) {
+    for (var k = 0; k < series.length; k++) {
+      if (series[k].name === orders[j].email) {
+        const month = new Date(orders[j].date.seconds * 1000).getMonth();
+        series[k].data[month] += orders[j].price;
+      }
+    }
+  }
+  console.log(series);
+  return series;
 }
 
 const Dashboard = (props) => {
@@ -140,7 +168,9 @@ const Dashboard = (props) => {
                     </ul>
                   </div>
                   <div className="clearfix"></div>
-                  <StackedColumnChart />
+                  <StackedColumnChart
+                    series={getChart(props.Orders, props.Clients)}
+                  />
                 </CardBody>
               </Card>
             </Col>
@@ -258,7 +288,7 @@ const Dashboard = (props) => {
 const mapStateToProps = (state) => {
   return {
     Orders: state.firestore.ordered.Orders,
-    Clients: state.firestore.ordered.Clients,
+    Clients: state.firestore.ordered.Users,
   };
 };
 
@@ -271,7 +301,7 @@ export default compose(
         collection: "Orders",
       },
       {
-        collection: "Clients",
+        collection: "Users",
       },
     ];
   })
