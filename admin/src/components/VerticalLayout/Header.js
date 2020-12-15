@@ -8,10 +8,10 @@ import { Link } from "react-router-dom";
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 
-import logo from "./dosal.png";
-import logoLightPng from "./dosal.png";
-import logoLightSvg from "./dosal.png";
-import logoDark from "./dosal.png";
+import logo from "./dosalLogo.png";
+import logoLightPng from "./dosalWhite.png";
+import logoLightSvg from "./dosalLogo.png";
+import logoDark from "./dosalBlue.png";
 
 //i18n
 import { withNamespaces } from "react-i18next";

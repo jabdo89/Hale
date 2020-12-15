@@ -17,7 +17,7 @@ import {
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
-
+import image from "./clipboard.png";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
 const InventoryDetailModal = ({ product, isOpen, setmodal }) => {
@@ -121,7 +121,7 @@ const Inventario = ({ products }) => {
                         <div className="text-center p-4 border-right">
                           <div className="avatar-md mx-auto mb-4">
                             <span className="avatar-title waves-effect rounded-circle bg-light text-danger font-size-16">
-                              <img src={product.image} alt="" height="90" />
+                              <img src={image} alt="" height="90" />
                             </span>
                           </div>
                           <h5 className="text-truncate">{product.name}</h5>
