@@ -26,6 +26,7 @@ import {
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
+import ExcelExport from "../../../components/Common/ExcelExport";
 
 const OrderDetailModal = ({ order, isOpen, setmodal }) => {
   return (
@@ -164,17 +165,22 @@ const Ordenes = ({ Orders }) => {
                       </div>
                     </Col>
                     <Col sm="8">
-                      <div className="text-sm-right">
-                        <Link to="/ordenes/edit/new">
-                          <Button
-                            type="button"
-                            color="success"
-                            className="btn-rounded waves-effect waves-light mb-2 mr-2"
-                          >
-                            <i className="mdi mdi-plus mr-1"></i> Nueva orden
-                          </Button>
-                        </Link>
-                      </div>
+                      <Row className="justify-content-end">
+                        <div className="text-sm-right">
+                          <ExcelExport data={Orders} />
+                        </div>
+                        <div className="text-sm-right">
+                          <Link to="/ordenes/edit/new">
+                            <Button
+                              type="button"
+                              color="success"
+                              className="btn-rounded waves-effect waves-light mb-2 mr-2"
+                            >
+                              <i className="mdi mdi-plus mr-1"></i> Nueva orden
+                            </Button>
+                          </Link>
+                        </div>
+                      </Row>
                     </Col>
                   </Row>
 

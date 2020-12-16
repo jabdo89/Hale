@@ -21,6 +21,7 @@ import {
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import { Link, useHistory } from "react-router-dom";
+import ExcelExport from "../../../components/Common/ExcelExport";
 
 // const Clientes = ({ clients }) => {
 //   return (
@@ -145,9 +146,8 @@ import { Link, useHistory } from "react-router-dom";
 // )(Clientes);
 
 const Clientes = ({ clients }) => {
-
   const history = useHistory();
-  
+
   const editClient = (client) => history.push(`/clientes/edit/${client.id}`);
 
   const deleteClient = (client) => {
@@ -177,17 +177,23 @@ const Clientes = ({ clients }) => {
                       </div>
                     </Col>
                     <Col sm="8">
-                      <div className="text-sm-right">
-                        <Link to="/clientes/edit/new">
-                          <Button
-                            type="button"
-                            color="success"
-                            className="btn-rounded waves-effect waves-light mb-2 mr-2"
-                          >
-                            <i className="mdi mdi-plus mr-1"></i> Nuevo cliente
-                          </Button>
-                        </Link>
-                      </div>
+                      <Row className="justify-content-end">
+                        <div className="text-sm-right">
+                          <ExcelExport data={clients} />
+                        </div>
+                        <div className="text-sm-right">
+                          <Link to="/clientes/edit/new">
+                            <Button
+                              type="button"
+                              color="success"
+                              className="btn-rounded waves-effect waves-light mb-2 mr-2"
+                            >
+                              <i className="mdi mdi-plus mr-1"></i> Nuevo
+                              cliente
+                            </Button>
+                          </Link>
+                        </div>
+                      </Row>
                     </Col>
                   </Row>
 

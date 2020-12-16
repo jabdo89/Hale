@@ -20,6 +20,7 @@ import {
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
+import ExcelExport from "../../../components/Common/ExcelExport";
 
 const Productos = ({ products }) => {
   const history = useHistory();
@@ -53,17 +54,22 @@ const Productos = ({ products }) => {
                   </div>
                 </Col>
                 <Col sm="8">
-                  <div className="text-sm-right">
-                    <Link to="/productos/edit/new">
-                      <Button
-                        type="button"
-                        color="success"
-                        className="btn-rounded waves-effect waves-light mb-2 mr-2"
-                      >
-                        <i className="mdi mdi-plus mr-1"></i> Nuevo producto
-                      </Button>
-                    </Link>
-                  </div>
+                  <Row className="justify-content-end">
+                    <div className="text-sm-right">
+                      <ExcelExport data={products} />
+                    </div>
+                    <div className="text-sm-right">
+                      <Link to="/productos/edit/new">
+                        <Button
+                          type="button"
+                          color="success"
+                          className="btn-rounded waves-effect waves-light mb-2 mr-2"
+                        >
+                          <i className="mdi mdi-plus mr-1"></i> Nuevo producto
+                        </Button>
+                      </Link>
+                    </div>
+                  </Row>
                 </Col>
               </Row>
               <Row>
