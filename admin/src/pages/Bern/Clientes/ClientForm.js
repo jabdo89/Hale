@@ -118,25 +118,13 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
     }));
   };
 
-  const handleCategoryChange = (v) => {
-    console.log("new values in category", v);
+  const handleSelectChange = (v, name) => {
 
-    const newCategories = v ? v.map((c) => c.value) : [];
+    const newValue = v ? v.value : '';
 
-    setClientData((prevProduct) => ({
-      ...prevProduct,
-      category: newCategories,
-    }));
-  };
-
-  const handleTagChange = (v) => {
-    console.log("new values in tag", v);
-
-    const newTags = v ? v.map((t) => t.value) : [];
-
-    setClientData((prevProduct) => ({
-      ...prevProduct,
-      tag: newTags,
+    setClientData((prevClient) => ({
+      ...prevClient,
+    [name]: newValue,
     }));
   };
 
@@ -207,6 +195,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               name="email"
               type="email"
               className="form-control"
+              onChange={handleTextChange}
             />
           </FormGroup>
         </Col>
@@ -220,6 +209,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               name="password"
               type="password"
               className="form-control"
+              onChange={handleTextChange}
             />
           </FormGroup>
         </Col>
@@ -237,6 +227,8 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               placeholder="Choose..."
               title="Producto 1"
               options={productOptions}
+              onChange={v => handleSelectChange(v, "productoUno")}
+              defaultValue={clientData.productoUno || ''}
             />
           </FormGroup>
         </Col>
@@ -321,7 +313,10 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               classNamePrefix="select2-selection"
               placeholder="Choose..."
               title="Producto 2"
+              name="productoDos"
               options={productOptions}
+              onChange={v => handleSelectChange(v, "productoDos")}
+              defaultValue={clientData.productoDos || ''}
             />
           </FormGroup>
         </Col>
