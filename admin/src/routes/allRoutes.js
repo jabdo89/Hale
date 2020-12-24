@@ -154,6 +154,7 @@ import AddEditCupones from '../pages/Bern/Promocion/Cupones/AddEditCupones';
 import Cupones from '../pages/Bern/Promocion/Cupones/Cupones';
 import Descuentos from '../pages/Bern/Promocion/Descuentos/Descuentos';
 import Inventario from "../pages/Bern/Inventario/Inventario";
+import Facturacion from "../pages/Bern/Facturacion/Facturacion";
 
 const userRoutes = [
 
@@ -171,6 +172,7 @@ const userRoutes = [
 	{ path: "/promocion-cupones/edit/:id", component: AddEditCupones },
 	{ path: "/promocion-cupones", component: Cupones },
 	{ path: "/promocion-descuentos", component: Descuentos },
+	{ path: "/facturacion", component: Facturacion},
 
 	{ path: "/dashboard-demo", component: DashboardDemo },
 	{ path: "/dashboard-saas", component: DashboardSaas },

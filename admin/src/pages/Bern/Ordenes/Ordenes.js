@@ -12,6 +12,7 @@ import {
   Button,
   Card,
   CardBody,
+  FormGroup,
   Table,
   Label,
   Modal,
@@ -133,6 +134,8 @@ const OrderDetailModal = ({ order, isOpen, setmodal }) => {
 const Ordenes = ({ Orders }) => {
   const [modal, setmodal] = useState(false);
   const [modalOrder, setModalOrder] = useState({});
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
 
   const history = useHistory();
 
@@ -140,6 +143,12 @@ const Ordenes = ({ Orders }) => {
 
   const deleteOrder = (order) => {
     console.log("Deleting order", order);
+  };
+
+  const handleDateChange = (e) => {
+    const rawDate = e.target.value;
+    const newDate = new Date(rawDate);
+    console.log(e.target.name);
   };
 
   return (
@@ -183,6 +192,30 @@ const Ordenes = ({ Orders }) => {
                       </Row>
                     </Col>
                   </Row>
+                  <Row className="ml-1">
+                    <FormGroup className="mr-2">
+                      <Label htmlFor="date">Start Date</Label>
+                      <Input
+                        className="form-control"
+                        type="date"
+                        name="startDate"
+                        // defaultValue={defaultDate(orderData.date)} // TODO: Fix bug, not taking initial date from order
+                        onChange={handleDateChange}
+                        id="date"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label htmlFor="date">End Date</Label>
+                      <Input
+                        className="form-control"
+                        type="date"
+                        name="endDate"
+                        // defaultValue={defaultDate(orderData.date)} // TODO: Fix bug, not taking initial date from order
+                        onChange={handleDateChange}
+                        id="date"
+                      />
+                    </FormGroup>
+                  </Row>
 
                   <div className="table-responsive">
                     <Table className="table table-centered table-nowrap">
@@ -200,7 +233,9 @@ const Ordenes = ({ Orders }) => {
                       </thead>
                       <tbody>
                         {Orders &&
-                          Orders.map((order, key) => (
+                          Orders.filter((order) => {
+                            return !!order.id;
+                          }).map((order, key) => (
                             <tr key={"_order_" + key}>
                               <td>
                                 <Link

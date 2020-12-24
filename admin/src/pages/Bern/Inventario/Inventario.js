@@ -117,29 +117,24 @@ const Inventario = ({ products }) => {
                 <Col key={idx} xl="4" sm="6">
                   <Card>
                     <Row>
-                      <Col xl="5">
+                      <Col sm="12">
                         <div className="text-center p-4 border-right">
                           <div className="avatar-md mx-auto mb-4">
                             <span className="avatar-title waves-effect rounded-circle bg-light text-danger font-size-16">
                               <img src={image} alt="" height="90" />
                             </span>
                           </div>
-                          <h5 className="text-truncate">{product.name}</h5>
+                          <h5 className="">{product.name}</h5>
                         </div>
                       </Col>
-
-                      <Col xl="7">
-                        <div className="p-4 text-center text-xl-left">
-                          <Row>
-                            <Col md="12">
-                              <div>
-                                <p className="text-muted mb-2 text-truncate">
-                                  Stock
-                                </p>
-                                <h5>{product.stock}</h5>
-                              </div>
-                            </Col>
-                          </Row>
+                      <Col sm="12">
+                        <div className="p-4 text-center">
+                          <div>
+                            <p className="text-muted mb-2 text-truncate">
+                              Stock
+                            </p>
+                            <h5>{product.stock}</h5>
+                          </div>
                           <div className="mt-4">
                             <Button
                               type="button"

@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   Row,
   Col,
   Form,
   FormGroup,
   Input,
-  Card,
-  CardTitle,
   Button,
   Label,
 } from "reactstrap";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 const OrderForm = ({ orden = {}, productOptions = [] }) => {
   const history = useHistory();
@@ -55,17 +51,29 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
     }));
   };
 
-  const handleDateChange = (date) => {
+  const handleDateChange = (e) => {
+    const rawDate = e.target.value;
+    const newDate = new Date(rawDate);
     setOrderData((prevOrder) => ({
       ...prevOrder,
-      date: date,
+      date: newDate,
     }));
+  };
+
+  const defaultDate = (date = new Date()) => {
+    return (
+      date.getFullYear().toString() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, 0) +
+      "-" +
+      date.getDate().toString().padStart(2, 0)
+    );
   };
 
   const calcOrderTotal = (items) => {
     if (!items) return 0;
 
-    return items.reduce((acc, curr) => acc + (+curr.price * +curr.quantity), 0);
+    return items.reduce((acc, curr) => acc + +curr.price * +curr.quantity, 0);
   };
 
   return (
@@ -178,13 +186,13 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
         <Col sm="3">
           <FormGroup>
             <Label htmlFor="date">Date</Label>
-            <DatePicker
-              id="date"
-              name="date"
-              selected={orderData.date}
+            <Input
               className="form-control"
+              type="date"
+              name="date"
+              defaultValue={defaultDate(orderData.date)} // TODO: Fix bug, not taking initial date from order
               onChange={handleDateChange}
-              showMonthDropdown
+              id="date"
             />
           </FormGroup>
         </Col>
@@ -230,9 +238,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
         <Col sm="3">
           <Label>Products</Label>
         </Col>
-        <Col sm="9">
-            {/* TODO: Make product select */}
-        </Col>
+        <Col sm="9">{/* TODO: Make product select */}</Col>
         <Col sm="12">
           <Label>
             Total: {orderData.items ? calcOrderTotal(orderData.items) : 0}

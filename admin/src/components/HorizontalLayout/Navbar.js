@@ -99,6 +99,12 @@ const Navbar = (props) => {
                                     <span>{props.t('Clientes')}</span>
                                 </Link>
                             </li>
+                            <li>
+                                <Link to="/facturacion" className="nav-link">
+                                    <i className="bx bx-money mr-2"></i>
+                                    <span>{props.t('Facturación')}</span>
+                                </Link>
+                            </li>
                         </ul>
                     </Collapse>
                 </nav>
