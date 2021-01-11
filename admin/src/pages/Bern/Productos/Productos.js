@@ -21,9 +21,11 @@ import {
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import ExcelExport from "../../../components/Common/ExcelExport";
+import { useState } from "react";
 
 const Productos = ({ products }) => {
   const history = useHistory();
+  const [search, setSearch] = useState('');
 
   const editProduct = (product) =>
     history.push(`/productos/edit/${product.id}`);
@@ -48,6 +50,9 @@ const Productos = ({ products }) => {
                         type="text"
                         className="form-control"
                         placeholder="Search..."
+                        onChange={({target: {value: v}}) => {
+                          setSearch(v)
+                        }}
                       />
                       <i className="bx bx-search-alt search-icon"></i>
                     </div>
@@ -90,7 +95,7 @@ const Productos = ({ products }) => {
                         </thead>
                         <tbody>
                           {products &&
-                            products.map((producto, index) => {
+                            products.filter(v => v.name.toLowerCase().includes(search)).map((producto, index) => {
                               const {
                                 image,
                                 sku,

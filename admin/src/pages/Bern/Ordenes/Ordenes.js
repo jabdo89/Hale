@@ -134,8 +134,10 @@ const OrderDetailModal = ({ order, isOpen, setmodal }) => {
 const Ordenes = ({ Orders }) => {
   const [modal, setmodal] = useState(false);
   const [modalOrder, setModalOrder] = useState({});
+  const [search, setSearch] = useState('');
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+
 
   const history = useHistory();
 
@@ -168,6 +170,9 @@ const Ordenes = ({ Orders }) => {
                             type="text"
                             className="form-control"
                             placeholder="Search..."
+                            onChange={({target: {value: v}}) => {
+                              setSearch(v)
+                            }}
                           />
                           <i className="bx bx-search-alt search-icon"></i>
                         </div>
@@ -233,9 +238,7 @@ const Ordenes = ({ Orders }) => {
                       </thead>
                       <tbody>
                         {Orders &&
-                          Orders.filter((order) => {
-                            return !!order.id;
-                          }).map((order, key) => (
+                          Orders.filter((order) => !!order.id && order.id.toLowerCase().includes(search)).map((order, key) => (
                             <tr key={"_order_" + key}>
                               <td>
                                 <Link

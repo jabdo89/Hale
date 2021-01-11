@@ -22,6 +22,7 @@ import {
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import { Link, useHistory } from "react-router-dom";
 import ExcelExport from "../../../components/Common/ExcelExport";
+import { useState } from "react";
 
 // const Clientes = ({ clients }) => {
 //   return (
@@ -147,6 +148,8 @@ import ExcelExport from "../../../components/Common/ExcelExport";
 
 const Clientes = ({ clients }) => {
   const history = useHistory();
+  const [search, setSearch] = useState('');
+
 
   const editClient = (client) => history.push(`/clientes/edit/${client.id}`);
 
@@ -171,6 +174,9 @@ const Clientes = ({ clients }) => {
                             type="text"
                             className="form-control"
                             placeholder="Search..."
+                            onChange={({target: {value: v}}) => {
+                              setSearch(v)
+                            }}
                           />
                           <i className="bx bx-search-alt search-icon"></i>
                         </div>
@@ -209,7 +215,7 @@ const Clientes = ({ clients }) => {
                       </thead>
                       <tbody>
                         {clients &&
-                          clients.map((client, index) => {
+                          clients.filter(v => (v.firstName + ' ' + v.lastName).toLowerCase().includes(search)).map((client, index) => {
                             const {
                               firstName,
                               lastName,
@@ -228,7 +234,7 @@ const Clientes = ({ clients }) => {
                                     {productoUno}
                                   </span>
                                   {productoDos && (
-                                    <span className="badge badge-danger">
+                                    <span className="ml-2 badge badge-danger">
                                       {productoDos}
                                     </span>
                                   )}
