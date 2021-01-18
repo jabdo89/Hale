@@ -21,12 +21,29 @@ import {
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../../components/Common/Breadcrumb";
+import { useState } from "react";
 
-const Sliders = ({ sliders }) => {
+const Sliders = ({ sliders = [] }) => {
   console.log("sliders", sliders);
 
   const deleteSlider = (slider) => {
-      console.log('Deleting slider', slider);
+    console.log("Deleting slider", slider);
+  };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(1);
+
+  const currentSliders = sliders
+    ? sliders.slice(
+        currentPage * itemsPerPage - itemsPerPage,
+        currentPage * itemsPerPage
+      )
+    : [];
+
+  const pageNumbers = [1];
+  const totalPages = Math.ceil(sliders.length / itemsPerPage);
+  for (let i = 2; i <= totalPages; i++) {
+    pageNumbers.push(i);
   }
 
   return (
@@ -51,7 +68,7 @@ const Sliders = ({ sliders }) => {
           </Row>
           <Row>
             {sliders &&
-              sliders.map((slider, key) => (
+              currentSliders.map((slider, key) => (
                 <Col xl="4" sm="6" key={"_slider_" + key}>
                   <Card>
                     <CardBody>
@@ -120,26 +137,30 @@ const Sliders = ({ sliders }) => {
           <Row>
             <Col lg="12">
               <Pagination className="pagination pagination-rounded justify-content-center mt-2 mb-5">
-                <PaginationItem disabled>
-                  <PaginationLink previous href="#" />
+                <PaginationItem disabled={currentPage <= 1}>
+                  <PaginationLink
+                    previous
+                    onClick={() => setCurrentPage((page) => page - 1)}
+                  />
                 </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem active>
-                  <PaginationLink href="#">2</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">3</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">4</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">5</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink next href="#" />
+                {pageNumbers.map((number) => {
+                  return (
+                    <PaginationItem
+                      active={number === currentPage}
+                      key={number}
+                      id={number}
+                    >
+                      <PaginationLink onClick={() => setCurrentPage(number)}>
+                        {number}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                })}
+                <PaginationItem disabled={currentPage >= totalPages}>
+                  <PaginationLink
+                    next
+                    onClick={() => setCurrentPage((page) => page + 1)}
+                  />
                 </PaginationItem>
               </Pagination>
             </Col>

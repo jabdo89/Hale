@@ -146,16 +146,31 @@ import { useState } from "react";
 //   })
 // )(Clientes);
 
-const Clientes = ({ clients }) => {
+const Clientes = ({ clients = [] }) => {
   const history = useHistory();
-  const [search, setSearch] = useState('');
-
+  const [search, setSearch] = useState("");
 
   const editClient = (client) => history.push(`/clientes/edit/${client.id}`);
 
   const deleteClient = (client) => {
     console.log("Deleting client", client);
   };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(2);
+
+  const currentClients = clients
+    ? clients.slice(
+        currentPage * itemsPerPage - itemsPerPage,
+        currentPage * itemsPerPage
+      )
+    : [];
+
+  const pageNumbers = [1];
+  const totalPages = Math.ceil(clients.length / itemsPerPage);
+  for (let i = 2; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <React.Fragment>
@@ -174,8 +189,8 @@ const Clientes = ({ clients }) => {
                             type="text"
                             className="form-control"
                             placeholder="Search..."
-                            onChange={({target: {value: v}}) => {
-                              setSearch(v)
+                            onChange={({ target: { value: v } }) => {
+                              setSearch(v);
                             }}
                           />
                           <i className="bx bx-search-alt search-icon"></i>
@@ -215,86 +230,98 @@ const Clientes = ({ clients }) => {
                       </thead>
                       <tbody>
                         {clients &&
-                          clients.filter(v => (v.firstName + ' ' + v.lastName).toLowerCase().includes(search)).map((client, index) => {
-                            const {
-                              firstName,
-                              lastName,
-                              totalSpent,
-                              productoUno,
-                              productoDos,
-                            } = client;
+                          currentClients
+                            .filter((v) =>
+                              (v.firstName + " " + v.lastName)
+                                .toLowerCase()
+                                .includes(search)
+                            )
+                            .map((client, index) => {
+                              const {
+                                firstName,
+                                lastName,
+                                totalSpent,
+                                productoUno,
+                                productoDos,
+                              } = client;
 
-                            return (
-                              <tr key={index}>
-                                <td>
-                                  {firstName} {lastName}
-                                </td>
-                                <td>
-                                  <span className="badge badge-danger">
-                                    {productoUno}
-                                  </span>
-                                  {productoDos && (
-                                    <span className="ml-2 badge badge-danger">
-                                      {productoDos}
+                              return (
+                                <tr key={index}>
+                                  <td>
+                                    {firstName} {lastName}
+                                  </td>
+                                  <td>
+                                    <span className="badge badge-danger">
+                                      {productoUno}
                                     </span>
-                                  )}
-                                </td>
-                                <td>${totalSpent}</td>
-                                <td>
-                                  <Link to="#" className="mr-3 text-primary">
-                                    <i
-                                      className="mdi mdi-pencil font-size-18 mr-3"
-                                      id="edittooltip"
-                                      onClick={() => editClient(client)}
-                                    ></i>
-                                    <UncontrolledTooltip
-                                      placement="top"
-                                      target="edittooltip"
-                                    >
-                                      Edit
-                                    </UncontrolledTooltip>
-                                  </Link>
-                                  <Link to="#" className="text-danger">
-                                    <i
-                                      className="mdi mdi-close font-size-18 mr-3"
-                                      id="deletetooltip"
-                                      onClick={() => deleteClient(client)}
-                                    ></i>
-                                    <UncontrolledTooltip
-                                      placement="top"
-                                      target="deletetooltip"
-                                    >
-                                      Delete
-                                    </UncontrolledTooltip>
-                                  </Link>
-                                </td>
-                              </tr>
-                            );
-                          })}
+                                    {productoDos && (
+                                      <span className="ml-2 badge badge-danger">
+                                        {productoDos}
+                                      </span>
+                                    )}
+                                  </td>
+                                  <td>${totalSpent}</td>
+                                  <td>
+                                    <Link to="#" className="mr-3 text-primary">
+                                      <i
+                                        className="mdi mdi-pencil font-size-18 mr-3"
+                                        id="edittooltip"
+                                        onClick={() => editClient(client)}
+                                      ></i>
+                                      <UncontrolledTooltip
+                                        placement="top"
+                                        target="edittooltip"
+                                      >
+                                        Edit
+                                      </UncontrolledTooltip>
+                                    </Link>
+                                    <Link to="#" className="text-danger">
+                                      <i
+                                        className="mdi mdi-close font-size-18 mr-3"
+                                        id="deletetooltip"
+                                        onClick={() => deleteClient(client)}
+                                      ></i>
+                                      <UncontrolledTooltip
+                                        placement="top"
+                                        target="deletetooltip"
+                                      >
+                                        Delete
+                                      </UncontrolledTooltip>
+                                    </Link>
+                                  </td>
+                                </tr>
+                              );
+                            })}
                       </tbody>
                     </Table>
                   </div>
                   <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                    <PaginationItem disabled>
-                      <PaginationLink previous href="#" />
+                    <PaginationItem disabled={currentPage <= 1}>
+                      <PaginationLink
+                        previous
+                        onClick={() => setCurrentPage((page) => page - 1)}
+                      />
                     </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem active>
-                      <PaginationLink href="#">2</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">3</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">4</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">5</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink next href="#" />
+                    {pageNumbers.map((number) => {
+                      return (
+                        <PaginationItem
+                          active={number === currentPage}
+                          key={number}
+                          id={number}
+                        >
+                          <PaginationLink
+                            onClick={() => setCurrentPage(number)}
+                          >
+                            {number}
+                          </PaginationLink>
+                        </PaginationItem>
+                      );
+                    })}
+                    <PaginationItem disabled={currentPage >= totalPages}>
+                      <PaginationLink
+                        next
+                        onClick={() => setCurrentPage((page) => page + 1)}
+                      />
                     </PaginationItem>
                   </Pagination>
                 </CardBody>
