@@ -1,4 +1,5 @@
 import React from "react";
+import firebase from "firebase";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
@@ -29,7 +30,8 @@ const Productos = ({ products }) => {
     history.push(`/productos/edit/${product.id}`);
 
   const deleteProduct = (product) => {
-    console.log("Deleting product", product);
+    const db = firebase.firestore();
+    db.collection("Products").doc(product.id).delete();
   };
 
   return (

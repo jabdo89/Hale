@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import firebase from "firebase";
 import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -142,7 +143,8 @@ const Ordenes = ({ Orders }) => {
   const editOrder = (order) => history.push(`/ordenes/edit/${order.id}`);
 
   const deleteOrder = (order) => {
-    console.log("Deleting order", order);
+    const db = firebase.firestore();
+    db.collection("Orders").doc(order.id).delete();
   };
 
   const handleDateChange = (e) => {

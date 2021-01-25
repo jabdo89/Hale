@@ -1,7 +1,7 @@
 {
   "hosting": {
-    "target": "admin",
     "public": "build",
+    "target": "admin",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {

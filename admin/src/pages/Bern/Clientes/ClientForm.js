@@ -30,8 +30,6 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
     history.push("/clientes");
   };
 
-  console.log(cliente, "bool");
-
   const [clientData, setClientData] = useState(cliente);
 
   useEffect(() => setClientData(cliente), [cliente]);
@@ -40,44 +38,126 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
     e.preventDefault();
     console.log(clientData);
     const db = firebase.firestore();
-    const secondAuth = firebase.initializeApp(secondConfig, "Secondary");
-    console.log(clientData);
-    db.collection("Users")
-      .where("email", "==", clientData.email)
-      .get()
-      .then((snapshot) => {
-        if (snapshot.empty) {
-          secondAuth
-            .auth()
-            .createUserWithEmailAndPassword(
-              clientData.email,
-              clientData.password
-            )
-            .then((resp) => {
-              return db.collection("Users").doc(resp.user.uid).set({
-                email: clientData.email,
+    if (id === "/new") {
+      const secondAuth = firebase.initializeApp(secondConfig, "Secondary");
+      db.collection("Users")
+        .where("email", "==", clientData.email)
+        .get()
+        .then((snapshot) => {
+          if (snapshot.empty) {
+            secondAuth
+              .auth()
+              .createUserWithEmailAndPassword(
+                clientData.email,
+                clientData.password
+              )
+              .then((resp) => {
+                return db.collection("Users").doc(resp.user.uid).set({
+                  email: clientData.email,
+                });
+              })
+              .then(() => {
+                secondAuth.delete();
+                history.push("/clientes");
+              })
+              .catch((err) => {
+                secondAuth.delete();
+                console.error(err);
               });
-            })
-            .then(() => {
-              secondAuth.delete();
-              history.push("/clientes");
-            })
-            .catch((err) => {
-              secondAuth.delete();
-              console.error(err);
-            });
-        }
-        snapshot.forEach((doc) => {
+          }
+          snapshot.forEach((doc) => {
+            secondAuth.delete();
+            console.error(doc);
+          });
+        })
+        .catch((err) => {
           secondAuth.delete();
-          console.error(doc);
+          console.error(err);
         });
-      })
-      .catch((err) => {
-        secondAuth.delete();
-        console.error(err);
-      });
-    console.log(clientData);
-    console.log("updating/creating client", clientData);
+      console.log(clientData);
+      console.log("updating/creating client", clientData);
+    } else {
+      const storage = firebase.storage();
+      if (
+        typeof clientData.imagenUno !== "string" &&
+        clientData.imagenUno !== undefined
+      ) {
+        const uploadTaskPDF = storage
+          .ref(`productos/${clientData.imagenUno.name}`)
+          .put(clientData.imagenUno);
+        uploadTaskPDF.on(
+          "state_changed",
+          (snapshot) => {
+            // progress function ...
+            const progress = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+          },
+          (error) => {
+            // Error function ...
+            console.error(error);
+          },
+          () => {
+            // complete function ...
+            storage
+              .ref("productos")
+              .child(clientData.imagenUno.name)
+              .getDownloadURL()
+              .then((urlImagenUno) => {
+                db.collection("Users").doc(clientData.id).update({
+                  imagenUno: urlImagenUno,
+                });
+              });
+          }
+        );
+      }
+      if (
+        typeof clientData.imagenDos !== "string" &&
+        clientData.imagenDos !== undefined
+      ) {
+        const uploadTaskPDF = storage
+          .ref(`productos/${clientData.imagenDos.name}`)
+          .put(clientData.imagenDos);
+        uploadTaskPDF.on(
+          "state_changed",
+          (snapshot) => {
+            // progress function ...
+            const progress = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+          },
+          (error) => {
+            // Error function ...
+            console.error(error);
+          },
+          () => {
+            // complete function ...
+            storage
+              .ref("productos")
+              .child(clientData.imagenDos.name)
+              .getDownloadURL()
+              .then((urlImagenDos) => {
+                db.collection("Users").doc(clientData.id).update({
+                  imagenDos: urlImagenDos,
+                });
+              });
+          }
+        );
+      }
+      db.collection("Users")
+        .doc(clientData.id)
+        .update({
+          idUno: clientData.productoUno,
+          productoUno: clientData.productoUno,
+          precioUno: clientData.precioUno,
+          productoDos: clientData.productoDos,
+          idDos: clientData.productoDos,
+          precioDos: clientData.precioDos,
+        })
+        .then(function (docRef) {
+          history.push("/clientes");
+        });
+    }
   };
 
   const handleTextChange = (e) => {
@@ -119,12 +199,11 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
   };
 
   const handleSelectChange = (v, name) => {
-
-    const newValue = v ? v.value : '';
+    const newValue = v ? v.value : "";
 
     setClientData((prevClient) => ({
       ...prevClient,
-    [name]: newValue,
+      [name]: newValue,
     }));
   };
 
@@ -163,7 +242,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
     value: p.id,
     label: p.name,
   }));
-
+  console.log(clientData);
   return (
     <Form>
       <CardTitle>Información del cliente</CardTitle>
@@ -227,8 +306,8 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               placeholder="Choose..."
               title="Producto 1"
               options={productOptions}
-              onChange={v => handleSelectChange(v, "productoUno")}
-              defaultValue={clientData.productoUno || ''}
+              onChange={(v) => handleSelectChange(v, "productoUno")}
+              defaultValue={clientData.productoUno || ""}
             />
           </FormGroup>
         </Col>
@@ -315,8 +394,8 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               title="Producto 2"
               name="productoDos"
               options={productOptions}
-              onChange={v => handleSelectChange(v, "productoDos")}
-              defaultValue={clientData.productoDos || ''}
+              onChange={(v) => handleSelectChange(v, "productoDos")}
+              defaultValue={clientData.productoDos || ""}
             />
           </FormGroup>
         </Col>

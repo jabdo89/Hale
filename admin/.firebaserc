@@ -1,12 +1,19 @@
 {
   "projects": {
-    "default": "hale-dd838"
+    "default": "dosal-ba23a"
   },
-    "targets": {
+  "targets": {
+    "dosal-ba23a": {
+      "hosting": {
+        "admin": [
+          "admindosal"
+        ]
+      }
+    },
     "hale-dd838": {
       "hosting": {
         "admin": [
-          "adminhale-dd838"
+          "admindosal"
         ]
       }
     }
