@@ -22,9 +22,14 @@ import {
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import ExcelExport from "../../../components/Common/ExcelExport";
+import { useState } from "react";
 
-const Productos = ({ products }) => {
+const Productos = ({ products = [] }) => {
   const history = useHistory();
+  const [search, setSearch] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(1);
 
   const editProduct = (product) =>
     history.push(`/productos/edit/${product.id}`);
@@ -33,6 +38,19 @@ const Productos = ({ products }) => {
     const db = firebase.firestore();
     db.collection("Products").doc(product.id).delete();
   };
+
+  const currentProducts = products
+    ? products.slice(
+        currentPage * itemsPerPage - itemsPerPage,
+        currentPage * itemsPerPage
+      )
+    : [];
+
+  const pageNumbers = [1];
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+  for (let i = 2; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <React.Fragment>
@@ -50,6 +68,9 @@ const Productos = ({ products }) => {
                         type="text"
                         className="form-control"
                         placeholder="Search..."
+                        onChange={({ target: { value: v } }) => {
+                          setSearch(v);
+                        }}
                       />
                       <i className="bx bx-search-alt search-icon"></i>
                     </div>
@@ -92,42 +113,46 @@ const Productos = ({ products }) => {
                         </thead>
                         <tbody>
                           {products &&
-                            products.map((producto, index) => {
-                              const {
-                                image,
-                                sku,
-                                name,
-                                shortDescription,
-                                category,
-                                price,
-                                stock,
-                              } = producto;
-                              return (
-                                <tr key={index}>
-                                  {/* <td>
+                            currentProducts
+                              .filter((v) =>
+                                v.name.toLowerCase().includes(search)
+                              )
+                              .map((producto, index) => {
+                                const {
+                                  image,
+                                  sku,
+                                  name,
+                                  shortDescription,
+                                  category,
+                                  price,
+                                  stock,
+                                } = producto;
+                                return (
+                                  <tr key={index}>
+                                    {/* <td>
                                     <img
                                       src={image}
                                       alt=""
                                       className="avatar-sm"
                                     />
                                   </td> */}
-                                  <td>{sku}</td>
-                                  <td>
-                                    <h5 className="text-truncate font-size-14">
-                                      <Link to="#" className="text-dark">
-                                        {name}
-                                      </Link>
-                                      {producto.new && (
-                                        <span className="badge badge-warning ml-2">
-                                          Nuevo
-                                        </span>
-                                      )}
-                                    </h5>
-                                    <p className="text-muted mb-0">
-                                      {shortDescription}
-                                    </p>
-                                  </td>
-                                  {/* <td>
+                                    <td>{sku}</td>
+                                    <td>
+                                      <h5 className="text-truncate font-size-14">
+                                        <Link to="#" className="text-dark">
+                                          {name}
+                                        </Link>
+                                        {producto.new && (
+                                          <span className="badge badge-warning ml-2">
+                                            Nuevo
+                                          </span>
+                                        )}
+                                      </h5>
+                                      <p className="text-muted mb-0">
+                                        {shortDescription}
+                                      </p>
+                                    </td>
+                                    {/* <td>
                                     {category.map((c, i) => (
                                       <span
                                         key={i}
@@ -137,39 +162,44 @@ const Productos = ({ products }) => {
                                       </span>
                                     ))}
                                   </td> */}
-                                  <td>{`$${price}`}</td>
-                                  <td>{stock}</td>
-                                  <td>
-                                    <Link to="#" className="mr-3 text-primary">
-                                      <i
-                                        className="mdi mdi-pencil font-size-18 mr-3"
-                                        id="edittooltip"
-                                        onClick={() => editProduct(producto)}
-                                      ></i>
-                                      <UncontrolledTooltip
-                                        placement="top"
-                                        target="edittooltip"
+                                    <td>{`$${price}`}</td>
+                                    <td>{stock}</td>
+                                    <td>
+                                      <Link
+                                        to="#"
+                                        className="mr-3 text-primary"
                                       >
-                                        Edit
-                                      </UncontrolledTooltip>
-                                    </Link>
-                                    <Link to="#" className="text-danger">
-                                      <i
-                                        className="mdi mdi-close font-size-18 mr-3"
-                                        id="deletetooltip"
-                                        onClick={() => deleteProduct(producto)}
-                                      ></i>
-                                      <UncontrolledTooltip
-                                        placement="top"
-                                        target="deletetooltip"
-                                      >
-                                        Delete
-                                      </UncontrolledTooltip>
-                                    </Link>
-                                  </td>
-                                </tr>
-                              );
-                            })}
+                                        <i
+                                          className="mdi mdi-pencil font-size-18 mr-3"
+                                          id="edittooltip"
+                                          onClick={() => editProduct(producto)}
+                                        ></i>
+                                        <UncontrolledTooltip
+                                          placement="top"
+                                          target="edittooltip"
+                                        >
+                                          Edit
+                                        </UncontrolledTooltip>
+                                      </Link>
+                                      <Link to="#" className="text-danger">
+                                        <i
+                                          className="mdi mdi-close font-size-18 mr-3"
+                                          id="deletetooltip"
+                                          onClick={() =>
+                                            deleteProduct(producto)
+                                          }
+                                        ></i>
+                                        <UncontrolledTooltip
+                                          placement="top"
+                                          target="deletetooltip"
+                                        >
+                                          Delete
+                                        </UncontrolledTooltip>
+                                      </Link>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
                         </tbody>
                       </Table>
                     </div>
@@ -179,26 +209,32 @@ const Productos = ({ products }) => {
               <Row>
                 <Col xs="12">
                   <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                    <PaginationItem disabled>
-                      <PaginationLink previous href="#" />
+                    <PaginationItem disabled={currentPage <= 1}>
+                      <PaginationLink
+                        previous
+                        onClick={() => setCurrentPage((page) => page - 1)}
+                      />
                     </PaginationItem>
-                    <PaginationItem active>
-                      <PaginationLink href="#">1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">2</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">3</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">4</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">5</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink next href="#" />
+                    {pageNumbers.map((number) => {
+                      return (
+                        <PaginationItem
+                          active={number === currentPage}
+                          key={number}
+                          id={number}
+                        >
+                          <PaginationLink
+                            onClick={() => setCurrentPage(number)}
+                          >
+                            {number}
+                          </PaginationLink>
+                        </PaginationItem>
+                      );
+                    })}
+                    <PaginationItem disabled={currentPage >= totalPages}>
+                      <PaginationLink
+                        next
+                        onClick={() => setCurrentPage((page) => page + 1)}
+                      />
                     </PaginationItem>
                   </Pagination>
                 </Col>

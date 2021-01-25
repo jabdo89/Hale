@@ -132,9 +132,14 @@ const OrderDetailModal = ({ order, isOpen, setmodal }) => {
   );
 };
 
-const Ordenes = ({ Orders }) => {
+const Ordenes = ({ Orders = [] }) => {
   const [modal, setmodal] = useState(false);
   const [modalOrder, setModalOrder] = useState({});
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(2);
+
+  const [search, setSearch] = useState("");
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
@@ -153,6 +158,19 @@ const Ordenes = ({ Orders }) => {
     console.log(e.target.name);
   };
 
+  const currentOrders = Orders
+    ? Orders.slice(
+        currentPage * itemsPerPage - itemsPerPage,
+        currentPage * itemsPerPage
+      )
+    : [];
+
+  const pageNumbers = [1];
+  const totalPages = Math.ceil(Orders.length / itemsPerPage);
+  for (let i = 2; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -170,6 +188,9 @@ const Ordenes = ({ Orders }) => {
                             type="text"
                             className="form-control"
                             placeholder="Search..."
+                            onChange={({ target: { value: v } }) => {
+                              setSearch(v);
+                            }}
                           />
                           <i className="bx bx-search-alt search-icon"></i>
                         </div>
@@ -235,107 +256,117 @@ const Ordenes = ({ Orders }) => {
                       </thead>
                       <tbody>
                         {Orders &&
-                          Orders.filter((order) => {
-                            return !!order.id;
-                          }).map((order, key) => (
-                            <tr key={"_order_" + key}>
-                              <td>
-                                <Link
-                                  to="#"
-                                  className="text-body font-weight-bold"
-                                >
-                                  {order.id}
-                                </Link>
-                              </td>
-                              <td>{`${order.firstName} ${order.lastname}`}</td>
-                              <td>{order.email}</td>
-                              <td>
-                                {order.date
-                                  ? moment(
-                                      new Date(order.date.seconds * 1000)
-                                    ).format("MMM Do YYYY")
-                                  : null}
-                              </td>
-                              <td>${order.price}</td>
-                              <td>
-                                <div>
-                                  {order.items.map((item, i) => (
-                                    <span
-                                      key={i}
-                                      className="badge badge-danger"
+                          currentOrders
+                            .filter(
+                              (order) =>
+                                !!order.id &&
+                                order.id.toLowerCase().includes(search)
+                            )
+                            .map((order, key) => (
+                              <tr key={"_order_" + key}>
+                                <td>
+                                  <Link
+                                    to="#"
+                                    className="text-body font-weight-bold"
+                                  >
+                                    {order.id}
+                                  </Link>
+                                </td>
+                                <td>{`${order.firstName} ${order.lastname}`}</td>
+                                <td>{order.email}</td>
+                                <td>
+                                  {order.date
+                                    ? moment(
+                                        new Date(order.date.seconds * 1000)
+                                      ).format("MMM Do YYYY")
+                                    : null}
+                                </td>
+                                <td>${order.price}</td>
+                                <td>
+                                  <div>
+                                    {order.items.map((item, i) => (
+                                      <span
+                                        key={i}
+                                        className="badge badge-danger"
+                                      >
+                                        {item.name}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </td>
+                                <td>
+                                  <Button
+                                    type="button"
+                                    color="primary"
+                                    className="btn-sm btn-rounded"
+                                    onClick={() => {
+                                      setModalOrder(order);
+                                      setmodal(!modal);
+                                    }}
+                                  >
+                                    View Details
+                                  </Button>
+                                </td>
+                                <td>
+                                  <Link to="#" className="mr-3 text-primary">
+                                    <i
+                                      className="mdi mdi-pencil font-size-18 mr-3"
+                                      id="edittooltip"
+                                      onClick={() => editOrder(order)}
+                                    ></i>
+                                    <UncontrolledTooltip
+                                      placement="top"
+                                      target="edittooltip"
                                     >
-                                      {item.name}
-                                    </span>
-                                  ))}
-                                </div>
-                              </td>
-                              <td>
-                                <Button
-                                  type="button"
-                                  color="primary"
-                                  className="btn-sm btn-rounded"
-                                  onClick={() => {
-                                    setModalOrder(order);
-                                    setmodal(!modal);
-                                  }}
-                                >
-                                  View Details
-                                </Button>
-                              </td>
-                              <td>
-                                <Link to="#" className="mr-3 text-primary">
-                                  <i
-                                    className="mdi mdi-pencil font-size-18 mr-3"
-                                    id="edittooltip"
-                                    onClick={() => editOrder(order)}
-                                  ></i>
-                                  <UncontrolledTooltip
-                                    placement="top"
-                                    target="edittooltip"
-                                  >
-                                    Edit
-                                  </UncontrolledTooltip>
-                                </Link>
-                                <Link to="#" className="text-danger">
-                                  <i
-                                    className="mdi mdi-close font-size-18 mr-3"
-                                    id="deletetooltip"
-                                    onClick={() => deleteOrder(order)}
-                                  ></i>
-                                  <UncontrolledTooltip
-                                    placement="top"
-                                    target="deletetooltip"
-                                  >
-                                    Delete
-                                  </UncontrolledTooltip>
-                                </Link>
-                              </td>
-                            </tr>
-                          ))}
+                                      Edit
+                                    </UncontrolledTooltip>
+                                  </Link>
+                                  <Link to="#" className="text-danger">
+                                    <i
+                                      className="mdi mdi-close font-size-18 mr-3"
+                                      id="deletetooltip"
+                                      onClick={() => deleteOrder(order)}
+                                    ></i>
+                                    <UncontrolledTooltip
+                                      placement="top"
+                                      target="deletetooltip"
+                                    >
+                                      Delete
+                                    </UncontrolledTooltip>
+                                  </Link>
+                                </td>
+                              </tr>
+                            ))}
                       </tbody>
                     </Table>
                   </div>
                   <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                    <PaginationItem disabled>
-                      <PaginationLink previous href="#" />
+                    <PaginationItem disabled={currentPage <= 1}>
+                      <PaginationLink
+                        previous
+                        onClick={() => setCurrentPage((page) => page - 1)}
+                      />
                     </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem active>
-                      <PaginationLink href="#">2</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">3</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">4</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">5</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink next href="#" />
+                    {pageNumbers.map((number) => {
+                      return (
+                        <PaginationItem
+                          active={number === currentPage}
+                          key={number}
+                          id={number}
+                        >
+                          <PaginationLink
+                            onClick={() => setCurrentPage(number)}
+                          >
+                            {number}
+                          </PaginationLink>
+                        </PaginationItem>
+                      );
+                    })}
+                    <PaginationItem disabled={currentPage >= totalPages}>
+                      <PaginationLink
+                        next
+                        onClick={() => setCurrentPage((page) => page + 1)}
+                      />
                     </PaginationItem>
                   </Pagination>
                 </CardBody>
