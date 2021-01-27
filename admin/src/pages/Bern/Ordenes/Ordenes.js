@@ -28,6 +28,7 @@ import {
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import ExcelExport from "../../../components/Common/ExcelExport";
+import Form from "reactstrap/lib/Form";
 
 const OrderDetailModal = ({ order, isOpen, setmodal }) => {
   return (
@@ -150,21 +151,40 @@ const Ordenes = ({ Orders = [] }) => {
     console.log("Deleting order", order);
   };
 
+  const marcarPagado = (order) => {
+    console.log("Marcando pagado", order);
+  };
+
   const handleDateChange = (e) => {
     const rawDate = e.target.value;
     const newDate = new Date(rawDate);
-    console.log(e.target.name);
+    if (e.target.name === "startDate") {
+      setStartDate(newDate);
+    } else {
+      setEndDate(newDate);
+    }
   };
 
-  const currentOrders = Orders
-    ? Orders.slice(
-        currentPage * itemsPerPage - itemsPerPage,
-        currentPage * itemsPerPage
-      )
-    : [];
+  const resetDates = () => {
+    document.getElementById("datesForm").reset();
+    setStartDate();
+    setEndDate();
+  };
+
+  const dateFilter = (order) => {
+    if (!startDate || !endDate) return true;
+
+    const date = new Date(order.date.seconds * 1000);
+    return date >= startDate && date <= endDate;
+  };
+
+  const orderFilter = (order) =>
+    !!order.id && order.id.toLowerCase().includes(search) && dateFilter(order);
+
+  let currentOrders = Orders.filter((order) => orderFilter(order));
 
   const pageNumbers = [1];
-  const totalPages = Math.ceil(Orders.length / itemsPerPage);
+  const totalPages = Math.ceil(currentOrders.length / itemsPerPage);
   for (let i = 2; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
@@ -185,7 +205,7 @@ const Ordenes = ({ Orders = [] }) => {
                           <Input
                             type="text"
                             className="form-control"
-                            placeholder="Search..."
+                            placeholder="Buscar por ID"
                             onChange={({ target: { value: v } }) => {
                               setSearch(v);
                             }}
@@ -214,28 +234,42 @@ const Ordenes = ({ Orders = [] }) => {
                     </Col>
                   </Row>
                   <Row className="ml-1">
-                    <FormGroup className="mr-2">
-                      <Label htmlFor="date">Start Date</Label>
-                      <Input
-                        className="form-control"
-                        type="date"
-                        name="startDate"
-                        // defaultValue={defaultDate(orderData.date)} // TODO: Fix bug, not taking initial date from order
-                        onChange={handleDateChange}
-                        id="date"
-                      />
-                    </FormGroup>
-                    <FormGroup>
-                      <Label htmlFor="date">End Date</Label>
-                      <Input
-                        className="form-control"
-                        type="date"
-                        name="endDate"
-                        // defaultValue={defaultDate(orderData.date)} // TODO: Fix bug, not taking initial date from order
-                        onChange={handleDateChange}
-                        id="date"
-                      />
-                    </FormGroup>
+                    <Form id="datesForm" className="form-inline">
+                      <FormGroup className="mr-3">
+                        <Label className="mr-2" htmlFor="startDate">
+                          Start Date
+                        </Label>
+                        <Input
+                          className="form-control"
+                          type="date"
+                          name="startDate"
+                          onChange={handleDateChange}
+                          id="startDate"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <Label className="mr-2" htmlFor="endDate">
+                          End Date
+                        </Label>
+                        <Input
+                          className="form-control"
+                          type="date"
+                          name="endDate"
+                          onChange={handleDateChange}
+                          id="endDate"
+                        />
+                      </FormGroup>
+                    </Form>
+                    <Col className="mt-2 mb-2">
+                      <Button
+                        type="button"
+                        color="success"
+                        className="btn-rounded waves-effect waves-light mb-2 mr-2"
+                        onClick={resetDates}
+                      >
+                        Reset
+                      </Button>
+                    </Col>
                   </Row>
 
                   <div className="table-responsive">
@@ -248,17 +282,18 @@ const Ordenes = ({ Orders = [] }) => {
                           <th>Fecha</th>
                           <th>Total</th>
                           <th>Items</th>
-                          <th>Ver detalles</th>
+                          <th>Tipo de pago</th>
+                          <th></th>
+                          {/* <th>Ver detalles</th> */}
                           <th>Acciones</th>
                         </tr>
                       </thead>
                       <tbody>
                         {Orders &&
                           currentOrders
-                            .filter(
-                              (order) =>
-                                !!order.id &&
-                                order.id.toLowerCase().includes(search)
+                            .slice(
+                              currentPage * itemsPerPage - itemsPerPage,
+                              currentPage * itemsPerPage
                             )
                             .map((order, key) => (
                               <tr key={"_order_" + key}>
@@ -285,14 +320,14 @@ const Ordenes = ({ Orders = [] }) => {
                                     {order.items.map((item, i) => (
                                       <span
                                         key={i}
-                                        className="badge badge-danger"
+                                        className="badge badge-danger mr-1"
                                       >
-                                        {item.name}
+                                        {item.name} x {item.quantity}
                                       </span>
                                     ))}
                                   </div>
                                 </td>
-                                <td>
+                                {/* <td>
                                   <Button
                                     type="button"
                                     color="primary"
@@ -304,6 +339,18 @@ const Ordenes = ({ Orders = [] }) => {
                                   >
                                     View Details
                                   </Button>
+                                </td> */}
+                                <td>{order.tipoDePago}</td>
+                                <td>
+                                  {order.pagado ? (
+                                    <span className="badge badge-success mr-1">
+                                      Pagado
+                                    </span>
+                                  ) : (
+                                    <span className="badge badge-danger mr-1">
+                                      No pagado
+                                    </span>
+                                  )}
                                 </td>
                                 <td>
                                   <Link to="#" className="mr-3 text-primary">
@@ -332,6 +379,22 @@ const Ordenes = ({ Orders = [] }) => {
                                       Delete
                                     </UncontrolledTooltip>
                                   </Link>
+                                  {
+                                    !order.pagado &&
+                                    <Link to="#" className="text-success">
+                                      <i
+                                        className="bx bx-money font-size-16 ml-3"
+                                        id="deletetooltip"
+                                        onClick={() => marcarPagado(order)}
+                                      ></i>
+                                      <UncontrolledTooltip
+                                        placement="top"
+                                        target="deletetooltip"
+                                      >
+                                        Marcar pagado
+                                      </UncontrolledTooltip>
+                                    </Link>
+                                  }
                                 </td>
                               </tr>
                             ))}
