@@ -25,6 +25,7 @@ import {
   PaginationLink,
   UncontrolledTooltip,
 } from "reactstrap";
+import Select from "react-select";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
@@ -138,7 +139,7 @@ const Ordenes = ({ Orders = [] }) => {
   const [modalOrder, setModalOrder] = useState({});
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(2);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const [search, setSearch] = useState("");
   const [startDate, setStartDate] = useState();
@@ -190,6 +191,25 @@ const Ordenes = ({ Orders = [] }) => {
   for (let i = 2; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
+
+  const itemsPerPageOptions = [
+    {
+      value: 5,
+      label: 5,
+    },
+    {
+      value: 10,
+      label: 10,
+    },
+    {
+      value: 20,
+      label: 20,
+    },
+    {
+      value: 50,
+      label: 50,
+    },
+  ];
 
   return (
     <React.Fragment>
@@ -381,8 +401,7 @@ const Ordenes = ({ Orders = [] }) => {
                                       Delete
                                     </UncontrolledTooltip>
                                   </Link>
-                                  {
-                                    !order.pagado &&
+                                  {!order.pagado && (
                                     <Link to="#" className="text-success">
                                       <i
                                         className="bx bx-money font-size-16 ml-3"
@@ -396,42 +415,58 @@ const Ordenes = ({ Orders = [] }) => {
                                         Marcar pagado
                                       </UncontrolledTooltip>
                                     </Link>
-                                  }
+                                  )}
                                 </td>
                               </tr>
                             ))}
                       </tbody>
                     </Table>
                   </div>
-                  <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                    <PaginationItem disabled={currentPage <= 1}>
-                      <PaginationLink
-                        previous
-                        onClick={() => setCurrentPage((page) => page - 1)}
+                  <Row className="justify-content-end mb-5">
+                    <Col sm="1">
+                      <Label className="control-label mr-2">
+                        Elementos por página
+                      </Label>
+                    </Col>
+                    <Col sm="1">
+                      <Select
+                        classNamePrefix="select2-selection"
+                        className=""
+                        placeholder="10"
+                        options={itemsPerPageOptions}
+                        onChange={(v) => setItemsPerPage(v.value)}
                       />
-                    </PaginationItem>
-                    {pageNumbers.map((number) => {
-                      return (
-                        <PaginationItem
-                          active={number === currentPage}
-                          key={number}
-                          id={number}
-                        >
-                          <PaginationLink
-                            onClick={() => setCurrentPage(number)}
+                    </Col>
+                    <Pagination className="pagination pagination-rounded">
+                      <PaginationItem disabled={currentPage <= 1}>
+                        <PaginationLink
+                          previous
+                          onClick={() => setCurrentPage((page) => page - 1)}
+                        />
+                      </PaginationItem>
+                      {pageNumbers.map((number) => {
+                        return (
+                          <PaginationItem
+                            active={number === currentPage}
+                            key={number}
+                            id={number}
                           >
-                            {number}
-                          </PaginationLink>
-                        </PaginationItem>
-                      );
-                    })}
-                    <PaginationItem disabled={currentPage >= totalPages}>
-                      <PaginationLink
-                        next
-                        onClick={() => setCurrentPage((page) => page + 1)}
-                      />
-                    </PaginationItem>
-                  </Pagination>
+                            <PaginationLink
+                              onClick={() => setCurrentPage(number)}
+                            >
+                              {number}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      })}
+                      <PaginationItem disabled={currentPage >= totalPages}>
+                        <PaginationLink
+                          next
+                          onClick={() => setCurrentPage((page) => page + 1)}
+                        />
+                      </PaginationItem>
+                    </Pagination>
+                  </Row>
                 </CardBody>
               </Card>
             </Col>

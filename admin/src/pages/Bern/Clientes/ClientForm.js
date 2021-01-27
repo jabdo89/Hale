@@ -282,9 +282,13 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
   const handleSelectChange = (v, name) => {
     const newValue = v ? v.value : "";
 
+    const newProduct = products.find(p => p.id === newValue);
+
     setClientData((prevClient) => ({
       ...prevClient,
-      [name]: newValue,
+      [`id${name}`]: newProduct.id,
+      [`producto${name}`]: newProduct.name,
+      [`precio${name}`]: newProduct.price,
     }));
   };
 
@@ -331,14 +335,26 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
         Ingresa la información en los siguientes campos:{" "}
       </CardSubtitle>
       <Row>
-        <Col sm="12">
+        <Col sm="6">
           <FormGroup>
             <Label className="control-label">Nombre</Label>
             <Input
-              defaultValue={cliente && cliente.name ? cliente.name : ""}
-              id="name"
-              name="name"
-              type="name"
+              defaultValue={cliente && cliente.firstName ? cliente.firstName : ""}
+              id="lastName"
+              name="firstName"
+              type="first name"
+              className="form-control"
+            />
+          </FormGroup>
+        </Col>
+        <Col sm="6">
+          <FormGroup>
+            <Label className="control-label">Apellido</Label>
+            <Input
+              defaultValue={cliente && cliente.lastName ? cliente.lastName : ""}
+              id="lastName"
+              name="lastName"
+              type="last name"
               className="form-control"
             />
           </FormGroup>
@@ -387,7 +403,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               placeholder="Choose..."
               title="Producto 1"
               options={productOptions}
-              onChange={(v) => handleSelectChange(v, "productoUno")}
+              onChange={(v) => handleSelectChange(v, "Uno")}
               defaultValue={clientData.productoUno || ""}
             />
           </FormGroup>
@@ -475,7 +491,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               title="Producto 2"
               name="productoDos"
               options={productOptions}
-              onChange={(v) => handleSelectChange(v, "productoDos")}
+              onChange={(v) => handleSelectChange(v, "Dos")}
               defaultValue={clientData.productoDos || ""}
             />
           </FormGroup>

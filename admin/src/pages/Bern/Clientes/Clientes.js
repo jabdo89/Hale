@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
-import moment from "moment";
 import {
   Container,
   Row,
@@ -11,6 +10,7 @@ import {
   CardBody,
   Table,
   Input,
+  Label,
   Pagination,
   PaginationItem,
   PaginationLink,
@@ -23,6 +23,7 @@ import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import { Link, useHistory } from "react-router-dom";
 import ExcelExport from "../../../components/Common/ExcelExport";
 import { useState } from "react";
+import Select from "react-select";
 
 // const Clientes = ({ clients }) => {
 //   return (
@@ -153,7 +154,7 @@ const Clientes = ({ clients = [] }) => {
   const editClient = (client) => history.push(`/clientes/edit/${client.id}`);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(2);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const currentClients = clients
     ? clients.slice(
@@ -167,6 +168,25 @@ const Clientes = ({ clients = [] }) => {
   for (let i = 2; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
+
+  const itemsPerPageOptions = [
+    {
+      value: 5,
+      label: 5,
+    },
+    {
+      value: 10,
+      label: 10,
+    },
+    {
+      value: 20,
+      label: 20,
+    },
+    {
+      value: 50,
+      label: 50,
+    },
+  ];
 
   return (
     <React.Fragment>
@@ -278,35 +298,50 @@ const Clientes = ({ clients = [] }) => {
                       </tbody>
                     </Table>
                   </div>
-                  <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                    <PaginationItem disabled={currentPage <= 1}>
-                      <PaginationLink
-                        previous
-                        onClick={() => setCurrentPage((page) => page - 1)}
+                  <Row className="justify-content-end mb-5">
+                    <Col sm="1">
+                      <Label className="control-label mr-2">
+                        Elementos por página
+                      </Label>
+                    </Col>
+                    <Col sm="1">
+                      <Select
+                        classNamePrefix="select2-selection"
+                        placeholder="10"
+                        options={itemsPerPageOptions}
+                        onChange={(v) => setItemsPerPage(v.value)}
                       />
-                    </PaginationItem>
-                    {pageNumbers.map((number) => {
-                      return (
-                        <PaginationItem
-                          active={number === currentPage}
-                          key={number}
-                          id={number}
-                        >
-                          <PaginationLink
-                            onClick={() => setCurrentPage(number)}
+                    </Col>
+                    <Pagination className="pagination pagination-rounded">
+                      <PaginationItem disabled={currentPage <= 1}>
+                        <PaginationLink
+                          previous
+                          onClick={() => setCurrentPage((page) => page - 1)}
+                        />
+                      </PaginationItem>
+                      {pageNumbers.map((number) => {
+                        return (
+                          <PaginationItem
+                            active={number === currentPage}
+                            key={number}
+                            id={number}
                           >
-                            {number}
-                          </PaginationLink>
-                        </PaginationItem>
-                      );
-                    })}
-                    <PaginationItem disabled={currentPage >= totalPages}>
-                      <PaginationLink
-                        next
-                        onClick={() => setCurrentPage((page) => page + 1)}
-                      />
-                    </PaginationItem>
-                  </Pagination>
+                            <PaginationLink
+                              onClick={() => setCurrentPage(number)}
+                            >
+                              {number}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      })}
+                      <PaginationItem disabled={currentPage >= totalPages}>
+                        <PaginationLink
+                          next
+                          onClick={() => setCurrentPage((page) => page + 1)}
+                        />
+                      </PaginationItem>
+                    </Pagination>
+                  </Row>
                 </CardBody>
               </Card>
             </Col>
