@@ -163,24 +163,24 @@ const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
   }
 
-  let categoryOptions = Object.keys(categories).map((c) => ({
-    value: c,
-    label: c,
-  }));
-  let tagOptions = Object.keys(tags).map((t) => ({ value: t, label: t }));
+  // let categoryOptions = Object.keys(categories).map((c) => ({
+  //   value: c,
+  //   label: c,
+  // }));
+  // let tagOptions = Object.keys(tags).map((t) => ({ value: t, label: t }));
 
-  const [currCat, setCurrCat] = useState("");
-  const [currTag, setCurrTag] = useState("");
+  // const [currCat, setCurrCat] = useState("");
+  // const [currTag, setCurrTag] = useState("");
 
   return (
     <Form>
       <Row>
         <Col sm="6">
           <FormGroup>
-            <Label htmlFor="productname">Nombre de producto</Label>
+            <Label htmlFor="name">Nombre de producto</Label>
             <Input
-              id="productname"
-              name="productname"
+              id="name"
+              name="name"
               type="text"
               onChange={handleTextChange}
               className="form-control"
@@ -333,7 +333,7 @@ const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
             />
           </FormGroup>
         </Col> */}
-        <Col sm="6">
+        {/* <Col sm="6">
           <FormGroup>
             <Label htmlFor="productprice">Precio de producto</Label>
             <Input
@@ -360,7 +360,7 @@ const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
               defaultValue={+productData.stock || ""}
             />
           </FormGroup>
-        </Col>
+        </Col> */}
       </Row>
       {/* <CardTitle className="mb-3">Imágenes de producto</CardTitle>
             <FormGroup>

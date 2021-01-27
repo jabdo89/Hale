@@ -52,9 +52,90 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
                 clientData.password
               )
               .then((resp) => {
-                return db.collection("Users").doc(resp.user.uid).set({
-                  email: clientData.email,
-                });
+                const storage = firebase.storage();
+                if (
+                  typeof clientData.imagenUno !== "string" &&
+                  clientData.imagenUno !== undefined
+                ) {
+                  const uploadTaskPDF = storage
+                    .ref(`productos/${clientData.imagenUno.name}`)
+                    .put(clientData.imagenUno);
+                  uploadTaskPDF.on(
+                    "state_changed",
+                    (snapshot) => {
+                      // progress function ...
+                      const progress = Math.round(
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                      );
+                    },
+                    (error) => {
+                      // Error function ...
+                      console.error(error);
+                    },
+                    () => {
+                      // complete function ...
+                      storage
+                        .ref("productos")
+                        .child(clientData.imagenUno.name)
+                        .getDownloadURL()
+                        .then((urlImagenUno) => {
+                          db.collection("Users").doc(resp.user.uid).update({
+                            imagenUno: urlImagenUno,
+                          });
+                        });
+                    }
+                  );
+                }
+                if (
+                  typeof clientData.imagenDos !== "string" &&
+                  clientData.imagenDos !== undefined
+                ) {
+                  const uploadTaskPDF = storage
+                    .ref(`productos/${clientData.imagenDos.name}`)
+                    .put(clientData.imagenDos);
+                  uploadTaskPDF.on(
+                    "state_changed",
+                    (snapshot) => {
+                      // progress function ...
+                      const progress = Math.round(
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                      );
+                    },
+                    (error) => {
+                      // Error function ...
+                      console.error(error);
+                    },
+                    () => {
+                      // complete function ...
+                      storage
+                        .ref("productos")
+                        .child(clientData.imagenDos.name)
+                        .getDownloadURL()
+                        .then((urlImagenDos) => {
+                          db.collection("Users").doc(resp.user.uid).update({
+                            imagenDos: urlImagenDos,
+                          });
+                        });
+                    }
+                  );
+                }
+                db.collection("Users")
+                  .doc(resp.user.uid)
+                  .set({
+                    idUno: clientData.productoUno,
+                    productoUno: clientData.productoUno,
+                    precioUno: clientData.precioUno,
+                    productoDos: clientData.productoDos,
+                    idDos: clientData.productoDos,
+                    precioDos: clientData.precioDos,
+                    email: clientData.email,
+                  })
+                  .then(function (docRef) {
+                    history.push("/clientes");
+                  });
+                // return db.collection("Users").doc(resp.user.uid).set({
+                //   email: clientData.email,
+                // });
               })
               .then(() => {
                 secondAuth.delete();

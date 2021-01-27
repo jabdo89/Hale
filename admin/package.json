@@ -86,7 +86,8 @@
     "simplebar-react": "^2.1.0",
     "styled-components": "^5.0.1",
     "toastr": "^2.1.4",
-    "xlsx": "^0.16.9"
+    "xlsx": "^0.16.9",
+    "yarn": "^1.22.10"
   },
   "scripts": {
     "start": "react-scripts start",

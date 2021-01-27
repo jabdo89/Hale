@@ -4,7 +4,7 @@ import ReactApexChart from "react-apexcharts";
 class StackedColumnChart extends Component {
   constructor(props) {
     super(props);
-    console.log(props.series);
+    console.log(props.categories);
     this.state = {
       options: {
         chart: {
@@ -29,20 +29,7 @@ class StackedColumnChart extends Component {
           enabled: !1,
         },
         xaxis: {
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
+          categories: props.categories,
         },
         colors: ["#556ee6", "#f1b44c", "#34c38f"],
         legend: {

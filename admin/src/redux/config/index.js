@@ -9,9 +9,9 @@ const firebaseConfig = {
 };
 
 const secondConfig = {
-  apiKey: "AIzaSyDru_dH3ajvW0O7dIauIjetd5-Pqi5nXx0",
-  authDomain: "eugenio-969c3.firebaseapp.com",
-  databaseURL: "https://eugenio-969c3.firebaseio.com",
+  apiKey: "AIzaSyB3zVJ9xyfzftH2STs-6qDpBtzxuQvYEAU",
+  authDomain: "dosal-ba23a.firebaseapp.com",
+  databaseURL: "https://dosal-ba23a.firebaseio.com",
 };
 
 const rrfConfig = {

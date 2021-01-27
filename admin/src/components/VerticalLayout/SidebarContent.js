@@ -83,12 +83,12 @@ const SidebarContent = (props) => {
               <span>{props.t("Órdenes")}</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/inventario">
               <i className="bx bxs-box"></i>
               <span>{props.t("Inventario")}</span>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/#" className="has-arrow waves-effect">
               <i className="bx bxs-discount"></i>
@@ -98,12 +98,12 @@ const SidebarContent = (props) => {
               <li>
                 <Link to="/promocion-sliders">{props.t("Sliders")}</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/promocion-cupones">{props.t("Cupones")}</Link>
               </li>
               <li>
                 <Link to="/promocion-descuentos">{props.t("Descuentos")}</Link>
-              </li>
+              </li> */}
             </ul>
           </li>
           <li>
@@ -114,7 +114,7 @@ const SidebarContent = (props) => {
           </li>
           <li>
             <Link to="/facturacion" className="nav-link">
-              <i className="bx bx-money mr-2"></i>
+              <i className="bx bx-money"></i>
               <span>{props.t("Facturación")}</span>
             </Link>
           </li>

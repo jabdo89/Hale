@@ -102,7 +102,7 @@ const Sliders = ({ sliders = [] }) => {
                         <a>
                           <div className="text-danger">
                             <i
-                              className="mdi mdi-close font-size-18 mr-3"
+                              className="mdi mdi-close font-size-18 ml-3"
                               id="deletetooltip"
                               onClick={() => deleteSlider(slider)}
                             ></i>
