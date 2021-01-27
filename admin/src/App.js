@@ -29,7 +29,7 @@ import Register from "./pages/Authentication/Register";
 import ForgetPwd from "./pages/Authentication/ForgetPassword";
 
 // Activating fake backend
-fakeBackend();
+// fakeBackend();
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyDqCfeEGAFooSlpMTHVRXkqdXGRdfuD4iY",
