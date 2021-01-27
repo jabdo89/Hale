@@ -282,9 +282,13 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
   const handleSelectChange = (v, name) => {
     const newValue = v ? v.value : "";
 
+    const newProduct = products.find(p => p.id === newValue);
+
     setClientData((prevClient) => ({
       ...prevClient,
-      [name]: newValue,
+      [`id${name}`]: newProduct.id,
+      [`producto${name}`]: newProduct.name,
+      [`precio${name}`]: newProduct.price,
     }));
   };
 
@@ -399,7 +403,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               placeholder="Choose..."
               title="Producto 1"
               options={productOptions}
-              onChange={(v) => handleSelectChange(v, "productoUno")}
+              onChange={(v) => handleSelectChange(v, "Uno")}
               defaultValue={clientData.productoUno || ""}
             />
           </FormGroup>
@@ -487,7 +491,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               title="Producto 2"
               name="productoDos"
               options={productOptions}
-              onChange={(v) => handleSelectChange(v, "productoDos")}
+              onChange={(v) => handleSelectChange(v, "Dos")}
               defaultValue={clientData.productoDos || ""}
             />
           </FormGroup>
