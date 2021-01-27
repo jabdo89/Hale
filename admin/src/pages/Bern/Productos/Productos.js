@@ -37,15 +37,12 @@ const Productos = ({ products = [] }) => {
     console.log("Deleting product", product);
   };
 
-  const currentProducts = products
-    ? products.slice(
-        currentPage * itemsPerPage - itemsPerPage,
-        currentPage * itemsPerPage
-      )
-    : [];
+  const currentProducts = products.filter((v) =>
+    v.name.toLowerCase().includes(search)
+  );
 
   const pageNumbers = [1];
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Math.ceil(currentProducts.length / itemsPerPage);
   for (let i = 2; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
@@ -65,7 +62,7 @@ const Productos = ({ products = [] }) => {
                       <Input
                         type="text"
                         className="form-control"
-                        placeholder="Search..."
+                        placeholder="Buscar por nombre"
                         onChange={({ target: { value: v } }) => {
                           setSearch(v);
                         }}
@@ -110,47 +107,47 @@ const Productos = ({ products = [] }) => {
                           </tr>
                         </thead>
                         <tbody>
-                          {products &&
-                            currentProducts
-                              .filter((v) =>
-                                v.name.toLowerCase().includes(search)
-                              )
-                              .map((producto, index) => {
-                                const {
-                                  image,
-                                  sku,
-                                  name,
-                                  shortDescription,
-                                  category,
-                                  price,
-                                  stock,
-                                } = producto;
-                                return (
-                                  <tr key={index}>
-                                    {/* <td>
+                          {currentProducts
+                            .slice(
+                              currentPage * itemsPerPage - itemsPerPage,
+                              currentPage * itemsPerPage
+                            )
+                            .map((producto, index) => {
+                              const {
+                                image,
+                                sku,
+                                name,
+                                shortDescription,
+                                category,
+                                price,
+                                stock,
+                              } = producto;
+                              return (
+                                <tr key={index}>
+                                  {/* <td>
                                     <img
                                       src={image}
                                       alt=""
                                       className="avatar-sm"
                                     />
                                   </td> */}
-                                    <td>{sku}</td>
-                                    <td>
-                                      <h5 className="text-truncate font-size-14">
-                                        <Link to="#" className="text-dark">
-                                          {name}
-                                        </Link>
-                                        {producto.new && (
-                                          <span className="badge badge-warning ml-2">
-                                            Nuevo
-                                          </span>
-                                        )}
-                                      </h5>
-                                      <p className="text-muted mb-0">
-                                        {shortDescription}
-                                      </p>
-                                    </td>
-                                    {/* <td>
+                                  <td>{sku}</td>
+                                  <td>
+                                    <h5 className="text-truncate font-size-14">
+                                      <Link to="#" className="text-dark">
+                                        {name}
+                                      </Link>
+                                      {producto.new && (
+                                        <span className="badge badge-warning ml-2">
+                                          Nuevo
+                                        </span>
+                                      )}
+                                    </h5>
+                                    <p className="text-muted mb-0">
+                                      {shortDescription}
+                                    </p>
+                                  </td>
+                                  {/* <td>
                                     {category.map((c, i) => (
                                       <span
                                         key={i}
@@ -160,44 +157,39 @@ const Productos = ({ products = [] }) => {
                                       </span>
                                     ))}
                                   </td> */}
-                                    <td>{`$${price}`}</td>
-                                    <td>{stock}</td>
-                                    <td>
-                                      <Link
-                                        to="#"
-                                        className="mr-3 text-primary"
+                                  <td>{`$${price}`}</td>
+                                  <td>{stock}</td>
+                                  <td>
+                                    <Link to="#" className="mr-3 text-primary">
+                                      <i
+                                        className="mdi mdi-pencil font-size-18 mr-3"
+                                        id="edittooltip"
+                                        onClick={() => editProduct(producto)}
+                                      ></i>
+                                      <UncontrolledTooltip
+                                        placement="top"
+                                        target="edittooltip"
                                       >
-                                        <i
-                                          className="mdi mdi-pencil font-size-18 mr-3"
-                                          id="edittooltip"
-                                          onClick={() => editProduct(producto)}
-                                        ></i>
-                                        <UncontrolledTooltip
-                                          placement="top"
-                                          target="edittooltip"
-                                        >
-                                          Edit
-                                        </UncontrolledTooltip>
-                                      </Link>
-                                      <Link to="#" className="text-danger">
-                                        <i
-                                          className="mdi mdi-close font-size-18 mr-3"
-                                          id="deletetooltip"
-                                          onClick={() =>
-                                            deleteProduct(producto)
-                                          }
-                                        ></i>
-                                        <UncontrolledTooltip
-                                          placement="top"
-                                          target="deletetooltip"
-                                        >
-                                          Delete
-                                        </UncontrolledTooltip>
-                                      </Link>
-                                    </td>
-                                  </tr>
-                                );
-                              })}
+                                        Edit
+                                      </UncontrolledTooltip>
+                                    </Link>
+                                    <Link to="#" className="text-danger">
+                                      <i
+                                        className="mdi mdi-close font-size-18 mr-3"
+                                        id="deletetooltip"
+                                        onClick={() => deleteProduct(producto)}
+                                      ></i>
+                                      <UncontrolledTooltip
+                                        placement="top"
+                                        target="deletetooltip"
+                                      >
+                                        Delete
+                                      </UncontrolledTooltip>
+                                    </Link>
+                                  </td>
+                                </tr>
+                              );
+                            })}
                         </tbody>
                       </Table>
                     </div>
