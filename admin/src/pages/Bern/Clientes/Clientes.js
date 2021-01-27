@@ -152,10 +152,6 @@ const Clientes = ({ clients = [] }) => {
 
   const editClient = (client) => history.push(`/clientes/edit/${client.id}`);
 
-  const deleteClient = (client) => {
-    console.log("Deleting client", client);
-  };
-
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(2);
 
@@ -188,7 +184,7 @@ const Clientes = ({ clients = [] }) => {
                           <Input
                             type="text"
                             className="form-control"
-                            placeholder="Search..."
+                            placeholder="Buscar por nombre"
                             onChange={({ target: { value: v } }) => {
                               setSearch(v);
                             }}
@@ -273,19 +269,6 @@ const Clientes = ({ clients = [] }) => {
                                         target="edittooltip"
                                       >
                                         Edit
-                                      </UncontrolledTooltip>
-                                    </Link>
-                                    <Link to="#" className="text-danger">
-                                      <i
-                                        className="mdi mdi-close font-size-18 mr-3"
-                                        id="deletetooltip"
-                                        onClick={() => deleteClient(client)}
-                                      ></i>
-                                      <UncontrolledTooltip
-                                        placement="top"
-                                        target="deletetooltip"
-                                      >
-                                        Delete
                                       </UncontrolledTooltip>
                                     </Link>
                                   </td>
