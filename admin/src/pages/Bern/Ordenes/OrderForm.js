@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import {
-  Row,
-  Col,
-  Form,
-  FormGroup,
-  Input,
-  Button,
-  Label,
-} from "reactstrap";
+import { Row, Col, Form, FormGroup, Input, Button, Label } from "reactstrap";
 
 const OrderForm = ({ orden = {}, productOptions = [] }) => {
   const history = useHistory();
@@ -196,7 +188,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
             />
           </FormGroup>
         </Col>
-        <Col sm="3">
+        {/* <Col sm="3">
           <FormGroup>
             <Label htmlFor="currencyName">Currency Name</Label>
             <Input
@@ -234,11 +226,22 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
               defaultValue={orderData.currencySymbol || ""}
             />
           </FormGroup>
-        </Col>
-        <Col sm="3">
+        </Col> */}
+        <Col sm="9">
           <Label>Products</Label>
+          {/* <FormGroup>
+            <Row className="ml-1">
+              <Label>Producto 1</Label>
+              <Col sm="6">
+                <Input id="item1" name="item1" />
+              </Col>
+              <Label>Cantidad</Label>
+              <Col sm="3">
+                <Input id="cantidad1" name="cantidad1" />
+              </Col>
+            </Row>
+          </FormGroup> */}
         </Col>
-        <Col sm="9">{/* TODO: Make product select */}</Col>
         <Col sm="12">
           <Label>
             Total: {orderData.items ? calcOrderTotal(orderData.items) : 0}

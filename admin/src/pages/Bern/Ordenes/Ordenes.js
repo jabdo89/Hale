@@ -381,8 +381,7 @@ const Ordenes = ({ Orders = [] }) => {
                                       Delete
                                     </UncontrolledTooltip>
                                   </Link>
-                                  {
-                                    !order.pagado &&
+                                  {!order.pagado && (
                                     <Link to="#" className="text-success">
                                       <i
                                         className="bx bx-money font-size-16 ml-3"
@@ -396,42 +395,45 @@ const Ordenes = ({ Orders = [] }) => {
                                         Marcar pagado
                                       </UncontrolledTooltip>
                                     </Link>
-                                  }
+                                  )}
                                 </td>
                               </tr>
                             ))}
                       </tbody>
                     </Table>
                   </div>
-                  <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                    <PaginationItem disabled={currentPage <= 1}>
-                      <PaginationLink
-                        previous
-                        onClick={() => setCurrentPage((page) => page - 1)}
-                      />
-                    </PaginationItem>
-                    {pageNumbers.map((number) => {
-                      return (
-                        <PaginationItem
-                          active={number === currentPage}
-                          key={number}
-                          id={number}
-                        >
-                          <PaginationLink
-                            onClick={() => setCurrentPage(number)}
+                  <Row className="justify-content-end mb-2">
+                    
+                    <Pagination className="pagination pagination-rounded">
+                      <PaginationItem disabled={currentPage <= 1}>
+                        <PaginationLink
+                          previous
+                          onClick={() => setCurrentPage((page) => page - 1)}
+                        />
+                      </PaginationItem>
+                      {pageNumbers.map((number) => {
+                        return (
+                          <PaginationItem
+                            active={number === currentPage}
+                            key={number}
+                            id={number}
                           >
-                            {number}
-                          </PaginationLink>
-                        </PaginationItem>
-                      );
-                    })}
-                    <PaginationItem disabled={currentPage >= totalPages}>
-                      <PaginationLink
-                        next
-                        onClick={() => setCurrentPage((page) => page + 1)}
-                      />
-                    </PaginationItem>
-                  </Pagination>
+                            <PaginationLink
+                              onClick={() => setCurrentPage(number)}
+                            >
+                              {number}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      })}
+                      <PaginationItem disabled={currentPage >= totalPages}>
+                        <PaginationLink
+                          next
+                          onClick={() => setCurrentPage((page) => page + 1)}
+                        />
+                      </PaginationItem>
+                    </Pagination>
+                  </Row>
                 </CardBody>
               </Card>
             </Col>

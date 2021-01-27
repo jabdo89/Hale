@@ -331,14 +331,26 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
         Ingresa la información en los siguientes campos:{" "}
       </CardSubtitle>
       <Row>
-        <Col sm="12">
+        <Col sm="6">
           <FormGroup>
             <Label className="control-label">Nombre</Label>
             <Input
-              defaultValue={cliente && cliente.name ? cliente.name : ""}
-              id="name"
-              name="name"
-              type="name"
+              defaultValue={cliente && cliente.firstName ? cliente.firstName : ""}
+              id="lastName"
+              name="firstName"
+              type="first name"
+              className="form-control"
+            />
+          </FormGroup>
+        </Col>
+        <Col sm="6">
+          <FormGroup>
+            <Label className="control-label">Apellido</Label>
+            <Input
+              defaultValue={cliente && cliente.lastName ? cliente.lastName : ""}
+              id="lastName"
+              name="lastName"
+              type="last name"
               className="form-control"
             />
           </FormGroup>
