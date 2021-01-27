@@ -77,20 +77,20 @@ const Navbar = (props) => {
                                     <span>{props.t('Órdenes')}</span>
                                 </Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link to="/inventario" className="nav-link">
                                     <i className="bx bxs-box mr-2"></i>
                                     <span>{props.t('Inventario')}</span>
                                 </Link>
-                            </li>
+                            </li> */}
                             <li className="nav-item dropdown">
                                 <Link to="/#" onClick={e => { e.preventDefault(); setpromocion(!promocion); }} className="nav-link dropdown-togglez arrow-none">
                                     <i className="bx bxs-discount mr-2"></i>{props.t('Promoción')} <div className="arrow-down"></div>
                                 </Link>
                                 <div className={classname("dropdown-menu", { show: promocion })} >
                                     <Link to="/promocion-sliders" className="dropdown-item">{props.t('Sliders')}</Link>
-                                    <Link to="/promocion-cupones" className="dropdown-item">{props.t('Cupones')}</Link>
-                                    <Link to="/promocion-descuentos" className="dropdown-item">{props.t('Descuentos')}</Link>
+                                    {/* <Link to="/promocion-cupones" className="dropdown-item">{props.t('Cupones')}</Link>
+                                    <Link to="/promocion-descuentos" className="dropdown-item">{props.t('Descuentos')}</Link> */}
                                 </div>
                             </li>
                             <li className="nav-item">
