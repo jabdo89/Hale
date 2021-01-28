@@ -342,8 +342,9 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               defaultValue={cliente && cliente.firstName ? cliente.firstName : ""}
               id="lastName"
               name="firstName"
-              type="first name"
+              type="text"
               className="form-control"
+              onChange={handleTextChange}
             />
           </FormGroup>
         </Col>
@@ -354,8 +355,9 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               defaultValue={cliente && cliente.lastName ? cliente.lastName : ""}
               id="lastName"
               name="lastName"
-              type="last name"
+              type="text"
               className="form-control"
+              onChange={handleTextChange}
             />
           </FormGroup>
         </Col>
