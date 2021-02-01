@@ -228,11 +228,11 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
       db.collection("Users")
         .doc(clientData.id)
         .update({
-          idUno: clientData.productoUno,
+          idUno: clientData.idUno,
           productoUno: clientData.productoUno,
           precioUno: clientData.precioUno,
           productoDos: clientData.productoDos,
-          idDos: clientData.productoDos,
+          idDos: clientData.idDos,
           precioDos: clientData.precioDos,
         })
         .then(function (docRef) {
@@ -282,7 +282,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
   const handleSelectChange = (v, name) => {
     const newValue = v ? v.value : "";
 
-    const newProduct = products.find(p => p.id === newValue);
+    const newProduct = products.find((p) => p.id === newValue);
 
     setClientData((prevClient) => ({
       ...prevClient,
@@ -339,7 +339,9 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
           <FormGroup>
             <Label className="control-label">Nombre</Label>
             <Input
-              defaultValue={cliente && cliente.firstName ? cliente.firstName : ""}
+              defaultValue={
+                cliente && cliente.firstName ? cliente.firstName : ""
+              }
               id="lastName"
               name="firstName"
               type="first name"
