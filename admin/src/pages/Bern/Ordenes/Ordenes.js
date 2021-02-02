@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import firebase from "firebase";
 import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
@@ -142,10 +142,24 @@ const Ordenes = ({ Orders = [] }) => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const [search, setSearch] = useState("");
+  const [tipoDePago, setTipoDePago] = useState(null);
+  const [pagado, setPagado] = useState({value: "Todos", label: "Todos"});
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
   const history = useHistory();
+
+  const tiposDePago = [
+    { value: "Efectivo", label: "Efectivo" },
+    { value: "Tarjeta de Credito", label: "Tarjeta de Credito" },
+    { value: "Transferencia", label: "Transferencia" },
+  ];
+
+  const opcionesPagado = [
+    { value: "Todos", label: "Todos" },
+    { value: "Pagado", label: "Pagado" },
+    { value: "No pagado", label: "No pagado" },
+  ]
 
   const editOrder = (order) => history.push(`/ordenes/edit/${order.id}`);
 
@@ -181,8 +195,22 @@ const Ordenes = ({ Orders = [] }) => {
     return date >= startDate && date <= endDate;
   };
 
+  const paymentTypeFilter = (order) => {
+    if (!tipoDePago || tipoDePago.length === 0) return true;
+    return tipoDePago.some((item) => item.value === order.paymentMethod);
+  };
+
+  const paymentStatusFilter = (order) => {
+    if (!pagado || pagado.value === "Todos") return true;
+    return (pagado.value === "Pagado" ^ !order.payed);
+  };
+
   const orderFilter = (order) =>
-    !!order.id && order.id.toLowerCase().includes(search) && dateFilter(order);
+    !!order.id &&
+    order.id.toLowerCase().includes(search) &&
+    dateFilter(order) &&
+    paymentTypeFilter(order) &&
+    paymentStatusFilter(order);
 
   let currentOrders = Orders.filter((order) => orderFilter(order));
 
@@ -235,6 +263,29 @@ const Ordenes = ({ Orders = [] }) => {
                           <i className="bx bx-search-alt search-icon"></i>
                         </div>
                       </div>
+                      <FormGroup className="select2-container">
+                        <label className="control-label">
+                          Filtrar por tipo de pago:
+                        </label>
+                        <Select
+                          value={tipoDePago}
+                          isMulti={true}
+                          onChange={(v) => setTipoDePago(v)}
+                          options={tiposDePago}
+                          classNamePrefix="select2-selection"
+                        />
+                      </FormGroup>
+                      <FormGroup className="select2-container">
+                        <label className="control-label">
+                          Filtrar estatus de pago:
+                        </label>
+                        <Select
+                          value={pagado}
+                          onChange={(v) => setPagado(v)}
+                          options={opcionesPagado}
+                          classNamePrefix="select2-selection"
+                        />
+                      </FormGroup>
                     </Col>
                     <Col sm="8">
                       <Row className="justify-content-end">
@@ -364,7 +415,7 @@ const Ordenes = ({ Orders = [] }) => {
                                 </td> */}
                                 <td>{order.tipoDePago}</td>
                                 <td>
-                                  {order.pagado ? (
+                                  {order.payed ? (
                                     <span className="badge badge-success mr-1">
                                       Pagado
                                     </span>
@@ -377,7 +428,7 @@ const Ordenes = ({ Orders = [] }) => {
                                 <td>
                                   <Link to="#" className="mr-3 text-primary">
                                     <i
-                                      className="mdi mdi-pencil font-size-18 mr-3"
+                                      className="mdi mdi-pencil font-size-18"
                                       id="edittooltip"
                                       onClick={() => editOrder(order)}
                                     ></i>
@@ -388,9 +439,9 @@ const Ordenes = ({ Orders = [] }) => {
                                       Edit
                                     </UncontrolledTooltip>
                                   </Link>
-                                  <Link to="#" className="text-danger">
+                                  <Link to="#" className="mr-3 text-danger">
                                     <i
-                                      className="mdi mdi-close font-size-18 mr-3"
+                                      className="mdi mdi-close font-size-18"
                                       id="deletetooltip"
                                       onClick={() => deleteOrder(order)}
                                     ></i>
@@ -404,13 +455,13 @@ const Ordenes = ({ Orders = [] }) => {
                                   {!order.pagado && (
                                     <Link to="#" className="text-success">
                                       <i
-                                        className="bx bx-money font-size-16 ml-3"
-                                        id="deletetooltip"
+                                        className="bx bx-money font-size-16"
+                                        id="paidtooltip"
                                         onClick={() => marcarPagado(order)}
                                       ></i>
                                       <UncontrolledTooltip
                                         placement="top"
-                                        target="deletetooltip"
+                                        target="paidtooltip"
                                       >
                                         Marcar pagado
                                       </UncontrolledTooltip>
