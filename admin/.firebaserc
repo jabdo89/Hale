@@ -1,7 +1,5 @@
 {
-  "projects": {
-    "default": "dosal-ba23a"
-  },
+  "targets": {
     "dosal-ba23a": {
       "hosting": {
         "admin": [

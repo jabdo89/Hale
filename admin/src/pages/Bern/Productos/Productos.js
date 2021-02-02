@@ -124,8 +124,6 @@ const Productos = ({ products = [] }) => {
                             <th scope="col">SKU</th>
                             <th scope="col">Productos</th>
                             {/* <th scope="col">Categorías</th> */}
-                            <th scope="col">Precio</th>
-                            <th scope="col">Stock</th>
                             <th scope="col">Acciones</th>
                           </tr>
                         </thead>
@@ -180,8 +178,6 @@ const Productos = ({ products = [] }) => {
                                       </span>
                                     ))}
                                   </td> */}
-                                  <td>{`$${price}`}</td>
-                                  <td>{stock}</td>
                                   <td>
                                     <Link to="#" className="mr-3 text-primary">
                                       <i

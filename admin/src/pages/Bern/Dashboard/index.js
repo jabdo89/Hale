@@ -160,7 +160,7 @@ function getChart(orders, clients, email) {
         if (series[k].name === orders[j].email) {
           if (
             new Date(orders[j].date.seconds * 1000) >=
-            getPreviousMonday() - 1
+            new Date(getPreviousMonday() - 1).setHours(0, 0, 0, 0)
           ) {
             const day = new Date(orders[j].date.seconds * 1000).getDay();
             if (day === 0) {
@@ -172,6 +172,7 @@ function getChart(orders, clients, email) {
         }
       }
     }
+    console.log(series);
     return series;
   }
 }
