@@ -37,13 +37,12 @@ const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
     if (id === "/new") {
       db.collection("Products")
         .add({
-          name: productData.productname,
-          new: productData.new,
-          price: productData.price,
+          name: productData.name,
+          new: productData.new ? productData.new : false,
           fullDescription: productData.fullDescription,
           shortDescription: productData.shortDescription,
           sku: productData.sku,
-          stock: productData.stock,
+          stock: 100,
         })
         .then(function (docRef) {
           history.push("/productos");
@@ -54,11 +53,10 @@ const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
         .update({
           name: productData.name,
           new: productData.new,
-          price: productData.price,
           fullDescription: productData.fullDescription,
           shortDescription: productData.shortDescription,
           sku: productData.sku,
-          stock: productData.stock,
+          stock: 100,
         })
         .then(function (docRef) {
           history.push("/productos");

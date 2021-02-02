@@ -154,8 +154,9 @@ const Ordenes = ({ Orders = [] }) => {
     db.collection("Orders").doc(order.id).delete();
   };
 
-  const marcarPagado = (order) => {
-    console.log("Marcando pagado", order);
+  const payedOrder = (order) => {
+    const db = firebase.firestore();
+    db.collection("Orders").doc(order.id).update({ payed: true });
   };
 
   const handleDateChange = (e) => {
@@ -299,7 +300,6 @@ const Ordenes = ({ Orders = [] }) => {
                       <thead className="thead-light">
                         <tr>
                           <th>Order ID</th>
-                          <th>Billing Name</th>
                           <th>Email</th>
                           <th>Fecha</th>
                           <th>Total</th>
@@ -324,10 +324,9 @@ const Ordenes = ({ Orders = [] }) => {
                                     to="#"
                                     className="text-body font-weight-bold"
                                   >
-                                    {order.id}
+                                    {order.id.substring(0, 6)}
                                   </Link>
                                 </td>
-                                <td>{`${order.firstName} ${order.lastname}`}</td>
                                 <td>{order.email}</td>
                                 <td>
                                   {order.date
@@ -362,9 +361,9 @@ const Ordenes = ({ Orders = [] }) => {
                                     View Details
                                   </Button>
                                 </td> */}
-                                <td>{order.tipoDePago}</td>
+                                <td>{order.paymentMethod}</td>
                                 <td>
-                                  {order.pagado ? (
+                                  {order.payed ? (
                                     <span className="badge badge-success mr-1">
                                       Pagado
                                     </span>
@@ -406,7 +405,7 @@ const Ordenes = ({ Orders = [] }) => {
                                       <i
                                         className="bx bx-money font-size-16 ml-3"
                                         id="deletetooltip"
-                                        onClick={() => marcarPagado(order)}
+                                        onClick={() => payedOrder(order)}
                                       ></i>
                                       <UncontrolledTooltip
                                         placement="top"

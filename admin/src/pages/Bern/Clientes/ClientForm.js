@@ -122,13 +122,18 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
                 db.collection("Users")
                   .doc(resp.user.uid)
                   .set({
-                    idUno: clientData.productoUno,
+                    idUno: clientData.idUno,
+                    userID: resp.user.uid,
                     productoUno: clientData.productoUno,
+                    firstName: clientData.firstName,
+                    lastName: clientData.lastName,
                     precioUno: clientData.precioUno,
                     productoDos: clientData.productoDos,
-                    idDos: clientData.productoDos,
+                    idDos: clientData.idDos,
+                    rol: "Cliente",
                     precioDos: clientData.precioDos,
                     email: clientData.email,
+                    totalSpent: 0,
                   })
                   .then(function (docRef) {
                     history.push("/clientes");
@@ -230,6 +235,8 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
         .update({
           idUno: clientData.idUno,
           productoUno: clientData.productoUno,
+          firstName: clientData.firstName,
+          lastName: clientData.lastName,
           precioUno: clientData.precioUno,
           productoDos: clientData.productoDos,
           idDos: clientData.idDos,
