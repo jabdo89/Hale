@@ -290,7 +290,7 @@ const Ordenes = ({ Orders = [] }) => {
                     <Col sm="8">
                       <Row className="justify-content-end">
                         <div className="text-sm-right">
-                          <ExcelExport data={Orders} />
+                          <ExcelExport data={currentOrders} />
                         </div>
                         <div className="text-sm-right">
                           <Link to="/ordenes/edit/new">
