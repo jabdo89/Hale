@@ -143,7 +143,7 @@ const Ordenes = ({ Orders = [] }) => {
 
   const [search, setSearch] = useState("");
   const [tipoDePago, setTipoDePago] = useState(null);
-  const [pagado, setPagado] = useState({value: "Todos", label: "Todos"});
+  const [pagado, setPagado] = useState({ value: "Todos", label: "Todos" });
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
@@ -159,7 +159,7 @@ const Ordenes = ({ Orders = [] }) => {
     { value: "Todos", label: "Todos" },
     { value: "Pagado", label: "Pagado" },
     { value: "No pagado", label: "No pagado" },
-  ]
+  ];
 
   const editOrder = (order) => history.push(`/ordenes/edit/${order.id}`);
 
@@ -203,7 +203,7 @@ const Ordenes = ({ Orders = [] }) => {
 
   const paymentStatusFilter = (order) => {
     if (!pagado || pagado.value === "Todos") return true;
-    return (pagado.value === "Pagado" ^ !order.payed);
+    return (pagado.value === "Pagado") ^ !order.payed;
   };
 
   const orderFilter = (order) =>
@@ -362,44 +362,48 @@ const Ordenes = ({ Orders = [] }) => {
                         </tr>
                       </thead>
                       <tbody>
-                        {Orders &&
-                          currentOrders
-                            .slice(
-                              currentPage * itemsPerPage - itemsPerPage,
-                              currentPage * itemsPerPage
-                            )
-                            .map((order, key) => (
-                              <tr key={"_order_" + key}>
-                                <td>
-                                  <Link
-                                    to="#"
-                                    className="text-body font-weight-bold"
-                                  >
-                                    {order.id.substring(0, 6)}
-                                  </Link>
-                                </td>
-                                <td>{order.email}</td>
-                                <td>
-                                  {order.date
-                                    ? moment(
-                                        new Date(order.date.seconds * 1000)
-                                      ).format("MMM Do YYYY")
-                                    : null}
-                                </td>
-                                <td>${order.price}</td>
-                                <td>
-                                  <div>
-                                    {order.items.map((item, i) => (
-                                      <span
-                                        key={i}
-                                        className="badge badge-danger mr-1"
-                                      >
-                                        {item.name} x {item.quantity}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </td>
-                                {/* <td>
+                        {currentOrders
+                          .sort(
+                            (a, b) =>
+                              new Date(b.date.seconds * 1000) -
+                              new Date(a.date.seconds * 1000)
+                          )
+                          .slice(
+                            currentPage * itemsPerPage - itemsPerPage,
+                            currentPage * itemsPerPage
+                          )
+                          .map((order, key) => (
+                            <tr key={"_order_" + key}>
+                              <td>
+                                <Link
+                                  to="#"
+                                  className="text-body font-weight-bold"
+                                >
+                                  {order.id.substring(0, 6)}
+                                </Link>
+                              </td>
+                              <td>{order.email}</td>
+                              <td>
+                                {order.date
+                                  ? moment(
+                                      new Date(order.date.seconds * 1000)
+                                    ).format("MMM Do YYYY")
+                                  : null}
+                              </td>
+                              <td>${order.price}</td>
+                              <td>
+                                <div>
+                                  {order.items.map((item, i) => (
+                                    <span
+                                      key={i}
+                                      className="badge badge-danger mr-1"
+                                    >
+                                      {item.name} x {item.quantity}
+                                    </span>
+                                  ))}
+                                </div>
+                              </td>
+                              {/* <td>
                                   <Button
                                     type="button"
                                     color="primary"
@@ -412,63 +416,63 @@ const Ordenes = ({ Orders = [] }) => {
                                     View Details
                                   </Button>
                                 </td> */}
-                                <td>{order.paymentMethod}</td>
-                                <td>
-                                  {order.payed ? (
-                                    <span className="badge badge-success mr-1">
-                                      Pagado
-                                    </span>
-                                  ) : (
-                                    <span className="badge badge-danger mr-1">
-                                      No pagado
-                                    </span>
-                                  )}
-                                </td>
-                                <td>
-                                  <Link to="#" className="mr-3 text-primary">
+                              <td>{order.paymentMethod}</td>
+                              <td>
+                                {order.payed ? (
+                                  <span className="badge badge-success mr-1">
+                                    Pagado
+                                  </span>
+                                ) : (
+                                  <span className="badge badge-danger mr-1">
+                                    No pagado
+                                  </span>
+                                )}
+                              </td>
+                              <td>
+                                <Link to="#" className="mr-3 text-primary">
+                                  <i
+                                    className="mdi mdi-pencil font-size-18"
+                                    id="edittooltip"
+                                    onClick={() => editOrder(order)}
+                                  ></i>
+                                  <UncontrolledTooltip
+                                    placement="top"
+                                    target="edittooltip"
+                                  >
+                                    Edit
+                                  </UncontrolledTooltip>
+                                </Link>
+                                <Link to="#" className="mr-3 text-danger">
+                                  <i
+                                    className="mdi mdi-close font-size-18"
+                                    id="deletetooltip"
+                                    onClick={() => deleteOrder(order)}
+                                  ></i>
+                                  <UncontrolledTooltip
+                                    placement="top"
+                                    target="deletetooltip"
+                                  >
+                                    Delete
+                                  </UncontrolledTooltip>
+                                </Link>
+                                {!order.pagado && (
+                                  <Link to="#" className="text-success">
                                     <i
-                                      className="mdi mdi-pencil font-size-18"
-                                      id="edittooltip"
-                                      onClick={() => editOrder(order)}
+                                      className="bx bx-money font-size-16"
+                                      id="paidtooltip"
+                                      onClick={() => payedOrder(order)}
                                     ></i>
                                     <UncontrolledTooltip
                                       placement="top"
-                                      target="edittooltip"
+                                      target="paidtooltip"
                                     >
-                                      Edit
+                                      Marcar pagado
                                     </UncontrolledTooltip>
                                   </Link>
-                                  <Link to="#" className="mr-3 text-danger">
-                                    <i
-                                      className="mdi mdi-close font-size-18"
-                                      id="deletetooltip"
-                                      onClick={() => deleteOrder(order)}
-                                    ></i>
-                                    <UncontrolledTooltip
-                                      placement="top"
-                                      target="deletetooltip"
-                                    >
-                                      Delete
-                                    </UncontrolledTooltip>
-                                  </Link>
-                                  {!order.pagado && (
-                                    <Link to="#" className="text-success">
-                                      <i
-                                        className="bx bx-money font-size-16"
-                                        id="paidtooltip"
-                                        onClick={() => payedOrder(order)}
-                                      ></i>
-                                      <UncontrolledTooltip
-                                        placement="top"
-                                        target="paidtooltip"
-                                      >
-                                        Marcar pagado
-                                      </UncontrolledTooltip>
-                                    </Link>
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
+                                )}
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </Table>
                   </div>

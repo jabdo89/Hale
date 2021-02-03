@@ -216,7 +216,7 @@ const Clientes = ({ clients = [] }) => {
                     <Col sm="8">
                       <Row className="justify-content-end">
                         <div className="text-sm-right">
-                          <ExcelExport data={clients} />
+                          <ExcelExport data={currentClients} />
                         </div>
                         <div className="text-sm-right">
                           <Link to="/clientes/edit/new">

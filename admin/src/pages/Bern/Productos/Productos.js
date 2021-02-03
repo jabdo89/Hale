@@ -97,7 +97,7 @@ const Productos = ({ products = [] }) => {
                 <Col sm="8">
                   <Row className="justify-content-end">
                     <div className="text-sm-right">
-                      <ExcelExport data={products} />
+                      <ExcelExport data={currentProducts} />
                     </div>
                     <div className="text-sm-right">
                       <Link to="/productos/edit/new">
