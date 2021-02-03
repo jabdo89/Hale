@@ -264,29 +264,6 @@ const Ordenes = ({ Orders = [] }) => {
                           <i className="bx bx-search-alt search-icon"></i>
                         </div>
                       </div>
-                      <FormGroup className="select2-container">
-                        <label className="control-label">
-                          Filtrar por tipo de pago:
-                        </label>
-                        <Select
-                          value={tipoDePago}
-                          isMulti={true}
-                          onChange={(v) => setTipoDePago(v)}
-                          options={tiposDePago}
-                          classNamePrefix="select2-selection"
-                        />
-                      </FormGroup>
-                      <FormGroup className="select2-container">
-                        <label className="control-label">
-                          Filtrar estatus de pago:
-                        </label>
-                        <Select
-                          value={pagado}
-                          onChange={(v) => setPagado(v)}
-                          options={opcionesPagado}
-                          classNamePrefix="select2-selection"
-                        />
-                      </FormGroup>
                     </Col>
                     <Col sm="8">
                       <Row className="justify-content-end">
@@ -307,44 +284,74 @@ const Ordenes = ({ Orders = [] }) => {
                       </Row>
                     </Col>
                   </Row>
-                  <Row className="ml-1">
-                    <Form id="datesForm" className="form-inline">
-                      <FormGroup className="mr-3">
-                        <Label className="mr-2" htmlFor="startDate">
-                          Start Date
-                        </Label>
-                        <Input
-                          className="form-control"
-                          type="date"
-                          name="startDate"
-                          onChange={handleDateChange}
-                          id="startDate"
+                  <Row>
+                    <Col sm="3">
+                      <FormGroup className="select2-container">
+                        <label className="control-label">
+                          Filtrar por tipo de pago:
+                        </label>
+                        <Select
+                          value={tipoDePago}
+                          isMulti={true}
+                          onChange={(v) => setTipoDePago(v)}
+                          options={tiposDePago}
+                          classNamePrefix="select2-selection"
                         />
                       </FormGroup>
-                      <FormGroup>
-                        <Label className="mr-2" htmlFor="endDate">
-                          End Date
-                        </Label>
-                        <Input
-                          className="form-control"
-                          type="date"
-                          name="endDate"
-                          onChange={handleDateChange}
-                          id="endDate"
+                    </Col>
+                    <Col sm="3">
+                      <FormGroup className="select2-container">
+                        <label className="control-label">
+                          Filtrar estatus de pago:
+                        </label>
+                        <Select
+                          value={pagado}
+                          onChange={(v) => setPagado(v)}
+                          options={opcionesPagado}
+                          classNamePrefix="select2-selection"
                         />
                       </FormGroup>
-                    </Form>
-                    <Col className="mt-2 mb-2">
-                      <Button
-                        type="button"
-                        color="success"
-                        className="btn-rounded waves-effect waves-light mb-2 mr-2"
-                        onClick={resetDates}
-                      >
-                        Reset
-                      </Button>
+                    </Col>
+                    <Col sm="6">
+                      <Form id="datesForm" className="form-inline mt-4 pt-1">
+                        <FormGroup className="mr-3">
+                          <Label className="mr-2" htmlFor="startDate">
+                            Start Date
+                          </Label>
+                          <Input
+                            className="form-control"
+                            type="date"
+                            name="startDate"
+                            onChange={handleDateChange}
+                            id="startDate"
+                          />
+                        </FormGroup>
+                        <FormGroup>
+                          <Label className="mr-2" htmlFor="endDate">
+                            End Date
+                          </Label>
+                          <Input
+                            className="form-control"
+                            type="date"
+                            name="endDate"
+                            onChange={handleDateChange}
+                            id="endDate"
+                          />
+                        </FormGroup>
+                        <Button
+                          type="button"
+                          color="success"
+                          className="btn-rounded waves-effect waves-light ml-2"
+                          onClick={resetDates}
+                        >
+                          Reset
+                        </Button>
+                      </Form>
+                      {/* <Col className="mt-2 mb-2"> */}
+                      {/* </Col> */}
                     </Col>
                   </Row>
+                  <Row className="ml-1"></Row>
 
                   <div className="table-responsive">
                     <Table className="table table-centered table-nowrap">
@@ -357,7 +364,7 @@ const Ordenes = ({ Orders = [] }) => {
                           <th>Items</th>
                           <th>Tipo de pago</th>
                           <th></th>
-                          {/* <th>Ver detalles</th> */}
+                          {/* <th>Ver --detalles</th> */}
                           <th>Acciones</th>
                         </tr>
                       </thead>
