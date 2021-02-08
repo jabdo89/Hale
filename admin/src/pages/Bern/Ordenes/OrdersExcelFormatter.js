@@ -3,7 +3,6 @@ import moment from "moment";
 
 const OrdersExcelFormatter = (data) => {
   let wb = XLSX.utils.book_new();
-  //   let ws = XLSX.utils.json_to_sheet(data);
   let ws = XLSX.utils.aoa_to_sheet([[""]]);
 
   ws["!merges"] = [
@@ -44,13 +43,6 @@ const OrdersExcelFormatter = (data) => {
   }));
 
   XLSX.utils.sheet_add_json(ws, transformedData, { origin: cell_ref });
-
-  //   for (let i = 0; i < data.length; i++) {
-  //     for (let C = 1; C <= 18; C++) {
-  //       let cell_ref = XLSX.utils.encode_cell(cell_address);
-  //       XLSX.utils.sheet_add_aoa(ws, [[`${R} + ${C}`]], { origin: cell_ref });
-  //     }
-  //   }
 
   XLSX.utils.book_append_sheet(wb, ws, "Órdenes");
   XLSX.writeFile(wb, "ordenes.xlsx");
