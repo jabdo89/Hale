@@ -21,6 +21,7 @@ import {
 } from "reactstrap";
 
 import Select from "react-select";
+import itemsPerPageOptions from '../../../../components/Common/itemsPerPageOptions';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../../components/Common/Breadcrumb";
@@ -48,25 +49,6 @@ const Sliders = ({ sliders = [] }) => {
   for (let i = 2; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
-
-  const itemsPerPageOptions = [
-    {
-      value: 5,
-      label: 5,
-    },
-    {
-      value: 10,
-      label: 10,
-    },
-    {
-      value: 20,
-      label: 20,
-    },
-    {
-      value: 50,
-      label: 50,
-    },
-  ];
 
   return (
     <React.Fragment>

@@ -26,11 +26,13 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 import Select from "react-select";
+import Form from "reactstrap/lib/Form";
+import itemsPerPageOptions from '../../../components/Common/itemsPerPageOptions';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import ExcelExport from "../../../components/Common/ExcelExport";
-import Form from "reactstrap/lib/Form";
+import OrdersExcelFormatter from "./OrdersExcelFormatter";
 
 const OrderDetailModal = ({ order, isOpen, setmodal }) => {
   return (
@@ -213,32 +215,15 @@ const Ordenes = ({ Orders = [] }) => {
     paymentTypeFilter(order) &&
     paymentStatusFilter(order);
 
-  let currentOrders = Orders.filter((order) => orderFilter(order));
+  let currentOrders = Orders.filter((order) => orderFilter(order)).sort(
+    (a, b) => new Date(b.date.seconds * 1000) - new Date(a.date.seconds * 1000)
+  );
 
   const pageNumbers = [1];
   const totalPages = Math.ceil(currentOrders.length / itemsPerPage);
   for (let i = 2; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
-
-  const itemsPerPageOptions = [
-    {
-      value: 5,
-      label: 5,
-    },
-    {
-      value: 10,
-      label: 10,
-    },
-    {
-      value: 20,
-      label: 20,
-    },
-    {
-      value: 50,
-      label: 50,
-    },
-  ];
 
   return (
     <React.Fragment>
@@ -249,8 +234,8 @@ const Ordenes = ({ Orders = [] }) => {
             <Col xs="12">
               <Card>
                 <CardBody>
-                  <Row className="mb-2">
-                    <Col sm="4">
+                  <Row className="mb-3">
+                    <Col lg="4" sm="6">
                       <div className="search-box mr-2 mb-2 d-inline-block">
                         <div className="position-relative">
                           <Input
@@ -265,10 +250,13 @@ const Ordenes = ({ Orders = [] }) => {
                         </div>
                       </div>
                     </Col>
-                    <Col sm="8">
+                    <Col lg="8" sm="6">
                       <Row className="justify-content-end">
                         <div className="text-sm-right">
-                          <ExcelExport data={currentOrders} />
+                          <ExcelExport
+                            fileExport={OrdersExcelFormatter}
+                            data={currentOrders}
+                          />
                         </div>
                         <div className="text-sm-right">
                           <Link to="/ordenes/edit/new">
@@ -285,7 +273,7 @@ const Ordenes = ({ Orders = [] }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col sm="3">
+                    <Col xl="5" lg="6" sm="12">
                       <FormGroup className="select2-container">
                         <label className="control-label">
                           Filtrar por tipo de pago:
@@ -299,7 +287,7 @@ const Ordenes = ({ Orders = [] }) => {
                         />
                       </FormGroup>
                     </Col>
-                    <Col sm="3">
+                    <Col xl="3" lg="6" sm="12">
                       <FormGroup className="select2-container">
                         <label className="control-label">
                           Filtrar estatus de pago:
@@ -312,9 +300,9 @@ const Ordenes = ({ Orders = [] }) => {
                         />
                       </FormGroup>
                     </Col>
-                    <Col sm="6">
-                      <Form id="datesForm" className="form-inline mt-4 pt-1">
-                        <FormGroup className="mr-3">
+                    <Col sm="12">
+                      <Form id="datesForm" className="form-inline pt-1">
+                        <FormGroup className="mb-3 mr-3">
                           <Label className="mr-2" htmlFor="startDate">
                             Start Date
                           </Label>
@@ -326,7 +314,7 @@ const Ordenes = ({ Orders = [] }) => {
                             id="startDate"
                           />
                         </FormGroup>
-                        <FormGroup>
+                        <FormGroup className="mb-3">
                           <Label className="mr-2" htmlFor="endDate">
                             End Date
                           </Label>
@@ -341,14 +329,12 @@ const Ordenes = ({ Orders = [] }) => {
                         <Button
                           type="button"
                           color="success"
-                          className="btn-rounded waves-effect waves-light ml-2"
+                          className="btn-rounded waves-effect waves-light ml-2 mb-3"
                           onClick={resetDates}
                         >
                           Reset
                         </Button>
                       </Form>
-                      {/* <Col className="mt-2 mb-2"> */}
-                      {/* </Col> */}
                     </Col>
                   </Row>
                   <Row className="ml-1"></Row>
@@ -370,11 +356,6 @@ const Ordenes = ({ Orders = [] }) => {
                       </thead>
                       <tbody>
                         {currentOrders
-                          .sort(
-                            (a, b) =>
-                              new Date(b.date.seconds * 1000) -
-                              new Date(a.date.seconds * 1000)
-                          )
                           .slice(
                             currentPage * itemsPerPage - itemsPerPage,
                             currentPage * itemsPerPage
@@ -484,12 +465,12 @@ const Ordenes = ({ Orders = [] }) => {
                     </Table>
                   </div>
                   <Row className="justify-content-end mb-5">
-                    <Col sm="1">
+                    <Col sm="2" className="mt-3">
                       <Label className="control-label mr-2">
                         Elementos por página
                       </Label>
                     </Col>
-                    <Col sm="1">
+                    <Col sm="2" className="mt-3">
                       <Select
                         classNamePrefix="select2-selection"
                         className=""
@@ -498,7 +479,7 @@ const Ordenes = ({ Orders = [] }) => {
                         onChange={(v) => setItemsPerPage(v.value)}
                       />
                     </Col>
-                    <Pagination className="pagination pagination-rounded">
+                    <Pagination className="pagination pagination-rounded mt-3">
                       <PaginationItem disabled={currentPage <= 1}>
                         <PaginationLink
                           previous
