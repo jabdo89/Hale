@@ -27,6 +27,7 @@ import ExcelExport from "../../../components/Common/ExcelExport";
 import { useState } from "react";
 import Select from "react-select";
 import TablePagination from "../../../components/Common/TablePagination";
+import ClientsExcelFormatter from "./ClientesExcelFormatter";
 
 // const Clientes = ({ clients }) => {
 //   return (
@@ -200,7 +201,7 @@ const Clientes = ({ clients = [] }) => {
                     <Col sm="8">
                       <Row className="justify-content-end">
                         <div className="text-sm-right">
-                          <ExcelExport data={currentClients} />
+                          <ExcelExport fileExport={ClientsExcelFormatter} data={currentClients} />
                         </div>
                         <div className="text-sm-right">
                           <Link to="/clientes/edit/new">

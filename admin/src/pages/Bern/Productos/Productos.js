@@ -27,6 +27,7 @@ import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import ExcelExport from "../../../components/Common/ExcelExport";
 import { useState } from "react";
 import TablePagination from "../../../components/Common/TablePagination";
+import ProductosExcelFormatter from "./ProductosExcelExport";
 
 const Productos = ({ products = [] }) => {
   const history = useHistory();
@@ -80,7 +81,7 @@ const Productos = ({ products = [] }) => {
                 <Col sm="8">
                   <Row className="justify-content-end">
                     <div className="text-sm-right">
-                      <ExcelExport data={currentProducts} />
+                      <ExcelExport fileExport={ProductosExcelFormatter} data={currentProducts} />
                     </div>
                     <div className="text-sm-right">
                       <Link to="/productos/edit/new">

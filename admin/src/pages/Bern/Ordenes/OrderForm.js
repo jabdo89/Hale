@@ -110,7 +110,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
             />
           </FormGroup>
         </Col>
-        <Col sm="1">
+        <Col sm="2">
           <FormGroup>
             <Label htmlFor="apartmentNum">Apt. #</Label>
             <Input
@@ -136,7 +136,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
             />
           </FormGroup>
         </Col>
-        <Col sm="1">
+        <Col sm="3">
           <FormGroup>
             <Label htmlFor="state">State</Label>
             <Input
@@ -149,7 +149,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
             />
           </FormGroup>
         </Col>
-        <Col sm="5">
+        <Col sm="4">
           <FormGroup>
             <Label htmlFor="street">Street</Label>
             <Input
