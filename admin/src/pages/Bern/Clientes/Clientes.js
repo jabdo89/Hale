@@ -26,6 +26,7 @@ import { Link, useHistory } from "react-router-dom";
 import ExcelExport from "../../../components/Common/ExcelExport";
 import { useState } from "react";
 import Select from "react-select";
+import TablePagination from "../../../components/Common/TablePagination";
 
 // const Clientes = ({ clients }) => {
 //   return (
@@ -281,50 +282,13 @@ const Clientes = ({ clients = [] }) => {
                       </tbody>
                     </Table>
                   </div>
-                  <Row className="justify-content-end mb-5">
-                    <Col sm="1">
-                      <Label className="control-label mr-2">
-                        Elementos por página
-                      </Label>
-                    </Col>
-                    <Col sm="1">
-                      <Select
-                        classNamePrefix="select2-selection"
-                        placeholder="10"
-                        options={itemsPerPageOptions}
-                        onChange={(v) => setItemsPerPage(v.value)}
-                      />
-                    </Col>
-                    <Pagination className="pagination pagination-rounded">
-                      <PaginationItem disabled={currentPage <= 1}>
-                        <PaginationLink
-                          previous
-                          onClick={() => setCurrentPage((page) => page - 1)}
-                        />
-                      </PaginationItem>
-                      {pageNumbers.map((number) => {
-                        return (
-                          <PaginationItem
-                            active={number === currentPage}
-                            key={number}
-                            id={number}
-                          >
-                            <PaginationLink
-                              onClick={() => setCurrentPage(number)}
-                            >
-                              {number}
-                            </PaginationLink>
-                          </PaginationItem>
-                        );
-                      })}
-                      <PaginationItem disabled={currentPage >= totalPages}>
-                        <PaginationLink
-                          next
-                          onClick={() => setCurrentPage((page) => page + 1)}
-                        />
-                      </PaginationItem>
-                    </Pagination>
-                  </Row>
+                  <TablePagination
+                    setItemsPerPage={setItemsPerPage}
+                    setCurrentPage={setCurrentPage}
+                    currentPage={currentPage}
+                    pageNumbers={pageNumbers}
+                    totalPages={totalPages}
+                  />
                 </CardBody>
               </Card>
             </Col>
