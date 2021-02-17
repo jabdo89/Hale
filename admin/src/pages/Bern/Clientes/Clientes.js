@@ -223,9 +223,9 @@ const Clientes = ({ clients = [] }) => {
                     <Table className="table-centered table-nowrap">
                       <thead>
                         <tr>
-                          <th>Name</th>
+                          <th>Nombre</th>
                           <th>Productos</th>
-                          <th>Total Spent</th>
+                          <th>Total</th>
                           <th>Acciones</th>
                         </tr>
                       </thead>
@@ -261,7 +261,7 @@ const Clientes = ({ clients = [] }) => {
                                       </span>
                                     )}
                                   </td>
-                                  <td>${totalSpent}</td>
+                                  <td>${totalSpent ?? 0}</td>
                                   <td>
                                     <Link to="#" className="mr-3 text-primary">
                                       <i
@@ -273,7 +273,7 @@ const Clientes = ({ clients = [] }) => {
                                         placement="top"
                                         target="edittooltip"
                                       >
-                                        Edit
+                                        Editar
                                       </UncontrolledTooltip>
                                     </Link>
                                   </td>

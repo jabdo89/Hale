@@ -173,7 +173,7 @@ const Productos = ({ products = [] }) => {
                                         placement="top"
                                         target="edittooltip"
                                       >
-                                        Edit
+                                        Editar
                                       </UncontrolledTooltip>
                                     </Link>
                                     <Link to="#" className="text-danger">
@@ -186,7 +186,7 @@ const Productos = ({ products = [] }) => {
                                         placement="top"
                                         target="deletetooltip"
                                       >
-                                        Delete
+                                        Eliminar
                                       </UncontrolledTooltip>
                                     </Link>
                                   </td>

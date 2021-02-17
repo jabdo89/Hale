@@ -101,7 +101,7 @@ const Sliders = ({ sliders = [] }) => {
                             placement="top"
                             target="edittooltip"
                           >
-                            Edit
+                            Editar
                           </UncontrolledTooltip>
                         </a>
                         <a>
@@ -115,7 +115,7 @@ const Sliders = ({ sliders = [] }) => {
                               placement="top"
                               target="deletetooltip"
                             >
-                              Delete
+                              Eliminar
                             </UncontrolledTooltip>
                           </div>
                         </a>

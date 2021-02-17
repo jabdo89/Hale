@@ -85,14 +85,14 @@ const InventoryDetailModal = ({ product, isOpen, setmodal }) => {
                 className="mr-1 waves-effect waves-light"
                 onClick={updateInventory}
               >
-                Save Changes
+                Guardar Cambios
               </Button>
               <Button
                 color="secondary"
                 className="waves-effect"
                 onClick={() => setmodal(!isOpen)}
               >
-                Cancel
+                Cancelar
               </Button>
             </Row>
           </Form>
