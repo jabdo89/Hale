@@ -18,7 +18,7 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
-import itemsPerPageOptions from '../../../components/Common/itemsPerPageOptions';
+import itemsPerPageOptions from "../../../components/Common/itemsPerPageOptions";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
@@ -201,7 +201,10 @@ const Clientes = ({ clients = [] }) => {
                     <Col sm="8">
                       <Row className="justify-content-end">
                         <div className="text-sm-right">
-                          <ExcelExport fileExport={ClientsExcelFormatter} data={currentClients} />
+                          <ExcelExport
+                            fileExport={ClientsExcelFormatter}
+                            data={currentClients}
+                          />
                         </div>
                         <div className="text-sm-right">
                           <Link to="/clientes/edit/new">
@@ -312,6 +315,7 @@ export default compose(
     return [
       {
         collection: "Users",
+        where: ["rol", "==", "Cliente"],
       },
     ];
   })
