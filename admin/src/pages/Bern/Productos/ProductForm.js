@@ -43,8 +43,12 @@ const ProductForm = ({ producto = {}, categories = {}, tags = {} }) => {
           shortDescription: productData.shortDescription,
           sku: productData.sku,
           stock: 100,
+          minQuant: 10,
         })
         .then(function (docRef) {
+          db.collection("Products").doc(docRef.id).update({
+            id: docRef.id,
+          });
           history.push("/productos");
         });
     } else {
