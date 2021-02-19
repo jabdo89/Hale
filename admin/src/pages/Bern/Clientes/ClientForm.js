@@ -450,7 +450,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
                   <div className="mb-3">
                     <i className="display-4 text-muted bx bxs-cloud-upload"></i>
                   </div>
-                  <h4>Drop files here or click to upload.</h4>
+                  <h4>Arrastra archivos aquí o haz click para subir.</h4>
                 </div>
               </div>
             </div>
@@ -538,7 +538,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
                   <div className="mb-3">
                     <i className="display-4 text-muted bx bxs-cloud-upload"></i>
                   </div>
-                  <h4>Drop files here or click to upload.</h4>
+                  <h4>Arrastra archivos aquí o haz click para subir.</h4>
                 </div>
               </div>
             </div>
@@ -586,14 +586,14 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
           className="mr-1 waves-effect waves-light"
           onClick={onSubmit}
         >
-          Save Changes
+          Guardar Cambios
         </Button>
         <Button
           color="secondary"
           className="waves-effect"
           onClick={returnToProducts}
         >
-          Cancel
+          Cancelar
         </Button>
       </Row>
     </Form>

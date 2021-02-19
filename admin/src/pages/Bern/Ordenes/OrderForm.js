@@ -86,7 +86,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
         </Col>
         <Col sm="4">
           <FormGroup>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Correo electrónico</Label>
             <Input
               id="email"
               name="email"
@@ -99,7 +99,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
         </Col>
         <Col sm="4">
           <FormGroup>
-            <Label htmlFor="phone">Phone</Label>
+            <Label htmlFor="phone">Teléfono</Label>
             <Input
               id="phone"
               name="phone"
@@ -112,7 +112,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
         </Col>
         <Col sm="2">
           <FormGroup>
-            <Label htmlFor="apartmentNum">Apt. #</Label>
+            <Label htmlFor="apartmentNum"># de depto.</Label>
             <Input
               id="apartmentNum"
               name="apartmentNum"
@@ -125,7 +125,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
         </Col>
         <Col sm="3">
           <FormGroup>
-            <Label htmlFor="city">City</Label>
+            <Label htmlFor="city">Ciudad</Label>
             <Input
               id="city"
               name="city"
@@ -138,7 +138,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
         </Col>
         <Col sm="3">
           <FormGroup>
-            <Label htmlFor="state">State</Label>
+            <Label htmlFor="state">Estado</Label>
             <Input
               id="state"
               name="state"
@@ -151,7 +151,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
         </Col>
         <Col sm="4">
           <FormGroup>
-            <Label htmlFor="street">Street</Label>
+            <Label htmlFor="street">Calle</Label>
             <Input
               id="street"
               name="street"
@@ -164,7 +164,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
         </Col>
         <Col sm="2">
           <FormGroup>
-            <Label htmlFor="zipcode">Zipcode</Label>
+            <Label htmlFor="zipcode">Código Postal</Label>
             <Input
               id="zipcode"
               name="zipcode"
@@ -177,7 +177,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
         </Col>
         <Col sm="3">
           <FormGroup>
-            <Label htmlFor="date">Date</Label>
+            <Label htmlFor="date">Fecha</Label>
             <Input
               className="form-control"
               type="date"
@@ -228,7 +228,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
           </FormGroup>
         </Col> */}
         <Col sm="9">
-          <Label>Products</Label>
+          <Label>Productos</Label>
           {/* <FormGroup>
             <Row className="ml-1">
               <Label>Producto 1</Label>
@@ -254,14 +254,14 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
           className="mr-1 waves-effect waves-light"
           onClick={onSubmit}
         >
-          Save Changes
+          Guardar cambios
         </Button>
         <Button
           color="secondary"
           className="waves-effect"
           onClick={returnToOrders}
         >
-          Cancel
+          Cancelar
         </Button>
       </Row>
     </Form>

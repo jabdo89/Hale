@@ -301,7 +301,7 @@ const Ordenes = ({ Orders = [] }) => {
                       <Form id="datesForm" className="form-inline pt-1">
                         <FormGroup className="mb-3 mr-3">
                           <Label className="mr-2" htmlFor="startDate">
-                            Start Date
+                            Fecha de inicio
                           </Label>
                           <Input
                             className="form-control"
@@ -313,7 +313,7 @@ const Ordenes = ({ Orders = [] }) => {
                         </FormGroup>
                         <FormGroup className="mb-3">
                           <Label className="mr-2" htmlFor="endDate">
-                            End Date
+                            Fecha de fin
                           </Label>
                           <Input
                             className="form-control"
@@ -344,7 +344,7 @@ const Ordenes = ({ Orders = [] }) => {
                           <th>Email</th>
                           <th>Fecha</th>
                           <th>Total</th>
-                          <th>Items</th>
+                          <th>Productos</th>
                           <th>Tipo de pago</th>
                           <th></th>
                           {/* <th>Ver --detalles</th> */}
@@ -424,7 +424,7 @@ const Ordenes = ({ Orders = [] }) => {
                                     placement="top"
                                     target="edittooltip"
                                   >
-                                    Edit
+                                    Editar
                                   </UncontrolledTooltip>
                                 </Link>
                                 <Link to="#" className="mr-3 text-danger">
@@ -437,7 +437,7 @@ const Ordenes = ({ Orders = [] }) => {
                                     placement="top"
                                     target="deletetooltip"
                                   >
-                                    Delete
+                                    Eliminar
                                   </UncontrolledTooltip>
                                 </Link>
                                 {!order.pagado && (

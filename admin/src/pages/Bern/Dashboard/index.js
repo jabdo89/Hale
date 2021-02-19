@@ -66,9 +66,8 @@ function getPreviousMonday() {
 }
 
 function getChart(orders, clients, email) {
-  console.log(email);
   let series = [];
-  if (email === "Year") {
+  if (email === "Año") {
     for (var i = 0; i < clients.length; i++) {
       if (clients[i].rol === "Cliente") {
         series.push({
@@ -87,7 +86,7 @@ function getChart(orders, clients, email) {
     }
     return series;
   }
-  if (email === "Month") {
+  if (email === "Mes") {
     for (var i = 0; i < clients.length; i++) {
       if (clients[i].rol === "Cliente") {
         series.push({
@@ -146,7 +145,7 @@ function getChart(orders, clients, email) {
     }
     return series;
   }
-  if (email === "Week") {
+  if (email === "Semana") {
     for (var i = 0; i < clients.length; i++) {
       if (clients[i].rol === "Cliente") {
         series.push({
@@ -172,7 +171,6 @@ function getChart(orders, clients, email) {
         }
       }
     }
-    console.log(series);
     return series;
   }
 }
@@ -181,55 +179,55 @@ const Dashboard = (props) => {
   const [modal, setmodal] = useState(false);
   const [series, setSeries] = useState(false);
   const [email, setEmail] = useState([
-    { title: "Week", linkto: "#", isActive: false },
-    { title: "Month", linkto: "#", isActive: false },
-    { title: "Year", linkto: "#", isActive: true },
+    { title: "Semana", linkto: "#", isActive: false },
+    { title: "Mes", linkto: "#", isActive: false },
+    { title: "Año", linkto: "#", isActive: true },
   ]);
-  const [graphvar, setgraphVar] = useState("Yearly");
+  const [graphvar, setgraphVar] = useState("Año");
   if (props.Orders === undefined || props.Clients === undefined) {
     return null;
   }
   const reports = [
     {
-      title: "Orders",
+      title: "Órdenes",
       iconClass: "bx-copy-alt",
       description: getOrders(props.Orders),
     },
     {
-      title: "Clients",
+      title: "Clientes",
       iconClass: "bx-archive-in",
       description: getClients(props.Clients),
     },
     {
-      title: "Total Earnings",
+      title: "Ingresos totales",
       iconClass: "bx-purchase-tag-alt",
       description: "$" + totalEarn(props.Orders),
     },
   ];
   const changeGraph = (data) => {
-    if (data.title === "Week") {
+    if (data.title === "Semana") {
       setEmail([
-        { title: "Week", linkto: "#", isActive: true },
-        { title: "Month", linkto: "#", isActive: false },
-        { title: "Year", linkto: "#", isActive: false },
+        { title: "Semana", linkto: "#", isActive: true },
+        { title: "Mes", linkto: "#", isActive: false },
+        { title: "Año", linkto: "#", isActive: false },
       ]);
-      setgraphVar("Weekly");
+      setgraphVar("Semana");
     }
-    if (data.title === "Year") {
+    if (data.title === "Año") {
       setEmail([
-        { title: "Week", linkto: "#", isActive: false },
-        { title: "Month", linkto: "#", isActive: false },
-        { title: "Year", linkto: "#", isActive: true },
+        { title: "Semana", linkto: "#", isActive: false },
+        { title: "Mes", linkto: "#", isActive: false },
+        { title: "Año", linkto: "#", isActive: true },
       ]);
-      setgraphVar("Yearly");
+      setgraphVar("Año");
     }
-    if (data.title === "Month") {
+    if (data.title === "Mes") {
       setEmail([
-        { title: "Week", linkto: "#", isActive: false },
-        { title: "Month", linkto: "#", isActive: true },
-        { title: "Year", linkto: "#", isActive: false },
+        { title: "Semana", linkto: "#", isActive: false },
+        { title: "Mes", linkto: "#", isActive: true },
+        { title: "Año", linkto: "#", isActive: false },
       ]);
-      setgraphVar("Monthly");
+      setgraphVar("Mes");
     }
   };
   return (
@@ -280,7 +278,7 @@ const Dashboard = (props) => {
               <Card>
                 <CardBody>
                   <CardTitle className="mb-4 float-sm-left">
-                    Sales {graphvar}
+                    Ventas por {graphvar}
                   </CardTitle>
                   <div className="float-sm-right">
                     <ul className="nav nav-pills">
@@ -302,10 +300,9 @@ const Dashboard = (props) => {
                   </div>
                   <div className="clearfix"></div>
                   {/* {action} */}
-                  {console.log(graphvar)}
-                  {graphvar === "Monthly" ? (
+                  {graphvar === "Mes" ? (
                     <StackedColumnChart
-                      series={getChart(props.Orders, props.Clients, "Month")}
+                      series={getChart(props.Orders, props.Clients, "Mes")}
                       categories={[
                         1,
                         2,
@@ -341,9 +338,9 @@ const Dashboard = (props) => {
                       ]}
                     />
                   ) : null}
-                  {graphvar === "Weekly" ? (
+                  {graphvar === "Semana" ? (
                     <StackedColumnChart
-                      series={getChart(props.Orders, props.Clients, "Week")}
+                      series={getChart(props.Orders, props.Clients, "Semana")}
                       categories={[
                         "Lunes",
                         "Martes",
@@ -355,9 +352,9 @@ const Dashboard = (props) => {
                       ]}
                     />
                   ) : null}
-                  {graphvar === "Yearly" ? (
+                  {graphvar === "Año" ? (
                     <StackedColumnChart
-                      series={getChart(props.Orders, props.Clients, "Year")}
+                      series={getChart(props.Orders, props.Clients, "Año")}
                       categories={[
                         "Jan",
                         "Feb",
