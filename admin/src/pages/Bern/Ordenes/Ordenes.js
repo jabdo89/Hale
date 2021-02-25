@@ -340,6 +340,7 @@ const Ordenes = ({ Orders = [] }) => {
                     <Table className="table table-centered table-nowrap">
                       <thead className="thead-light">
                         <tr>
+                          <th>Order Num</th>
                           <th>Order ID</th>
                           <th>Email</th>
                           <th>Fecha</th>
@@ -359,6 +360,14 @@ const Ordenes = ({ Orders = [] }) => {
                           )
                           .map((order, key) => (
                             <tr key={"_order_" + key}>
+                              <td>
+                                <Link
+                                  to="#"
+                                  className="text-body font-weight-bold"
+                                >
+                                  {order.orderNum}
+                                </Link>
+                              </td>
                               <td>
                                 <Link
                                   to="#"
