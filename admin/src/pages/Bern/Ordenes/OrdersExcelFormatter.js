@@ -35,6 +35,7 @@ const OrdersExcelFormatter = (data) => {
     Correo: obj.email ?? "",
     "Tipo de pago": obj.paymentMethod ?? "",
     "Estatus de pago": obj.payed ?? "",
+    "Precio Total": obj.price ?? "",
   }));
 
   XLSX.utils.sheet_add_json(ws, transformedData, { origin: cell_ref });
