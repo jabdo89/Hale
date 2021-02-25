@@ -19,25 +19,22 @@ const OrdersExcelFormatter = (data) => {
   let transformedData = data.map((obj) => ({
     "#ORDEN": "",
     "Order ID": obj.id ?? "",
-    "Fecha": moment(new Date(obj.date.seconds * 1000)).format("MMM Do YYYY") ?? "",
-    "Cliente": `${obj.firstName ?? ''} ${obj.lastname ?? ''}`,
-    "Producto":
-      `${obj.items[0].name}${obj.items[1] ? `, ${obj.items[1].name}` : ""}` ??
-      "",
-    "Piezas":
-      `${obj.items[0].quantity}${
-        obj.items[1] ? `, ${obj.items[1].quantity}` : ""
-      }` ?? "",
-    "Precio individual":
-      `${obj.items[0].price}${obj.items[1] ? `, ${obj.items[1].price}` : ""}` ??
-      "",
+    Fecha:
+      moment(new Date(obj.date.seconds * 1000)).format("MMM Do YYYY") ?? "",
+    Cliente: `${obj.firstName ?? ""} ${obj.lastname ?? ""}`,
+    Producto1: obj.items[0].name ?? "",
+    Piezas1: obj.items[0].quantity ?? "",
+    "Precio individual 1": obj.items[0].price ?? "",
+    Producto2: obj.items[1].name ?? "",
+    Piezas2: obj.items[1].quantity ?? "",
+    "Precio individual 2": obj.items[1].price ?? "",
     "Direccion (1)": obj.address.street ?? "",
     "Direccion (2)": obj.address.apartmentNum ?? "",
-    "Ciudad": obj.address.city ?? "",
-    "Estado": obj.address.state ?? "",
+    Ciudad: obj.address.city ?? "",
+    Estado: obj.address.state ?? "",
     "Codigo postal": obj.address.zipcode ?? "",
-    "Telefono": obj.phone ?? "",
-    "Correo": obj.email ?? "",
+    Telefono: obj.phone ?? "",
+    Correo: obj.email ?? "",
     "Tipo de pago": obj.paymentMethod ?? "",
     "Estatus de pago": obj.payed ?? "",
   }));
