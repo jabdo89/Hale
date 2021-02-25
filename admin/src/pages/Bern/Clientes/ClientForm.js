@@ -415,7 +415,10 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               title="Producto 1"
               options={productOptions}
               onChange={(v) => handleSelectChange(v, "Uno")}
-              defaultValue={clientData.productoUno || ""}
+              value={clientData.productoUno ? {
+                value: clientData.productoUno,
+                label: clientData.productoUno,
+              } : ""}
             />
           </FormGroup>
         </Col>
@@ -429,7 +432,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               onChange={handleNumberChange}
               min={0}
               className="form-control"
-              defaultValue={+clientData.precioUno || ""}
+              value={+clientData.precioUno || ""}
             />
           </FormGroup>
         </Col>
@@ -503,7 +506,10 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               name="productoDos"
               options={productOptions}
               onChange={(v) => handleSelectChange(v, "Dos")}
-              defaultValue={clientData.productoDos || ""}
+              value={clientData.productoDos ? {
+                value: clientData.productoDos,
+                label: clientData.productoDos,
+              } : ""}
             />
           </FormGroup>
         </Col>
@@ -517,7 +523,7 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               onChange={handleNumberChange}
               min={0}
               className="form-control"
-              defaultValue={+clientData.precioDos || ""}
+              value={+clientData.precioDos || ""}
             />
           </FormGroup>
         </Col>

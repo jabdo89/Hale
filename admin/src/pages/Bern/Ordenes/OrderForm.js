@@ -5,6 +5,8 @@ import { Row, Col, Form, FormGroup, Input, Button, Label } from "reactstrap";
 const OrderForm = ({ orden = {}, productOptions = [] }) => {
   const history = useHistory();
 
+  console.log('orden', orden)
+
   const returnToOrders = () => {
     history.push("/ordenes");
   };
@@ -65,7 +67,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
   const calcOrderTotal = (items) => {
     if (!items) return 0;
 
-    return items.reduce((acc, curr) => acc + +curr.price * +curr.quantity, 0);
+    return items.reduce((acc, curr) => acc + (parseFloat(curr.price) || 0) * (parseFloat(curr.quantity) || 0), 0);
   };
 
   return (
@@ -244,7 +246,7 @@ const OrderForm = ({ orden = {}, productOptions = [] }) => {
         </Col>
         <Col sm="12">
           <Label>
-            Total: {orderData.items ? calcOrderTotal(orderData.items) : 0}
+            Total: {calcOrderTotal(orderData.items) ?? 0}
           </Label>
         </Col>
       </Row>
