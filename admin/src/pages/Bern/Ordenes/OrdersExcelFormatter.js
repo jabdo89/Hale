@@ -17,7 +17,7 @@ const OrdersExcelFormatter = (data) => {
   let cell_ref = XLSX.utils.encode_cell(cell_address);
 
   let transformedData = data.map((obj) => ({
-    "#ORDEN": "",
+    "#ORDEN": obj.orderNum ?? "",
     "Order ID": obj.id ?? "",
     Fecha:
       moment(new Date(obj.date.seconds * 1000)).format("MMM Do YYYY") ?? "",

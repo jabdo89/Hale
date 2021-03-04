@@ -15,7 +15,7 @@ const secondConfig = {
 };
 
 const rrfConfig = {
-  userProfile: "Usuarios",
+  userProfile: "Users",
   useFirestoreForProfile: true,
 };
 

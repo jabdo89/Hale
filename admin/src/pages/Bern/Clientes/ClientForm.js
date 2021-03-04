@@ -128,10 +128,12 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
                     firstName: clientData.firstName,
                     lastName: clientData.lastName,
                     precioUno: clientData.precioUno,
-                    productoDos: clientData.productoDos,
-                    idDos: clientData.idDos,
+                    productoDos: clientData.productoDos
+                      ? clientData.productoDos
+                      : "",
+                    idDos: clientData.idDos ? clientData.idDos : "",
                     rol: "Cliente",
-                    precioDos: clientData.precioDos,
+                    precioDos: clientData.precioDos ? clientData.precioDos : "",
                     email: clientData.email,
                     totalSpent: 0,
                   })
@@ -238,9 +240,9 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
           firstName: clientData.firstName,
           lastName: clientData.lastName,
           precioUno: clientData.precioUno,
-          productoDos: clientData.productoDos,
-          idDos: clientData.idDos,
-          precioDos: clientData.precioDos,
+          productoDos: clientData.productoDos ? clientData.productoDos : "",
+          idDos: clientData.idDos ? clientData.idDos : "",
+          precioDos: clientData.precioDos ? clientData.precioDos : "",
         })
         .then(function (docRef) {
           history.push("/clientes");
@@ -415,10 +417,14 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               title="Producto 1"
               options={productOptions}
               onChange={(v) => handleSelectChange(v, "Uno")}
-              value={clientData.productoUno ? {
-                value: clientData.productoUno,
-                label: clientData.productoUno,
-              } : ""}
+              value={
+                clientData.productoUno
+                  ? {
+                      value: clientData.productoUno,
+                      label: clientData.productoUno,
+                    }
+                  : ""
+              }
             />
           </FormGroup>
         </Col>
@@ -506,10 +512,14 @@ const ClientForm = ({ cliente = {}, products = [] }) => {
               name="productoDos"
               options={productOptions}
               onChange={(v) => handleSelectChange(v, "Dos")}
-              value={clientData.productoDos ? {
-                value: clientData.productoDos,
-                label: clientData.productoDos,
-              } : ""}
+              value={
+                clientData.productoDos
+                  ? {
+                      value: clientData.productoDos,
+                      label: clientData.productoDos,
+                    }
+                  : ""
+              }
             />
           </FormGroup>
         </Col>

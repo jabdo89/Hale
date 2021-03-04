@@ -1,4 +1,5 @@
 import React from "react";
+import firebase from "firebase";
 
 import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
 import { Redirect } from "react-router-dom";
@@ -67,7 +68,7 @@ const App = (props) => {
 
   const Layout = getLayout();
   console.log(AuthIsLoaded());
-
+  console.log(props.profile);
   return (
     <React.Fragment>
       <Router>
@@ -85,7 +86,7 @@ const App = (props) => {
               </Route>
               <Redirect to="/login" />
             </div>
-          ) : (
+          ) : props.profile.rol === "Admin" ? (
             userRoutes.map((route, idx) => (
               <Authmiddleware
                 path={route.path}
@@ -94,6 +95,10 @@ const App = (props) => {
                 key={idx}
               />
             ))
+          ) : (
+            <div>
+              <button onClick={() => firebase.auth().signOut()}>Logout</button>
+            </div>
           )}
         </Switch>
       </Router>
@@ -104,7 +109,10 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     layout: state.Layout,
+    profile: state.firebase.profile,
   };
 };
 
 export default connect(mapStateToProps, null)(App);
+
+//          props.profile.rol === "Admin" ? (
